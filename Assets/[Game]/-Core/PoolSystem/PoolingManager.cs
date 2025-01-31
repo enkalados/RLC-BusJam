@@ -4,6 +4,7 @@ using Base.Utilities;
 using UnityEngine;
 namespace Base.Pool
 {
+	[DefaultExecutionOrder(-10)]
 	public class PoolingManager : Singleton<PoolingManager>
 	{
 		private Dictionary<PoolID, Stack<PoolObject>> _poolStacksByID = new Dictionary<PoolID, Stack<PoolObject>>();

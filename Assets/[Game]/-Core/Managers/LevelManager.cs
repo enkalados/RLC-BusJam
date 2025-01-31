@@ -1,6 +1,11 @@
 using Base.Utilities;
 using Base.Utilities.GlobalVariable;
 using Base.Utilities.SaveLoadManager;
+using LevelSaveSystem;
+using LevelUI;
+using System.Collections.Generic;
+using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -9,7 +14,11 @@ namespace Base.Managers
 	public class LevelManager : Singleton<LevelManager>
 	{
 		#region Parameters
-		[SerializeField] LevelData[] levels;
+		[SerializeField] LevelUIControl levelUIControl;
+		[SerializeField] TextMeshProUGUI levelPlayText;
+		[SerializeField] List<LevelTransformData> levelDataList = new List<LevelTransformData>();
+		string levelEnvironmentsPath = "Assets/[Game]/Data/LevelEnvironmentDatas";
+
 		int currentLevel;
 		bool isLevelStarted = false;
 
@@ -29,6 +38,9 @@ namespace Base.Managers
 		private void OnEnable()
 		{
 			currentLevel = SaveLoad.GetInt(GlobalVariables.LastLevelNumberSaveKey, 1);
+			LoadLevelData();
+			CreateLevelUI();
+			SelectCurrentLevel();
 
 			OnLevelStart.AddListener(StartLevel);
 			OnNextLevel.AddListener(NextLevel);
@@ -73,7 +85,6 @@ namespace Base.Managers
 
 			OnLevelFinish.Invoke();
 		}
-
 		void NextLevel()
 		{
 			//
@@ -82,13 +93,30 @@ namespace Base.Managers
 		{
 			//
 		}
-		#endregion
-	}
-	[System.Serializable]
-	public class LevelData
-	{
-		public int LevelNumber;
-		public int SceneIndex;
+		public void LoadLevelData()
+		{
+			levelDataList.Clear();
 
+			string[] levels = AssetDatabase.FindAssets("t:LevelTransformData", new[] { levelEnvironmentsPath });
+
+			foreach (string item in levels)
+			{
+				string path = AssetDatabase.GUIDToAssetPath(item);
+				LevelTransformData data = AssetDatabase.LoadAssetAtPath<LevelTransformData>(path);
+
+				if (data != null)
+					levelDataList.Add(data);
+			}
+		}
+		void CreateLevelUI()
+		{
+			levelUIControl.CreateButtons(levelDataList.Count);
+		}
+		void SelectCurrentLevel()
+		{
+			levelUIControl.SelecetCurrentLevel(currentLevel);
+			levelPlayText.text = "Level " + currentLevel;
+		}
+		#endregion
 	}
 }

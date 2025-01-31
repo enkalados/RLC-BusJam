@@ -2,13 +2,11 @@ using Base.Global.Enums;
 using Base.Utilities;
 using System.Collections.Generic;
 using Base.UI;
-using UnityEngine;
 namespace Base.Managers
 {
     public class UIManager : Singleton<UIManager>
     {
         #region Variables
-        [SerializeField] GameObject uiPrefab;
 
         #endregion
         #region Properties 
@@ -16,10 +14,6 @@ namespace Base.Managers
 
         #endregion
         #region MonoBehaviour Methods
-        private void Awake()
-        {
-            DontDestroyOnLoad(uiPrefab);
-        }
         #endregion
         #region My Methods
         public void ShowPanel(PanelID panelID)

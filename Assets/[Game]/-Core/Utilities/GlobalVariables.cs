@@ -1,0 +1,9 @@
+namespace Base.Utilities.GlobalVariable
+{
+    public static class GlobalVariables
+    {
+		public static string OpenedSceneOnEditor = "openedSceneOnEditor";
+		public static string LastLevelNumberSaveKey = "lastLevelNumber";
+		public static string MoneySaveKey = "savedMoney";
+	}
+}

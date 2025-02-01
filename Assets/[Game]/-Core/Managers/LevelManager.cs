@@ -3,8 +3,7 @@ using Base.Pool;
 using Base.Utilities;
 using Base.Utilities.GlobalVariable;
 using Base.Utilities.SaveLoadManager;
-using GridSystem;
-using LevelSaveSystem;
+using LevelDataSystem;
 using LevelUI;
 using System.Linq;
 using TMPro;
@@ -170,13 +169,5 @@ namespace Base.Managers
 			return levelDatas[currentLevel];
 		}
 		#endregion
-	}
-	[System.Serializable]
-    public class LevelData
-    {
-		public int Level;
-		public LevelTransformData LevelTransformData;
-		public GridData TilesData;
-		public GridData PlayAreaTilesData;
-	}
+	}   
 }

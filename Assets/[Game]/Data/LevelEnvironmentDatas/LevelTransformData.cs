@@ -1,7 +1,7 @@
 using Base.Global.Enums;
 using System.Collections.Generic;
 using UnityEngine;
-namespace LevelSaveSystem
+namespace LevelDataSystem
 {
 	[CreateAssetMenu(fileName = "TransformData-Level-", menuName = "Level Transform Data")]
 	public class LevelTransformData : ScriptableObject

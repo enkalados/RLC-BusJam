@@ -18,7 +18,8 @@ namespace Base.Global.Enums
 	{
 		None=0,
 		Tile = 1,
-		Environment1 = 2
+		Environment1 = 2,
+		Stickman=3
 	}
 	//public enum UpgradeElementID
 	//{

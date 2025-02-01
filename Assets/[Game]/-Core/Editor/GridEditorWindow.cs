@@ -16,6 +16,7 @@ namespace GridSystem.Editor
 		string poolPath = "PoolObjects";
 		PoolData poolDatabase;
 
+		static GridData editingData = null;
 		List<GridData> gridDataList = new List<GridData>();
 		string gridDatasPath = "Assets/[Game]/Data/GridData";
 		int selectedGridDataIndex;
@@ -30,12 +31,32 @@ namespace GridSystem.Editor
 		{
 			GetWindow<GridEditorWindow>("Grid Editor");
 		}
+		public static void ShowWindow(GridData gridData)
+		{
+			editingData = gridData;
+			GetWindow<GridEditorWindow>("Grid Editor");
+		}
 		private void OnEnable()
 		{
 			InitializeGrid(gridX, gridZ);
 			LoadGridData();
 			LoadColors();
 			poolDatabase = Resources.Load<PoolData>(poolPath);
+			if(editingData != null)
+			{
+				ClearAndPreviewGrid(editingData);
+                for (int i = 0; i < gridDataList.Count; i++)
+                {
+					if (string.Equals(gridDataList[i].name, editingData.name))
+					{
+						selectedGridDataIndex = i;
+					}
+				}
+            }
+		}
+		private void OnDisable()
+		{
+			editingData=null;
 		}
 		private void OnGUI()
 		{
@@ -58,10 +79,6 @@ namespace GridSystem.Editor
 
 				EditorGUILayout.Space();
 
-				if (GUILayout.Button("Clear & Preview Grid"))
-				{
-					ClearAndPreviewGrid();
-				}
 				if (GUILayout.Button("Save Grid"))
 				{
 					ShowWarningPopup(selectedGrid);
@@ -173,6 +190,20 @@ namespace GridSystem.Editor
 				for (int i = 0; i < gridDataList[selectedGridDataIndex].GridTiles.Count; i++)
 				{
 					gridData[gridDataList[selectedGridDataIndex].GridTiles[i].X, gridDataList[selectedGridDataIndex].GridTiles[i].Z] = gridDataList[selectedGridDataIndex].GridTiles[i].ObjectPoolID;
+				}
+			}
+		}
+		private void ClearAndPreviewGrid(GridData selectedGrid)
+		{
+			if (selectedGrid.GridTiles.Count > 0)
+			{
+				gridX = selectedGrid.GridX;
+				gridZ = selectedGrid.GridZ;
+				InitializeGrid(gridX, gridZ);
+
+				for (int i = 0; i < selectedGrid.GridTiles.Count; i++)
+				{
+					gridData[selectedGrid.GridTiles[i].X, selectedGrid.GridTiles[i].Z] = selectedGrid.GridTiles[i].ObjectPoolID;
 				}
 			}
 		}

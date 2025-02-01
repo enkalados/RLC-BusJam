@@ -1,18 +1,24 @@
 using Base.Global.Enums;
 using Base.Pool;
+using GridSystem;
+using GridSystem.Editor;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
-namespace LevelSaveSystem
+namespace LevelDataSystem.Editor
 {
 	public class LevelSaveLoadEditorWindow : EditorWindow
 	{
 		#region Variables
-		List<LevelTransformData> levelDataList = new List<LevelTransformData>();
+		List<LevelData> levelData = new List<LevelData>();
 		GameObject levelParent = null;
 		string levelParentName = "LEVEL";
-		int selectedIndex = 0;
-		string levelEnvironmentsPath = "Assets/[Game]/Data/LevelEnvironmentDatas";
+		int selectedLevelIndex = 0;
+		string levelDataPath = "Assets/[Game]/Data/LevelData";
+
+		PoolID[] dontSaveWithEnvironment = { PoolID.Tile, PoolID.Stickman };
+
 		string poolPath = "PoolObjects";
 		PoolData poolDatabase;
 		#endregion
@@ -35,17 +41,16 @@ namespace LevelSaveSystem
 		}
 		private void OnGUI()
 		{
-			if (levelDataList.Count == 0)
+			if (levelData.Count == 0)
 			{
-				EditorGUILayout.HelpBox("Not found LevelTransformData!", MessageType.Warning);
+				EditorGUILayout.HelpBox("Not found Level Data!", MessageType.Warning);
 				return;
 			}
+			selectedLevelIndex = EditorGUILayout.Popup("Selected Level:", selectedLevelIndex, GetLevelNames());
 
-			selectedIndex = EditorGUILayout.Popup("Selected Environment:", selectedIndex, GetLevelNames());
-
-			if (levelDataList.Count > 0 && selectedIndex < levelDataList.Count)
+			if (levelData.Count > 0 && selectedLevelIndex < levelData.Count)
 			{
-				LevelTransformData selectedLevel = levelDataList[selectedIndex];
+				LevelTransformData selectedLevel = levelData[selectedLevelIndex].LevelTransformData;
 
 				EditorGUILayout.Space();
 
@@ -53,13 +58,27 @@ namespace LevelSaveSystem
 				{
 					ClearEndPreviewLevel(selectedLevel);
 				}
-				if (GUILayout.Button("Clear Level"))
-				{
-					ClearLevel();
-				}
+				EditorGUILayout.Space(15);
 				if (GUILayout.Button("Save Level"))
 				{
 					ShowWarningPopup(selectedLevel);
+				}
+				GUILayout.BeginHorizontal();
+				if (GUILayout.Button("Edit Tiles"))
+				{
+					GridEditorWindow.ShowWindow(levelData[selectedLevelIndex].TilesData);
+				}
+				if (GUILayout.Button("Edit Stickman Area"))
+				{
+					GridEditorWindow.ShowWindow(levelData[selectedLevelIndex].StickmansTileData);
+				}
+				GUILayout.EndHorizontal();
+
+				EditorGUILayout.Space(15);
+
+				if (GUILayout.Button("Clear Level"))
+				{
+					ClearLevel();
 				}
 
 				EditorGUILayout.Space(15);
@@ -67,7 +86,7 @@ namespace LevelSaveSystem
 				GUILayout.BeginHorizontal();
 				if (GUILayout.Button("Go to level data"))
 				{
-					EditorGUIUtility.PingObject(selectedLevel);
+					EditorGUIUtility.PingObject(levelData[selectedLevelIndex]);
 				}
 				if (GUILayout.Button("Go to pool data"))
 				{
@@ -102,12 +121,15 @@ namespace LevelSaveSystem
 				{
 					if (levelParent.transform.GetChild(i).TryGetComponent(out PoolObject element))
 					{
-						LevelTransform newLevelTransform = new LevelTransform();
-						newLevelTransform.PoolID = element.PoolID;
-						newLevelTransform.Position = element.transform.position;
-						newLevelTransform.Rotation = element.transform.localRotation;
-						newLevelTransform.Scale = element.transform.localScale;
-						selectedLevel.LevelTransforms.Add(newLevelTransform);
+						if (!dontSaveWithEnvironment.Contains(element.PoolID))
+						{
+							LevelTransform newLevelTransform = new LevelTransform();
+							newLevelTransform.PoolID = element.PoolID;
+							newLevelTransform.Position = element.transform.position;
+							newLevelTransform.Rotation = element.transform.localRotation;
+							newLevelTransform.Scale = element.transform.localScale;
+							selectedLevel.LevelTransforms.Add(newLevelTransform);
+						}
 					}
 				}
 				EditorUtility.SetDirty(selectedLevel);
@@ -148,7 +170,8 @@ namespace LevelSaveSystem
 					throw;
 				}
 			}
-		}	
+			FindObjectOfType<TileCreator>().SetTileGridDataEditor(levelData[selectedLevelIndex].TilesData, GetPoolObject(PoolID.Tile, poolDatabase));
+		}
 		PoolObject GetPoolObject(PoolID poolID, PoolData poolDatabase)
 		{
 			foreach (Pool item in poolDatabase.PoolHolder)
@@ -162,28 +185,27 @@ namespace LevelSaveSystem
 		}
 		private void LoadLevelData()
 		{
-			levelDataList.Clear();
+			levelData.Clear();
+			string[] levelDatas = AssetDatabase.FindAssets("t:LevelData", new[] { levelDataPath });
 
-			string[] levels = AssetDatabase.FindAssets("t:LevelTransformData", new[] { levelEnvironmentsPath });
-
-			foreach (string item in levels)
+			foreach (string item in levelDatas)
 			{
 				string path = AssetDatabase.GUIDToAssetPath(item);
-				LevelTransformData data = AssetDatabase.LoadAssetAtPath<LevelTransformData>(path);
+				LevelData data = AssetDatabase.LoadAssetAtPath<LevelData>(path);
 
 				if (data != null)
-					levelDataList.Add(data);
+					levelData.Add(data);
 			}
 
-			if (selectedIndex >= levelDataList.Count)
-				selectedIndex = 0;
+			if (selectedLevelIndex >= levelData.Count)
+				selectedLevelIndex = 0;
 		}
 		private string[] GetLevelNames()
 		{
-			string[] names = new string[levelDataList.Count];
-			for (int i = 0; i < levelDataList.Count; i++)
+			string[] names = new string[levelData.Count];
+			for (int i = 0; i < levelData.Count; i++)
 			{
-				names[i] = levelDataList[i].name;
+				names[i] = "Level " + levelData[i].Level;
 			}
 			return names;
 		}

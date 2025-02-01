@@ -1,6 +1,7 @@
 using Base.Global.Enums;
 using Base.Managers;
 using Base.Pool;
+using UnityEditor;
 using UnityEngine;
 namespace GridSystem
 {
@@ -20,6 +21,7 @@ namespace GridSystem
 		}
 		#endregion
 		#region Methods
+
 		void SetTileGridData(GridData gridData)
 		{
 			tileGridData = gridData;
@@ -36,6 +38,25 @@ namespace GridSystem
 				}
 			}
 		}
+
 		#endregion
+#if UNITY_EDITOR
+		public void SetTileGridDataEditor(GridData gridData, PoolObject tileObject)
+		{
+			CreateTilesEditor(gridData, tileObject);
+		}
+		void CreateTilesEditor(GridData gridData, PoolObject tileObject)
+		{
+			for (int i = 0; i < gridData.GridTiles.Count; i++)
+			{
+				if (gridData.GridTiles[i].ObjectPoolID == PoolID.Tile)
+				{
+					PoolObject item = (PoolObject)PrefabUtility.InstantiatePrefab(tileObject);
+					item.transform.SetParent(TilesParent.transform);
+					item.transform.SetLocalPositionAndRotation(new Vector3(gridData.GridTiles[i].X, 0, gridData.GridTiles[i].Z), Quaternion.identity);
+				}
+			}
+		}
+#endif
 	}
 }

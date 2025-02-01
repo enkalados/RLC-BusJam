@@ -1,4 +1,4 @@
-using LevelSaveSystem;
+using LevelDataSystem.Editor;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -24,13 +24,12 @@ namespace Base.Init
 
 		private static void OnSceneGUI(SceneView sceneView)
 		{
-			// Ekranýn üst kýsmýna bir araç çubuðu oluþtur
 			Handles.BeginGUI();
-			GUILayout.BeginArea(new Rect(10, 10, 150, 50)); // Üst sol köþeye yerleþtir
+			GUILayout.BeginArea(new Rect(10, 10, 150, 50));
 
 			GUILayout.BeginHorizontal(EditorStyles.toolbar);
 
-			// Buton ekle
+
 			//if (GUILayout.Button("Start With Init", EditorStyles.toolbarButton))
 			//{
 			//	GetActiveSceneBuildIndex();

@@ -3,12 +3,11 @@ using Base.Pool;
 using Base.Utilities;
 using Base.Utilities.GlobalVariable;
 using Base.Utilities.SaveLoadManager;
+using GridSystem;
 using LevelSaveSystem;
 using LevelUI;
-using System.Collections.Generic;
 using System.Linq;
 using TMPro;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -19,9 +18,9 @@ namespace Base.Managers
 		#region Parameters
 		[SerializeField] LevelUIControl levelUIControl;
 		[SerializeField] TextMeshProUGUI levelPlayText;
-		[SerializeField] List<LevelTransformData> levelDataList = new List<LevelTransformData>();
+		[SerializeField] LevelData[] levelDatas;
 		LevelTransformData currentLevelData = null;
-		string levelEnvironmentsPath = "Assets/[Game]/Data/LevelEnvironmentDatas";
+
 		GameObject levelParent = null;
 		string levelParentName = "LEVEL";
 
@@ -45,7 +44,6 @@ namespace Base.Managers
 		private void OnEnable()
 		{
 			currentLevel = SaveLoad.GetInt(GlobalVariables.LastLevelNumberSaveKey, 1);
-			LoadLevelData();
 			CreateLevelUI();
 			SelectCurrentLevel();
 			CreateLevel();
@@ -80,19 +78,19 @@ namespace Base.Managers
 			if (isSuccess)
 			{
 				currentLevel += 1;
-				if (currentLevel > levelDataList.Count)
+				if (currentLevel > levelDatas.Length)
 				{
 					currentLevel = 1;
 				}
 				SaveLoad.SetInt(GlobalVariables.LastLevelNumberSaveKey, currentLevel);
 
 				OnLevelSuccess.Invoke();
-				UIManager.Instance.ShowPanel(Global.Enums.PanelID.WinPanel);
+				UIManager.Instance.ShowPanel(PanelID.WinPanel);
 			}
 			else
 			{
 				OnLevelFail.Invoke();
-				UIManager.Instance.ShowPanel(Global.Enums.PanelID.LosePanel);
+				UIManager.Instance.ShowPanel(PanelID.LosePanel);
 			}
 
 			OnLevelFinish.Invoke();
@@ -107,21 +105,6 @@ namespace Base.Managers
 			SelectCurrentLevel();
 			ReloadLevel();
 		}
-		public void LoadLevelData()
-		{
-			levelDataList.Clear();
-
-			string[] levels = AssetDatabase.FindAssets("t:LevelTransformData", new[] { levelEnvironmentsPath });
-
-			foreach (string item in levels)
-			{
-				string path = AssetDatabase.GUIDToAssetPath(item);
-				LevelTransformData data = AssetDatabase.LoadAssetAtPath<LevelTransformData>(path);
-
-				if (data != null)
-					levelDataList.Add(data);
-			}
-		}
 		void CreateLevel()
 		{
 			levelParent = GameObject.Find(levelParentName);
@@ -133,7 +116,7 @@ namespace Base.Managers
 			levelParent = new GameObject(levelParentName);
 			levelParent.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
 
-			currentLevelData = levelDataList.First(data => data.Level == currentLevel);
+			currentLevelData = levelDatas.First(data => data.Level == currentLevel).LevelTransformData;
 
 			for (int i = 0; i < currentLevelData.LevelTransforms.Count; i++)
 			{
@@ -175,7 +158,7 @@ namespace Base.Managers
 		}
 		void CreateLevelUI()
 		{
-			levelUIControl.CreateButtons(levelDataList.Count);
+			levelUIControl.CreateButtons(levelDatas.Length);
 		}
 		void SelectCurrentLevel()
 		{
@@ -183,5 +166,13 @@ namespace Base.Managers
 			levelPlayText.text = "Level " + currentLevel;
 		}
 		#endregion
+	}
+	[System.Serializable]
+    public class LevelData
+    {
+		public int Level;
+		public LevelTransformData LevelTransformData;
+		public GridData TilesData;
+		public GridData PlayAreaTilesData;
 	}
 }

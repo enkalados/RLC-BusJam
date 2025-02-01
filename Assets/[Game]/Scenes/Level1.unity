@@ -586,9 +586,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelUIControl: {fileID: 1063112344}
   levelPlayText: {fileID: 621402270}
-  levelDataList:
-  - {fileID: 11400000, guid: 9b7e798dbb94e344db9448fb21701d43, type: 2}
-  - {fileID: 11400000, guid: 6567e3a814afd9c4aa9368ed2a4c4229, type: 2}
+  levelDatas:
+  - Level: 1
+    LevelTransformData: {fileID: 11400000, guid: 9b7e798dbb94e344db9448fb21701d43, type: 2}
+    TilesData: {fileID: 11400000, guid: 8886a66042ce41e46834fa334906975f, type: 2}
+    PlayAreaTilesData: {fileID: 0}
+  - Level: 2
+    LevelTransformData: {fileID: 11400000, guid: 9b7e798dbb94e344db9448fb21701d43, type: 2}
+    TilesData: {fileID: 11400000, guid: 8886a66042ce41e46834fa334906975f, type: 2}
+    PlayAreaTilesData: {fileID: 0}
 --- !u!114 &1758063931
 MonoBehaviour:
   m_ObjectHideFlags: 0

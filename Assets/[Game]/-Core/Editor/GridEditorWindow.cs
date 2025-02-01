@@ -21,7 +21,7 @@ namespace GridSystem.Editor
 		int selectedGridDataIndex;
 		#endregion
 		#region Dictionary
-		
+
 		public static Dictionary<PoolID, Color> PoolColors = new Dictionary<PoolID, Color>();
 		#endregion
 		#region Editor Methods
@@ -32,7 +32,7 @@ namespace GridSystem.Editor
 		}
 		private void OnEnable()
 		{
-			InitializeGrid(gridX,gridZ);
+			InitializeGrid(gridX, gridZ);
 			LoadGridData();
 			LoadColors();
 			poolDatabase = Resources.Load<PoolData>(poolPath);
@@ -58,41 +58,14 @@ namespace GridSystem.Editor
 
 				EditorGUILayout.Space();
 
-				if (GUILayout.Button("Clear & Preview Level"))
+				if (GUILayout.Button("Clear & Preview Grid"))
 				{
-					if (gridDataList[selectedGridDataIndex].GridTiles.Count > 0)
-					{
-						gridX = gridDataList[selectedGridDataIndex].GridX;
-						gridZ = gridDataList[selectedGridDataIndex].GridZ;
-						InitializeGrid(gridX, gridZ);
-
-						for (int i = 0; i < gridDataList[selectedGridDataIndex].GridTiles.Count; i++)
-						{
-							gridData[gridDataList[selectedGridDataIndex].GridTiles[i].X, gridDataList[selectedGridDataIndex].GridTiles[i].Z] = gridDataList[selectedGridDataIndex].GridTiles[i].ObjectPoolID;
-						}
-					}
-		
-                }
+					ClearAndPreviewGrid();
+				}
 				if (GUILayout.Button("Save Grid"))
 				{
-					if (gridDataList[selectedGridDataIndex].GridTiles.Count > 0)
-					{
-						gridDataList[selectedGridDataIndex].GridTiles.Clear();
-					}
-					gridDataList[selectedGridDataIndex].GridX = gridX;
-					gridDataList[selectedGridDataIndex].GridZ = gridZ;
-                    for (int x = 0; x < gridX; x++)
-                    {
-                        for (int z = 0; z < gridZ; z++)
-                        {
-							GridTile tile = new GridTile();
-							tile.X = x;
-							tile.Z = z;
-							tile.ObjectPoolID = gridData[x,z];
-							gridDataList[selectedGridDataIndex].GridTiles.Add(tile);
-						}
-					}
-                }
+					ShowWarningPopup(selectedGrid);
+				}
 
 				EditorGUILayout.Space(15);
 
@@ -148,6 +121,29 @@ namespace GridSystem.Editor
 
 			Handles.EndGUI();
 		}
+		private void SaveGrid(GridData selectedGrid)
+		{
+			if (selectedGrid.GridTiles.Count > 0)
+			{
+				selectedGrid.GridTiles.Clear();
+			}
+			selectedGrid.GridX = gridX;
+			selectedGrid.GridZ = gridZ;
+			for (int x = 0; x < gridX; x++)
+			{
+				for (int z = 0; z < gridZ; z++)
+				{
+					GridTile tile = new GridTile();
+					tile.X = x;
+					tile.Z = z;
+					tile.ObjectPoolID = gridData[x, z];
+					selectedGrid.GridTiles.Add(tile);
+				}
+			}
+			EditorUtility.SetDirty(selectedGrid);
+			AssetDatabase.SaveAssets();
+			AssetDatabase.Refresh();
+		}
 		private void LoadGridData()
 		{
 			gridDataList.Clear();
@@ -165,6 +161,20 @@ namespace GridSystem.Editor
 
 			if (selectedGridDataIndex >= gridDataList.Count)
 				selectedGridDataIndex = 0;
+		}
+		private void ClearAndPreviewGrid()
+		{
+			if (gridDataList[selectedGridDataIndex].GridTiles.Count > 0)
+			{
+				gridX = gridDataList[selectedGridDataIndex].GridX;
+				gridZ = gridDataList[selectedGridDataIndex].GridZ;
+				InitializeGrid(gridX, gridZ);
+
+				for (int i = 0; i < gridDataList[selectedGridDataIndex].GridTiles.Count; i++)
+				{
+					gridData[gridDataList[selectedGridDataIndex].GridTiles[i].X, gridDataList[selectedGridDataIndex].GridTiles[i].Z] = gridDataList[selectedGridDataIndex].GridTiles[i].ObjectPoolID;
+				}
+			}
 		}
 		private string[] GetGridDataNames()
 		{
@@ -207,7 +217,22 @@ namespace GridSystem.Editor
 			return Color.white;
 		}
 		#endregion
+		#region Warning Popup
+		private void ShowWarningPopup(GridData selectedGrid)
+		{
+			bool continueAction = EditorUtility.DisplayDialog(
+				"WARNING",
+				"There is data for the selected grid. If you continue, existing data will be deleted and new data will be created. Do you want to continue?",
+				"Clear And Save",
+				"Cancel"
+			);
 
+			if (continueAction)
+			{
+				SaveGrid(selectedGrid);
+			}
+		}
+		#endregion
 	}
 	public class PoolColorWindow : EditorWindow
 	{
@@ -240,6 +265,6 @@ namespace GridSystem.Editor
 				EditorGUILayout.EndHorizontal();
 			}
 		}
-		
+
 	}
 }

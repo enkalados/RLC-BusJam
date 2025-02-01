@@ -110,6 +110,9 @@ namespace LevelSaveSystem
 						selectedLevel.LevelTransforms.Add(newLevelTransform);
 					}
 				}
+				EditorUtility.SetDirty(selectedLevel);
+				AssetDatabase.SaveAssets();
+				AssetDatabase.Refresh();
 			}
 			else
 			{

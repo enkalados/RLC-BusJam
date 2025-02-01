@@ -14,11 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Level: 1
   LevelTransforms:
-  - PoolID: 1
-    Position: {x: 0, y: 0, z: -51.4}
-    Rotation: {x: -0, y: -0, z: -0, w: 1}
-    Scale: {x: 1, y: 1, z: 1}
-  - PoolID: 0
-    Position: {x: 0, y: 0, z: -95.21}
+  - PoolID: 2
+    Position: {x: 0, y: 0, z: 0}
     Rotation: {x: -0, y: -0, z: -0, w: 1}
     Scale: {x: 1, y: 1, z: 1}

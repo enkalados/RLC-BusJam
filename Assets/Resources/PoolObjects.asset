@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PoolHolder:
   - ObjectCount: 1
-    Prefab: {fileID: 3177626408758412402, guid: f6cae273bd289004bb62e06b6e8a4cb2, type: 3}
+    Prefab: {fileID: 4992679766225637119, guid: a495f1460e1204a44a1f792904a14ad8, type: 3}
   - ObjectCount: 1
     Prefab: {fileID: 3536927129761721224, guid: 48f34c0c82a35634b9d8e6f524af0d08, type: 3}

@@ -10,7 +10,6 @@ namespace GridSystem.Editor
 		#region Grid Params
 		private int gridX = 10;
 		private int gridZ = 10;
-		private float cellSize = 1f;
 		private PoolID[,] gridData;
 		#endregion
 		#region Veriables
@@ -33,7 +32,7 @@ namespace GridSystem.Editor
 		}
 		private void OnEnable()
 		{
-			InitializeGrid();
+			InitializeGrid(gridX,gridZ);
 			LoadGridData();
 			LoadColors();
 			poolDatabase = Resources.Load<PoolData>(poolPath);
@@ -44,7 +43,6 @@ namespace GridSystem.Editor
 			selectedGridDataIndex = EditorGUILayout.Popup("Selected Grid:", selectedGridDataIndex, GetGridDataNames());
 			gridX = EditorGUILayout.IntField("Grid Width (X)", gridX);
 			gridZ = EditorGUILayout.IntField("Grid Depth (Z)", gridZ);
-			cellSize = EditorGUILayout.FloatField("Cell Size", cellSize);
 
 			EditorGUILayout.Space(15);
 
@@ -62,16 +60,39 @@ namespace GridSystem.Editor
 
 				if (GUILayout.Button("Clear & Preview Level"))
 				{
+					if (gridDataList[selectedGridDataIndex].GridTiles.Count > 0)
+					{
+						gridX = gridDataList[selectedGridDataIndex].GridX;
+						gridZ = gridDataList[selectedGridDataIndex].GridZ;
+						InitializeGrid(gridX, gridZ);
 
-				}
-				//if (GUILayout.Button("Generate Grid"))
-				//{
-				//	InitializeGrid();
-				//}
-				if (GUILayout.Button("Save Level"))
+						for (int i = 0; i < gridDataList[selectedGridDataIndex].GridTiles.Count; i++)
+						{
+							gridData[gridDataList[selectedGridDataIndex].GridTiles[i].X, gridDataList[selectedGridDataIndex].GridTiles[i].Z] = gridDataList[selectedGridDataIndex].GridTiles[i].ObjectPoolID;
+						}
+					}
+		
+                }
+				if (GUILayout.Button("Save Grid"))
 				{
-
-				}
+					if (gridDataList[selectedGridDataIndex].GridTiles.Count > 0)
+					{
+						gridDataList[selectedGridDataIndex].GridTiles.Clear();
+					}
+					gridDataList[selectedGridDataIndex].GridX = gridX;
+					gridDataList[selectedGridDataIndex].GridZ = gridZ;
+                    for (int x = 0; x < gridX; x++)
+                    {
+                        for (int z = 0; z < gridZ; z++)
+                        {
+							GridTile tile = new GridTile();
+							tile.X = x;
+							tile.Z = z;
+							tile.ObjectPoolID = gridData[x,z];
+							gridDataList[selectedGridDataIndex].GridTiles.Add(tile);
+						}
+					}
+                }
 
 				EditorGUILayout.Space(15);
 
@@ -99,24 +120,9 @@ namespace GridSystem.Editor
 		}
 		#endregion
 		#region Grid Methods
-		private void InitializeGrid()
+		private void InitializeGrid(int x, int z)
 		{
-			if (gridData == null || gridData.GetLength(0) != gridX || gridData.GetLength(1) != gridZ)
-			{
-				PoolID[,] newGrid = new PoolID[gridX, gridZ];
-				if (gridData != null)
-				{
-					for (int x = 0; x < Mathf.Min(gridX, gridData.GetLength(0)); x++)
-					{
-						for (int y = 0; y < Mathf.Min(gridZ, gridData.GetLength(1)); y++)
-						{
-							newGrid[x, y] = gridData[x, y];
-						}
-					}
-				}
-
-				gridData = newGrid;
-			}
+			gridData = new PoolID[x, z];
 		}
 		private void DrawGrid()
 		{

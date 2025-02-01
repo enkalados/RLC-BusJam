@@ -1,4 +1,5 @@
 using Base.Global.Enums;
+using System.Collections.Generic;
 using UnityEngine;
 namespace GridSystem
 {
@@ -7,12 +8,13 @@ namespace GridSystem
 	{
 		public int GridX;
 		public int GridZ;
-		public GridTile[] GridTiles;
+		public List<GridTile> GridTiles;
 	}
+	[System.Serializable]
 	public class GridTile
 	{
-		public float X;
-		public float Z;
+		public int X;
+		public int Z;
 		public PoolID ObjectPoolID;
 	}
 }

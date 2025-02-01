@@ -77,7 +77,7 @@ namespace LevelSaveSystem
 			}
 		}
 		#endregion
-		#region Methods
+		#region Level Data Methods
 		private void ClearLevel()
 		{
 			levelParent = GameObject.Find(levelParentName);
@@ -148,21 +148,7 @@ namespace LevelSaveSystem
 					throw;
 				}
 			}
-		}
-		private void ShowWarningPopup(LevelTransformData selectedLevel)
-		{
-			bool continueAction = EditorUtility.DisplayDialog(
-				"WARNING",
-				"There is data for the selected level. If you continue, existing data will be deleted and new data will be created. Do you want to continue?",
-				"Clear And Save",     
-				"Cancel" 
-			);
-
-			if (continueAction)
-			{
-				SaveLevel(selectedLevel);
-			}
-		}
+		}	
 		PoolObject GetPoolObject(PoolID poolID, PoolData poolDatabase)
 		{
 			foreach (Pool item in poolDatabase.PoolHolder)
@@ -200,6 +186,22 @@ namespace LevelSaveSystem
 				names[i] = levelDataList[i].name;
 			}
 			return names;
+		}
+		#endregion
+		#region Warning Popup
+		private void ShowWarningPopup(LevelTransformData selectedLevel)
+		{
+			bool continueAction = EditorUtility.DisplayDialog(
+				"WARNING",
+				"There is data for the selected level. If you continue, existing data will be deleted and new data will be created. Do you want to continue?",
+				"Clear And Save",
+				"Cancel"
+			);
+
+			if (continueAction)
+			{
+				SaveLevel(selectedLevel);
+			}
 		}
 		#endregion
 	}

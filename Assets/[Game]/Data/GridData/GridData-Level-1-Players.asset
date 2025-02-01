@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c6ccdb6d368bb3843a14ce52c325b06f, type: 3}
-  m_Name: GridData-Level-1-Tiles
+  m_Name: GridData-Level-1-Players
   m_EditorClassIdentifier: 
   GridX: 4
   GridZ: 4

@@ -4,7 +4,7 @@ using Base.Utilities;
 using UnityEngine;
 namespace Base.Pool
 {
-	[DefaultExecutionOrder(-10)]
+	[DefaultExecutionOrder(-20)]
 	public class PoolingManager : Singleton<PoolingManager>
 	{
 		private Dictionary<PoolID, Stack<PoolObject>> _poolStacksByID = new Dictionary<PoolID, Stack<PoolObject>>();
@@ -36,7 +36,22 @@ namespace Base.Pool
 
 			return poolObject;
 		}
+		public PoolObject Instantiate(PoolID poolID, Transform parent)
+		{
+			if (!PoolStacksByID.ContainsKey(poolID))
+			{
+				Debug.LogError("Pool with ID " + poolID + " does not exist.");
+				return null;
+			}
 
+			PoolObject poolObject = PopPoolObject(poolID);
+			poolObject.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+			poolObject.gameObject.SetActive(true);
+			poolObject.gameObject.transform.SetParent(parent);
+			poolObject.Initialize();
+
+			return poolObject;
+		}
 		public void DestroyPoolObject(PoolObject poolObject)
 		{
 			if (!PoolStacksByID.ContainsKey(poolObject.PoolID))

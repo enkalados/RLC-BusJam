@@ -165,6 +165,10 @@ namespace Base.Managers
 			levelUIControl.SelecetCurrentLevel(currentLevel);
 			levelPlayText.text = "Level " + currentLevel;
 		}
+		public LevelData GetCurrentLevelData()
+		{
+			return levelDatas[currentLevel];
+		}
 		#endregion
 	}
 	[System.Serializable]

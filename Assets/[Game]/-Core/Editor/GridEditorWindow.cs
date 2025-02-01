@@ -1,5 +1,5 @@
+using Base.Global.Enums;
 using Base.Pool;
-using LevelSaveSystem;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -11,11 +11,11 @@ namespace GridSystem.Editor
 		private int gridX = 10;
 		private int gridZ = 10;
 		private float cellSize = 1f;
+		private PoolID[,] gridData;
 		#endregion
 		#region Veriables
 		string poolPath = "PoolObjects";
 		PoolData poolDatabase;
-		int selectedPoolIndex = 0;
 
 		List<GridData> gridDataList = new List<GridData>();
 		string gridDatasPath = "Assets/[Game]/Data/GridData";
@@ -31,6 +31,7 @@ namespace GridSystem.Editor
 		}
 		private void OnEnable()
 		{
+			InitializeGrid();
 			LoadGridData();
 			poolDatabase = Resources.Load<PoolData>(poolPath);
 		}
@@ -41,11 +42,6 @@ namespace GridSystem.Editor
 			gridX = EditorGUILayout.IntField("Grid Width (X)", gridX);
 			gridZ = EditorGUILayout.IntField("Grid Depth (Z)", gridZ);
 			cellSize = EditorGUILayout.FloatField("Cell Size", cellSize);
-
-			EditorGUILayout.Space(15);
-
-			GUILayout.Label("Select Spawn Object", EditorStyles.boldLabel);
-			selectedPoolIndex = EditorGUILayout.Popup("Selected Object:", selectedPoolIndex, GetPoolObjectNames());
 
 			EditorGUILayout.Space(15);
 
@@ -63,15 +59,15 @@ namespace GridSystem.Editor
 
 				if (GUILayout.Button("Clear & Preview Level"))
 				{
-					
+
 				}
-				if (GUILayout.Button("Refresh Grid"))
-				{
-					Repaint();
-				}
+				//if (GUILayout.Button("Generate Grid"))
+				//{
+				//	InitializeGrid();
+				//}
 				if (GUILayout.Button("Save Level"))
 				{
-					
+
 				}
 
 				EditorGUILayout.Space(15);
@@ -86,49 +82,53 @@ namespace GridSystem.Editor
 					EditorGUIUtility.PingObject(poolDatabase);
 				}
 				GUILayout.EndHorizontal();
-			}			
+			}
 
-			GUILayout.Space(10);
+			GUILayout.Space(30);
 
-			Rect gridArea = GUILayoutUtility.GetRect(400, 400);
-			DrawGrid(gridArea);
+			DrawGrid();
 		}
 		#endregion
 		#region Methods
-		private void DrawGrid(Rect area)
+		private void InitializeGrid()
 		{
+			if (gridData == null || gridData.GetLength(0) != gridX || gridData.GetLength(1) != gridZ)
+			{
+				PoolID[,] newGrid = new PoolID[gridX, gridZ];
+				if (gridData != null)
+				{
+					for (int x = 0; x < Mathf.Min(gridX, gridData.GetLength(0)); x++)
+					{
+						for (int y = 0; y < Mathf.Min(gridZ, gridData.GetLength(1)); y++)
+						{
+							newGrid[x, y] = gridData[x, y];
+						}
+					}
+				}
+
+				gridData = newGrid;
+			}
+		}
+		private void DrawGrid()
+		{
+			GUILayout.Label("Set Grid", EditorStyles.boldLabel);
+			EditorGUILayout.Space(10);
+
 			Handles.BeginGUI();
 			Handles.color = Color.gray;
 
-			float startX = area.x;
-			float startY = area.y;
-			float gridWidth = area.width;
-			float gridHeight = area.height;
-
-			float cellWidth = gridWidth / gridX;
-			float cellHeight = gridHeight / gridZ;
-
-			for (int x = 0; x <= gridX; x++)
+			for (int y = 0; y < gridX; y++)
 			{
-				float xPos = startX + x * cellWidth;
-				Handles.DrawLine(new Vector3(xPos, startY), new Vector3(xPos, startY + gridHeight));
+				EditorGUILayout.BeginHorizontal();
+				for (int x = 0; x < gridZ; x++)
+				{
+					gridData[x, y] = (PoolID)EditorGUILayout.EnumPopup(gridData[x, y], GUILayout.Width(100));
+				}
+				EditorGUILayout.EndHorizontal();
 			}
-			for (int z = 0; z <= gridZ; z++)
-			{
-				float yPos = startY + z * cellHeight;
-				Handles.DrawLine(new Vector3(startX, yPos), new Vector3(startX + gridWidth, yPos));
-			}
+
 
 			Handles.EndGUI();
-		}
-		private string[] GetPoolObjectNames()
-		{
-			string[] names = new string[poolDatabase.PoolHolder.Count];
-			for (int i = 0; i < poolDatabase.PoolHolder.Count; i++)
-			{
-				names[i] = poolDatabase.PoolHolder[i].Prefab.PoolID.ToString();
-			}
-			return names;
 		}
 		private void LoadGridData()
 		{

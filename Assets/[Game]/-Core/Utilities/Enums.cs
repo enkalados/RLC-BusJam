@@ -16,8 +16,9 @@ namespace Base.Global.Enums
 	}
 	public enum PoolID
 	{
-		Player = 0,
-		Environment1 = 1
+		None=0,
+		Tile = 1,
+		Environment1 = 2
 	}
 	//public enum UpgradeElementID
 	//{

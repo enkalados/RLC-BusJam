@@ -42,28 +42,34 @@ namespace GridSystem.Editor
 			LoadGridData();
 			LoadColors();
 			poolDatabase = Resources.Load<PoolData>(poolPath);
-			if(editingData != null)
+			if (editingData != null)
 			{
 				ClearAndPreviewGrid(editingData);
-                for (int i = 0; i < gridDataList.Count; i++)
-                {
+				for (int i = 0; i < gridDataList.Count; i++)
+				{
 					if (string.Equals(gridDataList[i].name, editingData.name))
 					{
 						selectedGridDataIndex = i;
 					}
 				}
-            }
+			}
 		}
 		private void OnDisable()
 		{
-			editingData=null;
+			editingData = null;
 		}
 		private void OnGUI()
 		{
 			GUILayout.Label("Grid Settings", EditorStyles.boldLabel);
 			selectedGridDataIndex = EditorGUILayout.Popup("Selected Grid:", selectedGridDataIndex, GetGridDataNames());
-			gridX = EditorGUILayout.IntField("Grid Depth(Z)", gridX);
-			gridZ = EditorGUILayout.IntField("Grid Width (X)", gridZ);
+
+			int newGridX = EditorGUILayout.IntField("Grid Width (X)", gridX);
+			int newGridZ = EditorGUILayout.IntField("Grid Depth (Z)", gridZ);
+
+			if (newGridX != gridX || newGridZ != gridZ)
+			{
+				ResizeGrid(newGridX, newGridZ);
+			}
 
 			EditorGUILayout.Space(15);
 
@@ -114,28 +120,43 @@ namespace GridSystem.Editor
 		{
 			gridData = new PoolID[x, z];
 		}
+		private void ResizeGrid(int newX, int newZ)
+		{
+			PoolID[,] newGridData = new PoolID[newX, newZ];
+			for (int x = 0; x < Mathf.Min(gridX, newX); x++)
+			{
+				for (int z = 0; z < Mathf.Min(gridZ, newZ); z++)
+				{
+					newGridData[x, z] = gridData[x, z];
+				}
+			}
+			gridData = newGridData;
+			gridX = newX;
+			gridZ = newZ;
+
+			Repaint();
+		}
 		private void DrawGrid()
 		{
 			GUILayout.Label("Set Grid", EditorStyles.boldLabel);
 			EditorGUILayout.Space(10);
 
 			Handles.BeginGUI();
-
-
-			for (int y = 0; y < gridX; y++)
+			for (int z = 0; z < gridZ; z++) 
 			{
 				EditorGUILayout.BeginHorizontal();
-				for (int x = 0; x < gridZ; x++)
+				for (int x = 0; x < gridX; x++)
 				{
-					Rect rect = GUILayoutUtility.GetRect(120, 30);
-					EditorGUI.DrawRect(rect, GetTileColor(gridData[x, y]));
+					if (x < gridData.GetLength(0) && z < gridData.GetLength(1))
+					{
+						Rect rect = GUILayoutUtility.GetRect(50, 30); 
+						EditorGUI.DrawRect(rect, GetTileColor(gridData[x, z])); 
 
-					gridData[x, y] = (PoolID)EditorGUI.EnumPopup(rect, gridData[x, y]);
+						gridData[x, z] = (PoolID)EditorGUI.EnumPopup(rect, gridData[x, z]);
+					}
 				}
 				EditorGUILayout.EndHorizontal();
 			}
-
-
 			Handles.EndGUI();
 		}
 		private void SaveGrid(GridData selectedGrid)

@@ -95,6 +95,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TilesParent: {fileID: 223904919262889250}
+  GridParent: {fileID: 3313824127676488894}
 --- !u!1 &766503690868766139
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,7 +9,7 @@ namespace GridSystem
 	{
 		#region Variables
 		[SerializeField] GameObject TilesParent;
-		[SerializeField] GameManager GridParent;
+		[SerializeField] GameObject GridParent;
 		GridData tileGridData;
 		PoolObject createdTile;
 		#endregion
@@ -38,10 +38,18 @@ namespace GridSystem
 					createdTile.transform.SetLocalPositionAndRotation(new Vector3(tileGridData.GridTiles[i].X, 0, tileGridData.GridTiles[i].Z), Quaternion.identity);
 				}
 			}
+			SetGridParent(tileGridData);
 		}
 		void SetGridParent(GridData gridData)
 		{
-			//TilesParent.transform.position=new Vector3(gridData.GridX)
+			if (gridData.GridX % 2 == 0)
+			{
+				GridParent.transform.position = new Vector3((-gridData.GridX / 2)+.5f, GridParent.transform.position.y, GridParent.transform.position.z);
+			}
+			else
+			{
+				GridParent.transform.position = new Vector3((-gridData.GridX / 2), GridParent.transform.position.y, GridParent.transform.position.z);
+			}
 		}
 		#endregion
 #if UNITY_EDITOR
@@ -60,6 +68,7 @@ namespace GridSystem
 					item.transform.SetLocalPositionAndRotation(new Vector3(gridData.GridTiles[i].X, 0, -gridData.GridTiles[i].Z), Quaternion.identity);
 				}
 			}
+			SetGridParent(gridData);
 		}
 #endif
 	}

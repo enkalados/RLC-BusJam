@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 namespace Base.Init
 {
 	[InitializeOnLoad]
-	public static class PlayWithInitScene
+	public static class SceneControlEditor
 	{
 		#region Variables
 		//private static string scenePath = "Assets/[Game]/Scenes/Init.unity";
@@ -15,7 +15,7 @@ namespace Base.Init
 		#region Properties 
 		#endregion
 		#region Editor Methods
-		static PlayWithInitScene()
+		static SceneControlEditor()
 		{
 			SceneView.duringSceneGui += OnSceneGUI;
 		}

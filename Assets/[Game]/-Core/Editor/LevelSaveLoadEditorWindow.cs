@@ -31,7 +31,6 @@ namespace LevelSaveSystem
 		private void OnEnable()
 		{
 			LoadLevelData();
-			Resources.Load(poolPath);
 			poolDatabase = Resources.Load<PoolData>(poolPath);
 		}
 		private void OnGUI()

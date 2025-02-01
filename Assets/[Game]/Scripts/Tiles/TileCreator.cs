@@ -9,6 +9,7 @@ namespace GridSystem
 	{
 		#region Variables
 		[SerializeField] GameObject TilesParent;
+		[SerializeField] GameManager GridParent;
 		GridData tileGridData;
 		PoolObject createdTile;
 		#endregion
@@ -38,7 +39,10 @@ namespace GridSystem
 				}
 			}
 		}
-
+		void SetGridParent(GridData gridData)
+		{
+			//TilesParent.transform.position=new Vector3(gridData.GridX)
+		}
 		#endregion
 #if UNITY_EDITOR
 		public void SetTileGridDataEditor(GridData gridData, PoolObject tileObject)
@@ -53,7 +57,7 @@ namespace GridSystem
 				{
 					PoolObject item = (PoolObject)PrefabUtility.InstantiatePrefab(tileObject);
 					item.transform.SetParent(TilesParent.transform);
-					item.transform.SetLocalPositionAndRotation(new Vector3(gridData.GridTiles[i].X, 0, gridData.GridTiles[i].Z), Quaternion.identity);
+					item.transform.SetLocalPositionAndRotation(new Vector3(gridData.GridTiles[i].X, 0, -gridData.GridTiles[i].Z), Quaternion.identity);
 				}
 			}
 		}

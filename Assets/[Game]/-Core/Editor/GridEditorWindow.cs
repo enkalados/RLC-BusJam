@@ -62,8 +62,8 @@ namespace GridSystem.Editor
 		{
 			GUILayout.Label("Grid Settings", EditorStyles.boldLabel);
 			selectedGridDataIndex = EditorGUILayout.Popup("Selected Grid:", selectedGridDataIndex, GetGridDataNames());
-			gridX = EditorGUILayout.IntField("Grid Width (X)", gridX);
-			gridZ = EditorGUILayout.IntField("Grid Depth (Z)", gridZ);
+			gridX = EditorGUILayout.IntField("Grid Depth(Z)", gridX);
+			gridZ = EditorGUILayout.IntField("Grid Width (X)", gridZ);
 
 			EditorGUILayout.Space(15);
 

@@ -2,6 +2,7 @@ using Base.Global.Enums;
 using Base.Pool;
 using GridSystem;
 using GridSystem.Editor;
+using Stickman.Creator;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
@@ -171,6 +172,7 @@ namespace LevelDataSystem.Editor
 				}
 			}
 			FindObjectOfType<TileCreator>().SetTileGridDataEditor(levelData[selectedLevelIndex].TilesData, GetPoolObject(PoolID.Tile, poolDatabase));
+			FindObjectOfType<StickmanCreator>().SetTileGridDataEditor(levelData[selectedLevelIndex].StickmansTileData, GetPoolObject(PoolID.Stickman, poolDatabase));
 		}
 		PoolObject GetPoolObject(PoolID poolID, PoolData poolDatabase)
 		{

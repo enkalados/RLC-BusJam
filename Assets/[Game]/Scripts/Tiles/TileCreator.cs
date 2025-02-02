@@ -8,8 +8,8 @@ namespace GridSystem
 	public class TileCreator : MonoBehaviour
 	{
 		#region Variables
-		[SerializeField] GameObject TilesParent;
-		[SerializeField] GameObject GridParent;
+		[SerializeField] GameObject tilesParent;
+		[SerializeField] GameObject gridParent;
 		GridData tileGridData;
 		PoolObject createdTile;
 		#endregion
@@ -34,7 +34,7 @@ namespace GridSystem
 			{
 				if (tileGridData.GridTiles[i].ObjectPoolID == PoolID.Tile)
 				{
-					createdTile = PoolingManager.Instance.Instantiate(PoolID.Tile, TilesParent.transform);
+					createdTile = PoolingManager.Instance.Instantiate(PoolID.Tile, tilesParent.transform);
 					createdTile.transform.SetLocalPositionAndRotation(new Vector3(tileGridData.GridTiles[i].X, 0, tileGridData.GridTiles[i].Z), Quaternion.identity);
 				}
 			}
@@ -44,11 +44,11 @@ namespace GridSystem
 		{
 			if (gridData.GridX % 2 == 0)
 			{
-				GridParent.transform.position = new Vector3((-gridData.GridX / 2)+.5f, GridParent.transform.position.y, GridParent.transform.position.z);
+				gridParent.transform.position = new Vector3((-gridData.GridX / 2)+.5f, gridParent.transform.position.y, gridParent.transform.position.z);
 			}
 			else
 			{
-				GridParent.transform.position = new Vector3((-gridData.GridX / 2), GridParent.transform.position.y, GridParent.transform.position.z);
+				gridParent.transform.position = new Vector3((-gridData.GridX / 2), gridParent.transform.position.y, gridParent.transform.position.z);
 			}
 		}
 		#endregion
@@ -64,7 +64,7 @@ namespace GridSystem
 				if (gridData.GridTiles[i].ObjectPoolID == PoolID.Tile)
 				{
 					PoolObject item = (PoolObject)PrefabUtility.InstantiatePrefab(tileObject);
-					item.transform.SetParent(TilesParent.transform);
+					item.transform.SetParent(tilesParent.transform);
 					item.transform.SetLocalPositionAndRotation(new Vector3(gridData.GridTiles[i].X, 0, -gridData.GridTiles[i].Z), Quaternion.identity);
 				}
 			}

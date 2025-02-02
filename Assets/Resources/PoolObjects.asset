@@ -15,7 +15,7 @@ MonoBehaviour:
   PoolHolder:
   - ObjectCount: 1
     Prefab: {fileID: 4992679766225637119, guid: a495f1460e1204a44a1f792904a14ad8, type: 3}
-  - ObjectCount: 1
+  - ObjectCount: 10
     Prefab: {fileID: 7234180548465433026, guid: a50c6b44f66744c4c8473e46c1b119c5, type: 3}
-  - ObjectCount: 1
+  - ObjectCount: 10
     Prefab: {fileID: 2121135071511376049, guid: a129278c8b9cbcc4e9532f2943d43636, type: 3}

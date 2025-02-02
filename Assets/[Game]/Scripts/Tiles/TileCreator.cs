@@ -16,7 +16,7 @@ namespace GridSystem
 		#region Properties 
 		#endregion
 		#region MonoBehaviour Methods
-		private void OnEnable()
+		private void Start()
 		{
 			SetTileGridData(LevelManager.Instance.GetCurrentLevelData().TilesData);
 		}

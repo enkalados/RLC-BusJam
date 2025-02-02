@@ -43,13 +43,17 @@ namespace Base.Managers
 		private void OnEnable()
 		{
 			currentLevel = SaveLoad.GetInt(GlobalVariables.LastLevelNumberSaveKey, 1);
-			CreateLevelUI();
-			SelectCurrentLevel();
-			CreateLevel();
+
 
 			OnLevelStart.AddListener(StartLevel);
 			OnNextLevel.AddListener(NextLevel);
 			OnRestartLevel.AddListener(RestartLevel);
+		}
+		private void Start()
+		{
+			CreateLevelUI();
+			SelectCurrentLevel();
+			CreateLevel();
 		}
 		private void OnDisable()
 		{
@@ -107,7 +111,7 @@ namespace Base.Managers
 		void CreateLevel()
 		{
 			levelParent = GameObject.Find(levelParentName);
-			if(levelParent != null)
+			if (levelParent != null)
 			{
 				Destroy(levelParent);
 			}
@@ -166,8 +170,8 @@ namespace Base.Managers
 		}
 		public LevelData GetCurrentLevelData()
 		{
-			return levelDatas[currentLevel];
+			return levelDatas[currentLevel-1];
 		}
 		#endregion
-	}   
+	}
 }

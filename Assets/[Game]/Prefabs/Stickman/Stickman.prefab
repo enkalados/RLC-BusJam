@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8510995365734157043}
   - component: {fileID: 2121135071511376049}
+  - component: {fileID: -3949274203085835470}
   m_Layer: 0
   m_Name: Stickman
   m_TagString: Untagged
@@ -46,6 +47,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PoolID: 3
+--- !u!114 &-3949274203085835470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3481777946579399723}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b106119742741274f901450123094580, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  meshRenderer: {fileID: 76265193506575279}
+  materials:
+  - Color: 1
+    Material: {fileID: 2100000, guid: b89925807142d4846a5696b920ea894d, type: 2}
+  - Color: 2
+    Material: {fileID: 2100000, guid: a02b2a9855fbb1542a9e0e15b000d88d, type: 2}
+  - Color: 3
+    Material: {fileID: 2100000, guid: a76123acdeebca84a83d358fd9fa123c, type: 2}
+  - Color: 4
+    Material: {fileID: 2100000, guid: 6c69c6d329242a34e844451bb26ef7cf, type: 2}
 --- !u!1 &7279314980992818985
 GameObject:
   m_ObjectHideFlags: 0
@@ -107,7 +130,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 6c69c6d329242a34e844451bb26ef7cf, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

@@ -16,8 +16,8 @@ namespace Stickman.Creator
 		#region Properties 
 		#endregion
 		#region MonoBehaviour Methods
-		private void OnEnable()
-		{
+		private void Start()
+		{		
 			SetStickmanData(LevelManager.Instance.GetCurrentLevelData().StickmansTileData);
 		}
 		#endregion
@@ -25,6 +25,7 @@ namespace Stickman.Creator
 		void SetStickmanData(GridData gridData)
 		{
 			stickmanGridData = gridData;
+			CreateStickmans();
 		}
 		void CreateStickmans()
 		{
@@ -34,6 +35,7 @@ namespace Stickman.Creator
 				{
 					createdStickman = PoolingManager.Instance.Instantiate(PoolID.Stickman, stickmanParent.transform);
 					createdStickman.transform.SetLocalPositionAndRotation(new Vector3(stickmanGridData.GridTiles[i].X, 0, stickmanGridData.GridTiles[i].Z), Quaternion.identity);
+					createdStickman.GetComponent<StickmanSet>().SetColor(stickmanGridData.GridTiles[i].Color);
 				}
 			}
 		}
@@ -52,6 +54,7 @@ namespace Stickman.Creator
 					PoolObject item = (PoolObject)PrefabUtility.InstantiatePrefab(stickmanObj);
 					item.transform.SetParent(stickmanParent.transform);
 					item.transform.SetLocalPositionAndRotation(new Vector3(gridData.GridTiles[i].X, 0, -gridData.GridTiles[i].Z), Quaternion.identity);
+					item.GetComponent<StickmanSet>().SetColor(gridData.GridTiles[i].Color);
 				}
 			}
 		}

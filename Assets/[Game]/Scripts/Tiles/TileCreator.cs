@@ -63,8 +63,7 @@ namespace GridSystem
 			{
 				if (gridData.GridTiles[i].ObjectPoolID == PoolID.Tile)
 				{
-					PoolObject item = (PoolObject)PrefabUtility.InstantiatePrefab(tileObject);
-					item.transform.SetParent(tilesParent.transform);
+					PoolObject item = (PoolObject)PrefabUtility.InstantiatePrefab(tileObject, tilesParent.transform);
 					item.transform.SetLocalPositionAndRotation(new Vector3(gridData.GridTiles[i].X, 0, -gridData.GridTiles[i].Z), Quaternion.identity);
 				}
 			}

@@ -1,5 +1,6 @@
 using Base.Global.Enums;
 using Base.Pool;
+using BusSystem.Creator;
 using GridSystem;
 using GridSystem.Editor;
 using Stickman.Creator;
@@ -19,7 +20,7 @@ namespace LevelDataSystem.Editor
 		int selectedLevelIndex = 0;
 		string levelDataPath = "Assets/[Game]/Data/LevelData";
 
-		PoolID[] dontSaveWithEnvironment = { PoolID.Tile, PoolID.Stickman };
+		PoolID[] dontSaveWithEnvironment = { PoolID.Tile, PoolID.Stickman, PoolID.Bus1, PoolID.PlaceHolderTile };
 		string poolPath = "PoolObjects";
 		PoolData poolDatabase;
 
@@ -209,7 +210,8 @@ namespace LevelDataSystem.Editor
 				}
 			}
 			FindObjectOfType<TileCreator>().SetTileGridDataEditor(levelData[selectedLevelIndex].TilesData, GetPoolObject(PoolID.Tile, poolDatabase));
-			FindObjectOfType<StickmanCreator>().SetTileGridDataEditor(levelData[selectedLevelIndex].StickmansTileData, GetPoolObject(PoolID.Stickman, poolDatabase));
+			FindObjectOfType<StickmanCreator>().SetStickmanDataEditor(levelData[selectedLevelIndex].StickmansTileData, GetPoolObject(PoolID.Stickman, poolDatabase));
+			FindAnyObjectByType<BusCreator>().SetBusDataEditor(levelData[selectedLevelIndex].BusColorList, GetPoolObject(PoolID.Bus1, poolDatabase));
 		}
 		PoolObject GetPoolObject(PoolID poolID, PoolData poolDatabase)
 		{

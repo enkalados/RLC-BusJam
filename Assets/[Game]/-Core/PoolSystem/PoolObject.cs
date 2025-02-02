@@ -7,11 +7,6 @@ namespace Base.Pool
 		#region Variables
 		public PoolID PoolID;
 		Vector3 defaultScale;
-		private void Awake()
-		{
-			defaultScale=transform.localScale;
-		}
-
 		#endregion
 		#region Properties 
 		#endregion

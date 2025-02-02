@@ -19,7 +19,9 @@ namespace Base.Global.Enums
 		None = 0,
 		Tile = 1,
 		Environment1 = 2,
-		Stickman = 3
+		Stickman = 3,
+		Bus1 = 4,
+		PlaceHolderTile = 5
 	}
 	public enum GridTypes
 	{

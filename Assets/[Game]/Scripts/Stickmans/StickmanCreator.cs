@@ -41,18 +41,17 @@ namespace Stickman.Creator
 		}
 		#endregion
 #if UNITY_EDITOR
-		public void SetTileGridDataEditor(GridData gridData, PoolObject tileObject)
+		public void SetStickmanDataEditor(GridData gridData, PoolObject stickmanObj)
 		{
-			CreateTilesEditor(gridData, tileObject);
+			CreateStickmanEditor(gridData, stickmanObj);
 		}
-		void CreateTilesEditor(GridData gridData, PoolObject stickmanObj)
+		void CreateStickmanEditor(GridData gridData, PoolObject stickmanObj)
 		{
 			for (int i = 0; i < gridData.GridTiles.Count; i++)
 			{
 				if (gridData.GridTiles[i].ObjectPoolID == PoolID.Stickman)
 				{
-					PoolObject item = (PoolObject)PrefabUtility.InstantiatePrefab(stickmanObj);
-					item.transform.SetParent(stickmanParent.transform);
+					PoolObject item = (PoolObject)PrefabUtility.InstantiatePrefab(stickmanObj, stickmanParent.transform);
 					item.transform.SetLocalPositionAndRotation(new Vector3(gridData.GridTiles[i].X, 0, -gridData.GridTiles[i].Z), Quaternion.identity);
 					item.GetComponent<StickmanSet>().SetColor(gridData.GridTiles[i].Color);
 				}

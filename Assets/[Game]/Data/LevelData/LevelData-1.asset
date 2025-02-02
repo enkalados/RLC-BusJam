@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: LevelData-1
   m_EditorClassIdentifier: 
   Level: 1
+  PlaceHoldersCount: 2
+  BusColorList: 0100000003000000
   LevelTransformData: {fileID: 11400000, guid: 9b7e798dbb94e344db9448fb21701d43, type: 2}
   TilesData: {fileID: 11400000, guid: 8886a66042ce41e46834fa334906975f, type: 2}
   StickmansTileData: {fileID: 11400000, guid: 7f5e13123e56a6b449986ba2da527dd6, type: 2}

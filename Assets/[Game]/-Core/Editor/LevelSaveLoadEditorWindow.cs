@@ -3,6 +3,7 @@ using Base.Pool;
 using GridSystem;
 using GridSystem.Editor;
 using Stickman.Creator;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
@@ -19,9 +20,11 @@ namespace LevelDataSystem.Editor
 		string levelDataPath = "Assets/[Game]/Data/LevelData";
 
 		PoolID[] dontSaveWithEnvironment = { PoolID.Tile, PoolID.Stickman };
-
 		string poolPath = "PoolObjects";
 		PoolData poolDatabase;
+
+		int placeHoldersCount;
+		List<Colors> busColors = new List<Colors>();
 		#endregion
 		#region Properties 
 
@@ -54,16 +57,23 @@ namespace LevelDataSystem.Editor
 				LevelTransformData selectedLevel = levelData[selectedLevelIndex].LevelTransformData;
 
 				EditorGUILayout.Space();
-
+				#region Environment Settings
 				if (GUILayout.Button("Clear & Preview Level"))
 				{
 					ClearEndPreviewLevel(selectedLevel);
 				}
-				EditorGUILayout.Space(15);
-				if (GUILayout.Button("Save Level"))
+
+				if (GUILayout.Button("Clear Level"))
+				{
+					ClearLevel();
+				}
+				if (GUILayout.Button("Save Level Environment"))
 				{
 					ShowWarningPopup(selectedLevel);
 				}
+				EditorGUILayout.Space(15);
+				#endregion
+				#region Grid Settings
 				GUILayout.BeginHorizontal();
 				if (GUILayout.Button("Edit Tiles"))
 				{
@@ -74,16 +84,36 @@ namespace LevelDataSystem.Editor
 					GridEditorWindow.ShowWindow(levelData[selectedLevelIndex].StickmansTileData);
 				}
 				GUILayout.EndHorizontal();
+				#endregion
+				#region Other Settings
+				placeHoldersCount = EditorGUILayout.IntField("Place Holder Count", placeHoldersCount);
 
-				EditorGUILayout.Space(15);
+				EditorGUILayout.LabelField("Bus Colors", EditorStyles.boldLabel);
 
-				if (GUILayout.Button("Clear Level"))
+				for (int i = 0; i < busColors.Count; i++)
 				{
-					ClearLevel();
+					EditorGUILayout.BeginHorizontal();
+
+					busColors[i] = (Colors)EditorGUILayout.EnumPopup($"Bus {i + 1}", busColors[i]);
+
+					if (GUILayout.Button("X", GUILayout.Width(20)))
+					{
+						busColors.RemoveAt(i);
+					}
+
+					EditorGUILayout.EndHorizontal();
 				}
-
+				if (GUILayout.Button("+ Add Bus"))
+				{
+					busColors.Add(Colors.None);
+				}
+				EditorGUILayout.Space(10);
+				if (GUILayout.Button("Save Bus & Place Holders"))
+				{
+					SaveBusAndPlaceHolder();
+				}
 				EditorGUILayout.Space(15);
-
+				#endregion
 				GUILayout.BeginHorizontal();
 				if (GUILayout.Button("Go to level data"))
 				{
@@ -110,7 +140,7 @@ namespace LevelDataSystem.Editor
 				Debug.LogWarning("There is no Level in the scene");
 			}
 		}
-		private void SaveLevel(LevelTransformData selectedLevel)
+		private void SaveLevelEnvironment(LevelTransformData selectedLevel)
 		{
 			levelParent = GameObject.Find(levelParentName);
 			if (levelParent != null)
@@ -199,6 +229,9 @@ namespace LevelDataSystem.Editor
 					levelData.Add(data);
 			}
 
+			placeHoldersCount = levelData[selectedLevelIndex].PlaceHoldersCount;
+			busColors = levelData[selectedLevelIndex].BusColorList.ToList();
+
 			if (selectedLevelIndex >= levelData.Count)
 				selectedLevelIndex = 0;
 		}
@@ -210,6 +243,17 @@ namespace LevelDataSystem.Editor
 				names[i] = "Level " + levelData[i].Level;
 			}
 			return names;
+		}
+		#endregion
+		#region Bus And PlaceHolder Methods
+		void SaveBusAndPlaceHolder()
+		{
+			levelData[selectedLevelIndex].BusColorList = busColors.ToList();
+			levelData[selectedLevelIndex].PlaceHoldersCount = placeHoldersCount;
+
+			EditorUtility.SetDirty(levelData[selectedLevelIndex]);
+			AssetDatabase.SaveAssets();
+			AssetDatabase.Refresh();
 		}
 		#endregion
 		#region Warning Popup
@@ -224,7 +268,7 @@ namespace LevelDataSystem.Editor
 
 			if (continueAction)
 			{
-				SaveLevel(selectedLevel);
+				SaveLevelEnvironment(selectedLevel);
 			}
 		}
 		#endregion

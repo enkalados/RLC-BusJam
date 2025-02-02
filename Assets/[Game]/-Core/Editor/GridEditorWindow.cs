@@ -106,7 +106,7 @@ namespace GridSystem.Editor
 
 			if (GUILayout.Button("Edit Pool Colors", GUILayout.Height(25)))
 			{
-				//PoolColorWindow.ShowWindow();
+				PoolColorWindow.ShowWindow();
 			}
 
 			GUILayout.Space(20);
@@ -296,36 +296,34 @@ namespace GridSystem.Editor
 	}
 	public class PoolColorWindow : EditorWindow
 	{
+		public static void ShowWindow()
+		{
+			GetWindow<PoolColorWindow>("Pool Objects Colors");
+		}
 
-		//public static void ShowWindow()
-		//{
-		//	GetWindow<PoolColorWindow>("Pool Objects Colors");
-		//}
+		private void OnGUI()
+		{
+			EditorGUILayout.LabelField("Set Colors for Pool Objects", EditorStyles.boldLabel);
 
-		//private void OnGUI()
-		//{
-		//	EditorGUILayout.LabelField("Set Colors for Pool Objects", EditorStyles.boldLabel);
+			foreach (PoolID id in System.Enum.GetValues(typeof(PoolID)))
+			{
+				EditorGUILayout.BeginHorizontal();
+				EditorGUILayout.LabelField(id.ToString(), GUILayout.Width(100));
 
-		//	foreach (PoolID id in System.Enum.GetValues(typeof(PoolID)))
-		//	{
-		//		EditorGUILayout.BeginHorizontal();
-		//		EditorGUILayout.LabelField(id.ToString(), GUILayout.Width(100));
+				if (!GridEditorWindow.PoolColors.TryGetValue(id, out Color color))
+				{
+					color = Color.white;
+				}
 
-		//		if (!GridEditorWindow.PoolColors.TryGetValue(id, out Color color))
-		//		{
-		//			color = Color.white;
-		//		}
+				Color newColor = EditorGUILayout.ColorField(color);
+				if (newColor != color)
+				{
+					GridEditorWindow.SaveColor(id, newColor);
+				}
 
-		//		Color newColor = EditorGUILayout.ColorField(color);
-		//		if (newColor != color)
-		//		{
-		//			GridEditorWindow.SaveColor(id, newColor);
-		//		}
-
-		//		EditorGUILayout.EndHorizontal();
-		//	}
-		//}
-
+				EditorGUILayout.EndHorizontal();
+			}
+		}
 	}
 	
 }

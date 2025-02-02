@@ -157,8 +157,8 @@ namespace GridSystem.Editor
 				{
 					if (x < gridData.GetLength(0) && z < gridData.GetLength(1))
 					{
-						Rect rect = GUILayoutUtility.GetRect(50, 30); 
-						EditorGUI.DrawRect(rect, GetTileColor(gridData[x, z])); 
+						Rect rect = GUILayoutUtility.GetRect(50, 30);
+						EditorGUI.DrawRect(rect, GetTileColor(gridData[x, z]));
 
 						gridData[x, z] = (PoolID)EditorGUI.EnumPopup(rect, gridData[x, z]);
 					}

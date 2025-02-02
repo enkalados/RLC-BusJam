@@ -35,7 +35,7 @@ namespace GridSystem
 				if (tileGridData.GridTiles[i].ObjectPoolID == PoolID.Tile)
 				{
 					createdTile = PoolingManager.Instance.Instantiate(PoolID.Tile, tilesParent.transform);
-					createdTile.transform.SetLocalPositionAndRotation(new Vector3(tileGridData.GridTiles[i].X, 0, tileGridData.GridTiles[i].Z), Quaternion.identity);
+					createdTile.transform.SetLocalPositionAndRotation(new Vector3(tileGridData.GridTiles[i].X, 0, -tileGridData.GridTiles[i].Z), Quaternion.identity);
 				}
 			}
 			SetGridParent(tileGridData);
@@ -64,7 +64,7 @@ namespace GridSystem
 				if (gridData.GridTiles[i].ObjectPoolID == PoolID.Tile)
 				{
 					PoolObject item = (PoolObject)PrefabUtility.InstantiatePrefab(tileObject, tilesParent.transform);
-					item.transform.SetLocalPositionAndRotation(new Vector3(gridData.GridTiles[i].X, 0, -gridData.GridTiles[i].Z), Quaternion.identity);
+					item.transform.SetLocalPositionAndRotation(new Vector3(gridData.GridTiles[i].X, 0,- gridData.GridTiles[i].Z), Quaternion.identity);
 				}
 			}
 			SetGridParent(gridData);

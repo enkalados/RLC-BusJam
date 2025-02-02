@@ -14,7 +14,7 @@ namespace BusSystem.Creator
 		[SerializeField] GameObject busParent;
 		List<Colors> busList = new List<Colors>();
 		PoolObject createdBus;
-		const float DIST_BETWEEEN_BUS = -8;
+		const float DIST_BETWEEEN_BUS = -7;
 		const int MAT_COLOR_INDEX = 1;
 
 		#endregion

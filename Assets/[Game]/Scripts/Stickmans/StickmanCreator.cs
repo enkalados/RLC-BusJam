@@ -35,7 +35,7 @@ namespace Stickman.Creator
 				if (stickmanGridData.GridTiles[i].ObjectPoolID == PoolID.Stickman)
 				{
 					createdStickman = PoolingManager.Instance.Instantiate(PoolID.Stickman, stickmanParent.transform);
-					createdStickman.transform.SetLocalPositionAndRotation(new Vector3(stickmanGridData.GridTiles[i].X, 0, stickmanGridData.GridTiles[i].Z), Quaternion.identity);
+					createdStickman.transform.SetLocalPositionAndRotation(new Vector3(stickmanGridData.GridTiles[i].X, 0, -stickmanGridData.GridTiles[i].Z), Quaternion.identity);
 					createdStickman.GetComponent<MeshColorSet>().SetColor(stickmanGridData.GridTiles[i].Color);
 				}
 			}
@@ -53,7 +53,7 @@ namespace Stickman.Creator
 				if (gridData.GridTiles[i].ObjectPoolID == PoolID.Stickman)
 				{
 					PoolObject item = (PoolObject)PrefabUtility.InstantiatePrefab(stickmanObj, stickmanParent.transform);
-					item.transform.SetLocalPositionAndRotation(new Vector3(gridData.GridTiles[i].X, 0, -gridData.GridTiles[i].Z), Quaternion.identity);
+					item.transform.SetLocalPositionAndRotation(new Vector3(gridData.GridTiles[i].X, 0, -gridData.GridTiles[i].Z), Quaternion.identity );
 					item.GetComponent<MeshColorSet>().SetColor(gridData.GridTiles[i].Color);
 				}
 			}

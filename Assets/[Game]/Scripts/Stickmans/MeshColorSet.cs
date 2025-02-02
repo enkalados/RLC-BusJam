@@ -7,6 +7,7 @@ namespace MeshColorSetter
 	{
 		#region Variables
 		[SerializeField] MeshRenderer meshRenderer;
+		[SerializeField] SkinnedMeshRenderer meshRenderer2;
 		[SerializeField] ColorMaterial[] materials;
 		Material[] m_materials;
 		#endregion
@@ -17,9 +18,19 @@ namespace MeshColorSetter
 		#region Methods
 		internal void SetColor(Colors color, int matIndex=0)
 		{
-			m_materials = meshRenderer.sharedMaterials;
-			m_materials[matIndex] = materials.First(mat => mat.Color == color).Material;
-			meshRenderer.sharedMaterials = m_materials;
+			if (meshRenderer2 != null)
+			{
+				m_materials = meshRenderer2.sharedMaterials;
+				m_materials[matIndex] = materials.First(mat => mat.Color == color).Material;
+				meshRenderer2.sharedMaterials = m_materials;
+			}
+			else if(meshRenderer != null)
+			{
+				m_materials = meshRenderer.sharedMaterials;
+				m_materials[matIndex] = materials.First(mat => mat.Color == color).Material;
+				meshRenderer.sharedMaterials = m_materials;
+			}
+
 		}
 		#endregion
 	}

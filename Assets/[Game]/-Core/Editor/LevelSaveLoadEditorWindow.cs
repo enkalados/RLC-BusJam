@@ -73,10 +73,10 @@ namespace LevelDataSystem.Editor
 					ShowWarningPopup(selectedLevel);
 				}
 
-				EditorGUILayout.Space(7);
+				EditorGUILayout.Space(10);
 				Rect group1Rect = GUILayoutUtility.GetRect(position.width, 8);
-				EditorGUI.DrawRect(group1Rect, Color.white);
-				EditorGUILayout.Space(7);
+				EditorGUI.DrawRect(group1Rect, Color.black);
+				EditorGUILayout.Space(10);
 				#endregion
 				#region Grid Settings
 				GUILayout.BeginHorizontal();
@@ -117,10 +117,10 @@ namespace LevelDataSystem.Editor
 				{
 					SaveBusAndPlaceHolder();
 				}
-				EditorGUILayout.Space(7);
+				EditorGUILayout.Space(10);
 				Rect group2Rect = GUILayoutUtility.GetRect(position.width, 8);
-				EditorGUI.DrawRect(group2Rect, Color.white);
-				EditorGUILayout.Space(7);
+				EditorGUI.DrawRect(group2Rect, Color.black);
+				EditorGUILayout.Space(10);
 				#endregion
 				GUILayout.BeginHorizontal();
 				if (GUILayout.Button("Go to level data"))

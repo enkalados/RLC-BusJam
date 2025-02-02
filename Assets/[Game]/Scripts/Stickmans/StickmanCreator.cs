@@ -2,6 +2,7 @@ using Base.Global.Enums;
 using Base.Managers;
 using Base.Pool;
 using GridSystem;
+using MeshColorSetter;
 using UnityEditor;
 using UnityEngine;
 namespace Stickman.Creator
@@ -35,7 +36,7 @@ namespace Stickman.Creator
 				{
 					createdStickman = PoolingManager.Instance.Instantiate(PoolID.Stickman, stickmanParent.transform);
 					createdStickman.transform.SetLocalPositionAndRotation(new Vector3(stickmanGridData.GridTiles[i].X, 0, stickmanGridData.GridTiles[i].Z), Quaternion.identity);
-					createdStickman.GetComponent<StickmanSet>().SetColor(stickmanGridData.GridTiles[i].Color);
+					createdStickman.GetComponent<MeshColorSet>().SetColor(stickmanGridData.GridTiles[i].Color);
 				}
 			}
 		}
@@ -53,7 +54,7 @@ namespace Stickman.Creator
 				{
 					PoolObject item = (PoolObject)PrefabUtility.InstantiatePrefab(stickmanObj, stickmanParent.transform);
 					item.transform.SetLocalPositionAndRotation(new Vector3(gridData.GridTiles[i].X, 0, -gridData.GridTiles[i].Z), Quaternion.identity);
-					item.GetComponent<StickmanSet>().SetColor(gridData.GridTiles[i].Color);
+					item.GetComponent<MeshColorSet>().SetColor(gridData.GridTiles[i].Color);
 				}
 			}
 		}

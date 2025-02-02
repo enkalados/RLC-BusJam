@@ -1,13 +1,13 @@
 using Base.Global.Enums;
 using System.Linq;
 using UnityEngine;
-namespace Stickman.Creator
+namespace MeshColorSetter
 {
-	public class StickmanSet : MonoBehaviour
+	public class MeshColorSet : MonoBehaviour
 	{
 		#region Variables
 		[SerializeField] MeshRenderer meshRenderer;
-		[SerializeField] StickmanColorMat[] materials;
+		[SerializeField] ColorMaterial[] materials;
 		Material[] m_materials;
 		#endregion
 		#region Properties 
@@ -15,16 +15,16 @@ namespace Stickman.Creator
 		#region MonoBehaviour Methods
 		#endregion
 		#region Methods
-		internal void SetColor(Colors color)
+		internal void SetColor(Colors color, int matIndex=0)
 		{
 			m_materials = meshRenderer.sharedMaterials;
-			m_materials[0] = materials.First(mat => mat.Color == color).Material;
+			m_materials[matIndex] = materials.First(mat => mat.Color == color).Material;
 			meshRenderer.sharedMaterials = m_materials;
 		}
 		#endregion
 	}
 	[System.Serializable]
-	public class StickmanColorMat
+	public class ColorMaterial
 	{
 		public Colors Color;
 		public Material Material;

@@ -69,8 +69,12 @@ namespace GridSystem.Editor
 			{
 				ResizeGrid(newGridX, newGridZ);
 			}
-
 			EditorGUILayout.Space(15);
+			
+			if (GUILayout.Button("Edit Pool Colors"))
+			{
+				PoolColorWindow.ShowWindow();
+			}
 
 			if (gridDataList.Count == 0)
 			{
@@ -102,12 +106,6 @@ namespace GridSystem.Editor
 				}
 				GUILayout.EndHorizontal();
 			}
-			GUILayout.Space(20);
-
-			if (GUILayout.Button("Edit Pool Colors", GUILayout.Height(25)))
-			{
-				PoolColorWindow.ShowWindow();
-			}
 
 			GUILayout.Space(20);
 			if(gridDataList[selectedGridDataIndex].GridType == GridTypes.Stickman)
@@ -118,7 +116,7 @@ namespace GridSystem.Editor
 				}
 			}
 	
-			GUILayout.Space(20);
+			GUILayout.Space(10);
 
 			DrawGrid();
 		}

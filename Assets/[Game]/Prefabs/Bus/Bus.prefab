@@ -181,7 +181,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2831638700836391535}
   - component: {fileID: -4678752626057990806}
-  - component: {fileID: 6994486964980405536}
+  - component: {fileID: 5339135172180493433}
   m_Layer: 0
   m_Name: Bus
   m_TagString: Untagged
@@ -219,7 +219,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PoolID: 4
---- !u!114 &6994486964980405536
+--- !u!114 &5339135172180493433
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -228,9 +228,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 6321979735086082488}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1962ddf9b624b5544a94ff696afce058, type: 3}
+  m_Script: {fileID: 11500000, guid: b106119742741274f901450123094580, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  meshRenderer: {fileID: 3816097903962194189}
+  materials:
+  - Color: 1
+    Material: {fileID: 2100000, guid: b89925807142d4846a5696b920ea894d, type: 2}
+  - Color: 2
+    Material: {fileID: 2100000, guid: a02b2a9855fbb1542a9e0e15b000d88d, type: 2}
+  - Color: 3
+    Material: {fileID: 2100000, guid: a76123acdeebca84a83d358fd9fa123c, type: 2}
+  - Color: 4
+    Material: {fileID: 2100000, guid: 6c69c6d329242a34e844451bb26ef7cf, type: 2}
 --- !u!1001 &7857353273409800514
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -304,6 +314,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 72a2d2411a727214a948477c6cf82a07, type: 3}
+--- !u!23 &3816097903962194189 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 6485022931119212623, guid: 72a2d2411a727214a948477c6cf82a07, type: 3}
+  m_PrefabInstance: {fileID: 7857353273409800514}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7674226473768939177 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 72a2d2411a727214a948477c6cf82a07, type: 3}

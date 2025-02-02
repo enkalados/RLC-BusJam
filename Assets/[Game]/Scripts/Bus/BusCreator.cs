@@ -1,8 +1,7 @@
 using Base.Global.Enums;
 using Base.Managers;
 using Base.Pool;
-using GridSystem;
-using Stickman.Creator;
+using MeshColorSetter;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
@@ -16,6 +15,8 @@ namespace BusSystem.Creator
 		List<Colors> busList = new List<Colors>();
 		PoolObject createdBus;
 		const float DIST_BETWEEEN_BUS = -8;
+		const int MAT_COLOR_INDEX = 1;
+
 		#endregion
 		#region Properties 
 		#endregion
@@ -37,6 +38,7 @@ namespace BusSystem.Creator
             {
 				createdBus = PoolingManager.Instance.Instantiate(PoolID.Bus1, busParent.transform);
 				createdBus.transform.SetLocalPositionAndRotation(new Vector3(0,0, DIST_BETWEEEN_BUS * i), Quaternion.identity);
+				createdBus.GetComponent<MeshColorSet>().SetColor(busList[i], MAT_COLOR_INDEX);
 			}
         }
 		#endregion
@@ -51,6 +53,7 @@ namespace BusSystem.Creator
 			{
 				PoolObject item = (PoolObject)PrefabUtility.InstantiatePrefab(bus,busParent.transform);
 				item.transform.SetLocalPositionAndRotation(new Vector3(0, 0, DIST_BETWEEEN_BUS * i), Quaternion.identity);
+				item.GetComponent<MeshColorSet>().SetColor(busList[i], MAT_COLOR_INDEX);
 			}
 		}
 #endif

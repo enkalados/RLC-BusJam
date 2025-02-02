@@ -6,6 +6,7 @@ namespace GridSystem
 	[CreateAssetMenu(fileName = "GridData-Level-", menuName = "Grid Data")]
 	public class GridData : ScriptableObject
 	{
+		public GridTypes GridType;
 		public int GridX;
 		public int GridZ;
 		public List<GridTile> GridTiles;
@@ -16,5 +17,6 @@ namespace GridSystem
 		public int X;
 		public int Z;
 		public PoolID ObjectPoolID;
+		public Colors Color;
 	}
 }

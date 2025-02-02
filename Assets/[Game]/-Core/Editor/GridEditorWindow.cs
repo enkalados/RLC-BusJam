@@ -16,7 +16,7 @@ namespace GridSystem.Editor
 		string poolPath = "PoolObjects";
 		PoolData poolDatabase;
 
-		static GridData editingData = null;
+		public static GridData editingData = null;
 		List<GridData> gridDataList = new List<GridData>();
 		string gridDatasPath = "Assets/[Game]/Data/GridData";
 		int selectedGridDataIndex;
@@ -26,11 +26,10 @@ namespace GridSystem.Editor
 		public static Dictionary<PoolID, Color> PoolColors = new Dictionary<PoolID, Color>();
 		#endregion
 		#region Editor Methods
-		[MenuItem("Tools/Grid Editor")]
-		public static void ShowWindow()
-		{
-			GetWindow<GridEditorWindow>("Grid Editor");
-		}
+		//public static void ShowWindow()
+		//{
+		//	GetWindow<GridEditorWindow>("Grid Editor");
+		//}
 		public static void ShowWindow(GridData gridData)
 		{
 			editingData = gridData;
@@ -107,9 +106,18 @@ namespace GridSystem.Editor
 
 			if (GUILayout.Button("Edit Pool Colors", GUILayout.Height(25)))
 			{
-				PoolColorWindow.ShowWindow();
+				//PoolColorWindow.ShowWindow();
 			}
 
+			GUILayout.Space(20);
+			if(gridDataList[selectedGridDataIndex].GridType == GridTypes.Stickman)
+			{
+				if (GUILayout.Button("Edit Stickman Color Data", GUILayout.Height(25)))
+				{
+					StickmanDataColorSetEditorWindow.ShowWindowGridDataColor(selectedGridDataIndex);
+				}
+			}
+	
 			GUILayout.Space(20);
 
 			DrawGrid();
@@ -289,34 +297,35 @@ namespace GridSystem.Editor
 	public class PoolColorWindow : EditorWindow
 	{
 
-		public static void ShowWindow()
-		{
-			GetWindow<PoolColorWindow>("Pool Objects Colors");
-		}
+		//public static void ShowWindow()
+		//{
+		//	GetWindow<PoolColorWindow>("Pool Objects Colors");
+		//}
 
-		private void OnGUI()
-		{
-			EditorGUILayout.LabelField("Set Colors for Pool Objects", EditorStyles.boldLabel);
+		//private void OnGUI()
+		//{
+		//	EditorGUILayout.LabelField("Set Colors for Pool Objects", EditorStyles.boldLabel);
 
-			foreach (PoolID id in System.Enum.GetValues(typeof(PoolID)))
-			{
-				EditorGUILayout.BeginHorizontal();
-				EditorGUILayout.LabelField(id.ToString(), GUILayout.Width(100));
+		//	foreach (PoolID id in System.Enum.GetValues(typeof(PoolID)))
+		//	{
+		//		EditorGUILayout.BeginHorizontal();
+		//		EditorGUILayout.LabelField(id.ToString(), GUILayout.Width(100));
 
-				if (!GridEditorWindow.PoolColors.TryGetValue(id, out Color color))
-				{
-					color = Color.white;
-				}
+		//		if (!GridEditorWindow.PoolColors.TryGetValue(id, out Color color))
+		//		{
+		//			color = Color.white;
+		//		}
 
-				Color newColor = EditorGUILayout.ColorField(color);
-				if (newColor != color)
-				{
-					GridEditorWindow.SaveColor(id, newColor);
-				}
+		//		Color newColor = EditorGUILayout.ColorField(color);
+		//		if (newColor != color)
+		//		{
+		//			GridEditorWindow.SaveColor(id, newColor);
+		//		}
 
-				EditorGUILayout.EndHorizontal();
-			}
-		}
+		//		EditorGUILayout.EndHorizontal();
+		//	}
+		//}
 
 	}
+	
 }

@@ -182,6 +182,7 @@ GameObject:
   - component: {fileID: 2831638700836391535}
   - component: {fileID: -4678752626057990806}
   - component: {fileID: 5339135172180493433}
+  - component: {fileID: 6962595387104264341}
   m_Layer: 0
   m_Name: Bus
   m_TagString: Untagged
@@ -242,6 +243,18 @@ MonoBehaviour:
     Material: {fileID: 2100000, guid: a76123acdeebca84a83d358fd9fa123c, type: 2}
   - Color: 4
     Material: {fileID: 2100000, guid: 6c69c6d329242a34e844451bb26ef7cf, type: 2}
+--- !u!114 &6962595387104264341
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6321979735086082488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0eeeaf65c22a7948864f82323726ac2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7857353273409800514
 PrefabInstance:
   m_ObjectHideFlags: 0

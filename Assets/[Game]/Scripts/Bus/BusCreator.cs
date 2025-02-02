@@ -39,6 +39,7 @@ namespace BusSystem.Creator
 				createdBus = PoolingManager.Instance.Instantiate(PoolID.Bus1, busParent.transform);
 				createdBus.transform.SetLocalPositionAndRotation(new Vector3(0,0, DIST_BETWEEEN_BUS * i), Quaternion.identity);
 				createdBus.GetComponent<MeshColorSet>().SetColor(busList[i], MAT_COLOR_INDEX);
+				createdBus.GetComponent<BusControl>().SetBusColor(busList[i]);
 			}
         }
 		#endregion
@@ -54,6 +55,7 @@ namespace BusSystem.Creator
 				PoolObject item = (PoolObject)PrefabUtility.InstantiatePrefab(bus,busParent.transform);
 				item.transform.SetLocalPositionAndRotation(new Vector3(0, 0, DIST_BETWEEEN_BUS * i), Quaternion.identity);
 				item.GetComponent<MeshColorSet>().SetColor(busList[i], MAT_COLOR_INDEX);
+				item.GetComponent<BusControl>().SetBusColor(busList[i]);
 			}
 		}
 #endif

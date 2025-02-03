@@ -50,119 +50,60 @@ namespace GridSystem
 
 			for (int i = 0; i < stickmanList.Count; i++)
 			{
-				bool can = CanReachZero(stickmanList[i].GetComponent<StickmanControl>().GetGridX(), stickmanList[i].GetComponent<StickmanControl>().GetGridZ());
+				bool can = CanReachZ0(stickmanList[i].GetComponent<StickmanControl>().GetGridX(), stickmanList[i].GetComponent<StickmanControl>().GetGridZ());
 				stickmanList[i].GetComponent<StickmanControl>().SetCanClickable(can);
 			}
 		}
 		#endregion
 		#region Methods
-		bool CanReachZero(int x, int z)
+		public bool CanReachZ0(int startX, int startZ)
 		{
-			return CanReachZero1(x, z) || CanReachZero2(x, z);
-		}
-		bool CanReachZero1(int x, int z)
-		{
-			if (z == 0)
+			if (!gridTiles.Any(tile => tile.X == startX && tile.Z == startZ))
 			{
-				print(x + " " + z + " eriþebilir");
-				return true;
+				Debug.Log($"Invalid position ({startX}, {startZ})");
+				return false;
 			}
 
-			for (int i = x; i < tileGridData.GridX; i++)
-			{
-				for (int j = z; j > -1; j--)
-				{
-					if (i == x && j == z) continue;
-					if (TileListContains(i, j))
-					{
-						print(x + "-" + z + "  için kontrol:" + i + " " + j + " tile içinde");
-						if (!StickmanListContains(i, j))
-						{
-							print(i + " " + j + " boþ");
-							if (j == 0)
-							{
-								print(x + "-" + z + "  için kontrol:" + i + " " + j + " eriþebilir");
-								return true;
-							}
-						}
-						else
-						{
-							print(x + "-" + z + "  için kontrol:" + i + " " + j + " dolu");
-							continue;
-						}
-					}
-					else
-					{
-						print(x + "-" + z + "  için kontrol:" + i + " " + j + " tile dýþýnda");
-						continue;
-					}
-				}
-			}
+			HashSet<string> visited = new HashSet<string>();
+			Queue<(int x, int z)> queue = new Queue<(int x, int z)>();
 
-			return false;
-		}
-		bool CanReachZero2(int x, int z)
-		{
-			if (z == 0)
-			{
-				print(x + " " + z + " eriþebilir");
-				return true;
-			}
+			queue.Enqueue((startX, startZ));
+			visited.Add($"{startX},{startZ}");
 
-			for (int i = x; i > -1; i--)
-			{
-				for (int j = z; j > -1; j--)
-				{
-					if (i == x && j == z) continue;
-					if (TileListContains(i, j))
-					{
-						print(x + "-" + z + "  için kontrol:" + i + " " + j + " tile içinde");
-						if (!StickmanListContains(i, j))
-						{
-							print(x + "-" + z + "  için kontrol:" + i + " " + j + " boþ");
-							if (j == 0)
-							{
-								print(x + "-" + z + "  için kontrol:" + i + " " + j + " eriþebilir");
-								return true;
-							}
-						}
-						else
-						{
-							print(x + "-" + z + "  için kontrol:" + i + " " + j + " dolu");
-							continue;
-						}
-					}
-					else
-					{
-						print(x + "-" + z + "  için kontrol:" + i + " " + j + " tile dýþýnda");
-						continue;
-					}
-				}
-			}
+			int[] dx = { 0, 0, 1, -1 };
+			int[] dz = { 1, -1, 0, 0 };
 
-			return false;
-		}
-		bool StickmanListContains(int x, int z)
-		{
-			foreach (GridTile item in obstacleTiles)
+			while (queue.Count > 0)
 			{
-				if (item.X == x && item.Z == z)
+				var (currentX, currentZ) = queue.Dequeue();
+
+				if (currentZ == 0)
 				{
 					return true;
 				}
-			}
-			return false;
-		}
-		bool TileListContains(int x, int z)
-		{
-			foreach (GridTile item in gridTiles)
-			{
-				if (item.X == x && item.Z == z)
+				for (int i = 0; i < 4; i++)
 				{
-					return true;
+					int newX = currentX + dx[i];
+					int newZ = currentZ + dz[i];
+					string key = $"{newX},{newZ}";
+
+					if (IsValidPosition(newX, newZ) && !visited.Contains(key))
+					{
+						queue.Enqueue((newX, newZ));
+						visited.Add(key);
+					}
 				}
 			}
 			return false;
+		}
+
+		private bool IsValidPosition(int x, int z)
+		{
+			// Grid üzerinde var mý kontrol et
+			bool isOnGrid = gridTiles.Any(tile => tile.X == x && tile.Z == z);
+			// Engel var mý kontrol et
+			bool isObstacle = obstacleTiles.Any(tile => tile.X == x && tile.Z == z);
+			return isOnGrid && !isObstacle;
 		}
 		void GetGridTileData()
 		{

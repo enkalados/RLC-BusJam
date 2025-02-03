@@ -35,7 +35,6 @@ namespace Stickman
 		}
 		internal void SetCanClickable(bool state)
 		{
-			print(gridX+" - "+gridZ+" - "+state);
 			canClickable = state;
 			if (state)
 			{

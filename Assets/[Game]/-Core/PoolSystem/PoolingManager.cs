@@ -51,6 +51,22 @@ namespace Base.Pool
 
 			return poolObject;
 		}
+		public PoolObject Instantiate(PoolID poolID, Transform parent, Vector3 position, Quaternion rotation)
+		{
+			if (!PoolStacksByID.ContainsKey(poolID))
+			{
+				Debug.LogError("Pool with ID " + poolID + " does not exist.");
+				return null;
+			}
+
+			PoolObject poolObject = PopPoolObject(poolID);
+			poolObject.gameObject.transform.SetParent(parent);
+			poolObject.transform.SetPositionAndRotation(position, rotation);
+			poolObject.gameObject.SetActive(true);
+			poolObject.Initialize();
+
+			return poolObject;
+		}
 		public void DestroyPoolObject(PoolObject poolObject)
 		{
 			if (!PoolStacksByID.ContainsKey(poolObject.PoolID))

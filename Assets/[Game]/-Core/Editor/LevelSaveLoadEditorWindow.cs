@@ -3,6 +3,7 @@ using Base.Pool;
 using BusSystem.Creator;
 using GridSystem;
 using GridSystem.Editor;
+using GridSystem.WaitPlace;
 using Stickman.Creator;
 using System;
 using System.Collections.Generic;
@@ -212,6 +213,7 @@ namespace LevelDataSystem.Editor
 			FindObjectOfType<TileCreator>().SetTileGridDataEditor(levelData[selectedLevelIndex].TilesData, GetPoolObject(PoolID.Tile, poolDatabase));
 			FindObjectOfType<StickmanCreator>().SetStickmanDataEditor(levelData[selectedLevelIndex].StickmansTileData, GetPoolObject(PoolID.Stickman, poolDatabase));
 			FindAnyObjectByType<BusCreator>().SetBusDataEditor(levelData[selectedLevelIndex].BusColorList, GetPoolObject(PoolID.Bus1, poolDatabase));
+			FindAnyObjectByType<PlaceHolderCreator>().SetPlacesDataEditor(levelData[selectedLevelIndex].PlaceHoldersCount, GetPoolObject(PoolID.PlaceHolderTile, poolDatabase));
 		}
 		PoolObject GetPoolObject(PoolID poolID, PoolData poolDatabase)
 		{

@@ -16,6 +16,10 @@ namespace BusSystem
 		{
 			this.color = color;
 		}
+		internal Colors GetBusColor()
+		{
+			return color;
+		}
 		#endregion
 	}
 }

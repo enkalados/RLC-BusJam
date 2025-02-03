@@ -1,5 +1,6 @@
 using Base.Global.Enums;
 using Base.Managers;
+using BusSystem;
 using Stickman;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,8 @@ namespace GridSystem
 
 		#endregion
 		#region Properties 
+		BusPassengerControl busPassengerControl;
+		BusPassengerControl BusPassengerControl => (busPassengerControl == null) ? busPassengerControl = GetComponent<BusPassengerControl>() : busPassengerControl;
 		#endregion
 		#region MonoBehaviour Methods
 		private void OnEnable()
@@ -34,8 +37,9 @@ namespace GridSystem
 			if (CanReachZ0(x, z))
 			{
 				stickmanControlList.First(stckmn => stckmn.GetGridX() == x && stckmn.GetGridZ() == z).Clicked();
-				stickmanControlList.Remove(stickmanControlList.First(stckmn => stckmn.GetGridX() == x && stckmn.GetGridZ() == z));			
-				obstacleTiles.Remove(obstacleTiles.First(stckmn => stckmn.X == x && stckmn.Z == z));			
+				BusPassengerControl.CheckPassenger(stickmanControlList.First(stckmn => stckmn.GetGridX() == x && stckmn.GetGridZ() == z));
+				stickmanControlList.Remove(stickmanControlList.First(stckmn => stckmn.GetGridX() == x && stckmn.GetGridZ() == z));
+				obstacleTiles.Remove(obstacleTiles.First(stckmn => stckmn.X == x && stckmn.Z == z));
 				CheckAllStickmans();
 			}
 		}

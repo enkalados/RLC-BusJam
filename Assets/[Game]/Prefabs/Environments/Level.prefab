@@ -46,6 +46,8 @@ GameObject:
   - component: {fileID: 42744589011180710}
   - component: {fileID: 9160754363015763216}
   - component: {fileID: 398937070728818340}
+  - component: {fileID: 5729767166144421229}
+  - component: {fileID: 3724908146805299195}
   m_Layer: 0
   m_Name: Level
   m_TagString: Untagged
@@ -69,6 +71,7 @@ Transform:
   - {fileID: 5514281746542204776}
   - {fileID: 8636259551208406125}
   - {fileID: 6463800995105176654}
+  - {fileID: 8480227019339621234}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4992679766225637119
@@ -148,6 +151,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c3a7b144cdd47f48a6ed9adff6eb778, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5729767166144421229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 591994110881317607}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bff903e910d3e494db6210cbeccac585, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3724908146805299195
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 591994110881317607}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7db7c36c2e834584cbd244a65e2096f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  placesParent: {fileID: 6741284573600719873}
 --- !u!1 &748811479864005627
 GameObject:
   m_ObjectHideFlags: 0
@@ -457,6 +485,53 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6967370840873889275}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!1 &6741284573600719873
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8480227019339621234}
+  - component: {fileID: 2754028893421100474}
+  m_Layer: 0
+  m_Name: WaitTiles
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8480227019339621234
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6741284573600719873}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.5, z: 13}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6967370840873889275}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2754028893421100474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6741284573600719873}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8667b27a8566e54190cff20c8720aff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  needToOrderObjectsParent: {fileID: 6741284573600719873}
+  OrderX: 1
+  XDistance: 1
 --- !u!1 &7712745289715331762
 GameObject:
   m_ObjectHideFlags: 0

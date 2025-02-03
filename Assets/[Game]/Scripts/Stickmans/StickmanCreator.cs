@@ -30,6 +30,7 @@ namespace Stickman.Creator
 		{
 			stickmanGridData = gridData;
 			CreateStickmans();
+			GridStickmanControl.SetStickmans(createdStickmanList);
 		}
 		void CreateStickmans()
 		{
@@ -47,7 +48,6 @@ namespace Stickman.Creator
 					createdStickmanList.Add(createdStickman.gameObject);
 				}
 			}
-			GridStickmanControl.SetStickmans(createdStickmanList);
 		}
 		#endregion
 #if UNITY_EDITOR

@@ -27,6 +27,10 @@ namespace Stickman
 			this.gridX = gridX;
 			this.gridZ = gridz;
 		}
+		internal Colors GetColor()
+		{
+			return color;
+		}
 		internal int GetGridX() { return gridX; }
 		internal int GetGridZ() { return gridZ; }
 		internal bool GetCanClick()
@@ -48,7 +52,7 @@ namespace Stickman
 		internal void Clicked()
 		{
 			SetCanClickable(false);
-			gameObject.transform.localScale = Vector3.zero;
+			//gameObject.transform.localScale = Vector3.zero;
 		}
 		#endregion
 	}

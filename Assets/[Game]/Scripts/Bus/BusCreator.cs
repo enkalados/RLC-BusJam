@@ -12,21 +12,32 @@ namespace BusSystem.Creator
 	{
 		#region Variables
 		[SerializeField] GameObject busParent;
+		List<GameObject> busObjectcs = new List<GameObject>();
 		List<Colors> busList = new List<Colors>();
-		PoolObject createdBus;
 		const float DIST_BETWEEEN_BUS = -7;
 		const int MAT_COLOR_INDEX = 1;
 
 		#endregion
 		#region Properties 
+		BusPassengerControl busPassengerControl;
+		BusPassengerControl BusPassengerControl => (busPassengerControl == null) ? busPassengerControl = GetComponent<BusPassengerControl>() : busPassengerControl;
 		#endregion
 		#region MonoBehaviour Methods
-		private void Start()
+		private void OnEnable()
 		{
-			SetBusData(LevelManager.Instance.GetCurrentLevelData().BusColorList.ToList());
+			LevelManager.OnLevelStart.AddListener(GetData);
+		}
+		private void OnDisable()
+		{
+			LevelManager.OnLevelStart.RemoveListener(GetData);
 		}
 		#endregion
 		#region Methods
+		void GetData()
+		{
+			SetBusData(LevelManager.Instance.GetCurrentLevelData().BusColorList.ToList());
+			BusPassengerControl.SetBusControlsPlacesList(busObjectcs);
+		}
 		void SetBusData(List<Colors> busList)
 		{
 			this.busList = busList;
@@ -36,10 +47,11 @@ namespace BusSystem.Creator
 		{
             for (int i = 0; i < busList.Count; i++)
             {
-				createdBus = PoolingManager.Instance.Instantiate(PoolID.Bus1, busParent.transform);
+				PoolObject createdBus = PoolingManager.Instance.Instantiate(PoolID.Bus1, busParent.transform);
 				createdBus.transform.SetLocalPositionAndRotation(new Vector3(0,0, DIST_BETWEEEN_BUS * i), Quaternion.identity);
 				createdBus.GetComponent<MeshColorSet>().SetColor(busList[i], MAT_COLOR_INDEX);
 				createdBus.GetComponent<BusControl>().SetBusColor(busList[i]);
+				busObjectcs.Add(createdBus.gameObject);
 			}
         }
 		#endregion

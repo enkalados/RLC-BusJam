@@ -34,6 +34,7 @@ namespace GridSystem
 			if (CanReachZ0(x, z))
 			{
 				stickmanControlList.First(stckmn => stckmn.GetGridX() == x && stckmn.GetGridZ() == z).Clicked();
+				stickmanControlList.Remove(stickmanControlList.First(stckmn => stckmn.GetGridX() == x && stckmn.GetGridZ() == z));			
 				obstacleTiles.Remove(obstacleTiles.First(stckmn => stckmn.X == x && stckmn.Z == z));			
 				CheckAllStickmans();
 			}

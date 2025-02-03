@@ -1,4 +1,6 @@
 using Base.Global.Enums;
+using BusSystem;
+using DG.Tweening;
 using MeshColorSetter;
 using UnityEngine;
 namespace Stickman
@@ -10,6 +12,8 @@ namespace Stickman
 		Colors color;
 		int gridX, gridZ;
 		[SerializeField] bool canClickable;
+
+		const float MOVE_DURATION = .5f;
 		#endregion
 		#region Properties 
 		MeshColorSet matSet;
@@ -52,7 +56,15 @@ namespace Stickman
 		internal void Clicked()
 		{
 			SetCanClickable(false);
-			//gameObject.transform.localScale = Vector3.zero;
+		}
+		internal void MoveToBus(BusControl bus)
+		{
+			transform.SetParent(bus.transform);
+			transform.DOMove(bus.transform.position, MOVE_DURATION).OnComplete(()=>transform.position = bus.GetEmptySeat());
+		}
+		internal void MoveToTile(GameObject tle)
+		{
+			transform.DOMove(tle.transform.position, MOVE_DURATION);
 		}
 		#endregion
 	}

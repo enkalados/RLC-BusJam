@@ -11,6 +11,7 @@ namespace BusSystem
 		Queue<BusControl> busControls = new Queue<BusControl>();
 		List<GameObject> waitPlaces = new List<GameObject>();
 		int fullWaitPlaceCount = 0;
+		const float DIST_BETWEEEN_BUS = 7;
 		#endregion
 		#region Properties 
 		#endregion
@@ -41,16 +42,30 @@ namespace BusSystem
 		}
 		internal void CheckPassenger(StickmanControl passenger)
 		{
-			if (passenger.GetColor() == busControls.Peek().GetBusColor())
+			if (passenger.GetColor() == busControls.Peek().GetBusColor() && busControls.Peek().HaveEmptySeat())
 			{
-				passenger.transform.DOMove(busControls.Peek().transform.position, .5f);
+				busControls.Peek().TakeSeat();
+				passenger.MoveToBus(busControls.Peek());
+				if (!busControls.Peek().HaveEmptySeat())
+				{
+					busControls.Peek().MoveFullBus();
+					busControls.Dequeue();
+					SetNewBus();
+				}
 			}
 			else if (fullWaitPlaceCount < waitPlaces.Count)
 			{
-				passenger.transform.DOMove(waitPlaces[fullWaitPlaceCount].transform.position, .5f);
+				passenger.MoveToTile(waitPlaces[fullWaitPlaceCount]);
 				fullWaitPlaceCount++;
 			}
 		}
+		void SetNewBus()
+		{
+            foreach (var bus in busControls)
+            {
+				bus.MoveNextBusPos();
+            }
+        }
 		#endregion
 	}
 }

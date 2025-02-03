@@ -51,6 +51,7 @@ namespace BusSystem.Creator
 				createdBus.transform.SetLocalPositionAndRotation(new Vector3(0,0, DIST_BETWEEEN_BUS * i), Quaternion.identity);
 				createdBus.GetComponent<MeshColorSet>().SetColor(busList[i], MAT_COLOR_INDEX);
 				createdBus.GetComponent<BusControl>().SetBusColor(busList[i]);
+				createdBus.GetComponent<BusControl>().SetDistanceValue(DIST_BETWEEEN_BUS);
 				busObjectcs.Add(createdBus.gameObject);
 			}
         }

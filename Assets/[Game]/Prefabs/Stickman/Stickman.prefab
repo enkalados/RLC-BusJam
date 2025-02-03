@@ -674,12 +674,16 @@ MonoBehaviour:
   materials:
   - Color: 1
     Material: {fileID: 2100000, guid: b89925807142d4846a5696b920ea894d, type: 2}
+    ClickableMaterial: {fileID: 2100000, guid: c2b8cbaabdd76b641a70ca87b6fb0f01, type: 2}
   - Color: 2
     Material: {fileID: 2100000, guid: a02b2a9855fbb1542a9e0e15b000d88d, type: 2}
+    ClickableMaterial: {fileID: 2100000, guid: 3bb14b55d3312794c9b30fa45eb1819d, type: 2}
   - Color: 3
     Material: {fileID: 2100000, guid: a76123acdeebca84a83d358fd9fa123c, type: 2}
+    ClickableMaterial: {fileID: 2100000, guid: 62a1b928e97e48b48a4353260285d574, type: 2}
   - Color: 4
     Material: {fileID: 2100000, guid: 6c69c6d329242a34e844451bb26ef7cf, type: 2}
+    ClickableMaterial: {fileID: 2100000, guid: f2f5c635029290f4faed2249a8fec5c0, type: 2}
 --- !u!95 &7291150155399035310
 Animator:
   serializedVersion: 5
@@ -688,7 +692,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3481777946579399723}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 9000000, guid: df9b5d297d81547888b344327c5dc32a, type: 3}
   m_Controller: {fileID: 9100000, guid: 0e0895ef2ba42cb41ad4e033c39c3810, type: 2}
   m_CullingMode: 1
@@ -734,6 +738,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9aab92d416fc46747964752c1ee667fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skinnedMeshRenderer: {fileID: 4985115905238391869}
 --- !u!1 &3567499457657206816
 GameObject:
   m_ObjectHideFlags: 0

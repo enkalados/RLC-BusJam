@@ -236,13 +236,13 @@ MonoBehaviour:
   meshRenderer2: {fileID: 0}
   materials:
   - Color: 1
-    Material: {fileID: 2100000, guid: b89925807142d4846a5696b920ea894d, type: 2}
+    Material: {fileID: 2100000, guid: 8b8d152051756b845bf6cb521c674d82, type: 2}
   - Color: 2
-    Material: {fileID: 2100000, guid: a02b2a9855fbb1542a9e0e15b000d88d, type: 2}
+    Material: {fileID: 2100000, guid: c9bc237c03a2a244c941ef75764120ef, type: 2}
   - Color: 3
-    Material: {fileID: 2100000, guid: a76123acdeebca84a83d358fd9fa123c, type: 2}
+    Material: {fileID: 2100000, guid: ca8b2b462ac790d408bc37865f6cfaad, type: 2}
   - Color: 4
-    Material: {fileID: 2100000, guid: 6c69c6d329242a34e844451bb26ef7cf, type: 2}
+    Material: {fileID: 2100000, guid: d6e093c44045a474e9872cb1365e0177, type: 2}
 --- !u!114 &6962595387104264341
 MonoBehaviour:
   m_ObjectHideFlags: 0

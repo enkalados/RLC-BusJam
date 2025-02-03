@@ -1,13 +1,19 @@
 using Base.Global.Enums;
+using MeshColorSetter;
 using UnityEngine;
 namespace Stickman
 {
 	public class StickmanControl : MonoBehaviour
 	{
 		#region Variables
+		[SerializeField] SkinnedMeshRenderer skinnedMeshRenderer;
 		Colors color;
+		int gridX, gridz;
+		[SerializeField] bool canClickable;
 		#endregion
 		#region Properties 
+		MeshColorSet matSet;
+		MeshColorSet MaterialSet => (matSet == null) ? matSet = GetComponent<MeshColorSet>() : matSet;
 		#endregion
 		#region MonoBehaviour Methods
 		#endregion
@@ -15,6 +21,25 @@ namespace Stickman
 		internal void SetStickmanColor(Colors color)
 		{
 			this.color = color;
+		}
+		internal void SetGridInfo(int gridX, int gridz)
+		{
+			this.gridX = gridX;
+			this.gridz = gridz;
+		}
+		internal int GetGridX() { return gridX; }
+		internal int GetGridZ() { return gridz; }
+		internal void SetCanClickable(bool state)
+		{
+			canClickable = state;
+			if (state)
+			{
+				MaterialSet.SetClickableMaterial();
+			}
+			else
+			{
+				MaterialSet.SetNormalMaterial();
+			}
 		}
 		#endregion
 	}

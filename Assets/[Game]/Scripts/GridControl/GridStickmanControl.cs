@@ -1,7 +1,6 @@
 using Base.Global.Enums;
 using Base.Managers;
 using Stickman;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -10,7 +9,7 @@ namespace GridSystem
 	public class GridStickmanControl : MonoBehaviour
 	{
 		#region Variables
-		List<GameObject> stickmanList = new List<GameObject>();
+		List<StickmanControl> stickmanControlList = new List<StickmanControl>();
 		GridData tileGridData;
 		GridData stickmanGridData;
 		List<GridTile> gridTiles = new List<GridTile>();
@@ -20,43 +19,45 @@ namespace GridSystem
 		#region Properties 
 		#endregion
 		#region MonoBehaviour Methods
-		private void Start()
+		private void OnEnable()
+		{
+			LevelManager.OnLevelStart.AddListener(GetGridDatas);
+		}
+		private void OnDisable()
+		{
+			LevelManager.OnLevelStart.RemoveListener(GetGridDatas);
+		}
+		#endregion
+		#region Grid Methods
+		internal void CheckClickedStickman(int x, int z)
+		{
+			if (CanReachZ0(x, z))
+			{
+				stickmanControlList.First(stckmn => stckmn.GetGridX() == x && stckmn.GetGridZ() == z).Clicked();
+				obstacleTiles.Remove(obstacleTiles.First(stckmn => stckmn.X == x && stckmn.Z == z));			
+				CheckAllStickmans();
+			}
+		}
+		void CheckAllStickmans()
+		{
+			for (int i = 0; i < stickmanControlList.Count; i++)
+			{
+				stickmanControlList[i].SetCanClickable(CanReachZ0(stickmanControlList[i].GetGridX(), stickmanControlList[i].GetGridZ()));
+			}
+		}
+		void GetGridDatas()
 		{
 			GetGridTileData();
 			GetStickmanTileData();
 
-			for (int i = 0; i < stickmanGridData.GridTiles.Count; i++)
-			{
-				if (stickmanGridData.GridTiles[i].ObjectPoolID == PoolID.Stickman)
-				{
-					GridTile tile = new GridTile();
-					tile.X = stickmanGridData.GridTiles[i].X;
-					tile.Z = stickmanGridData.GridTiles[i].Z;
-					obstacleTiles.Add(tile);
-				}
-			}
-			for (int i = 0; i < tileGridData.GridTiles.Count; i++)
-			{
-				if (tileGridData.GridTiles[i].ObjectPoolID == PoolID.Tile)
-				{
-					GridTile tile = new GridTile();
-					tile.X = tileGridData.GridTiles[i].X;
-					tile.Z = tileGridData.GridTiles[i].Z;
-					gridTiles.Add(tile);
-				}
-			}
+			obstacleTiles.Clear();
+			gridTiles.Clear();
 
-
-
-			for (int i = 0; i < stickmanList.Count; i++)
-			{
-				bool can = CanReachZ0(stickmanList[i].GetComponent<StickmanControl>().GetGridX(), stickmanList[i].GetComponent<StickmanControl>().GetGridZ());
-				stickmanList[i].GetComponent<StickmanControl>().SetCanClickable(can);
-			}
+			obstacleTiles = stickmanGridData.GridTiles.Where(tile => tile.ObjectPoolID == PoolID.Stickman).ToList();
+			gridTiles = tileGridData.GridTiles.Where(tile => tile.ObjectPoolID == PoolID.Tile).ToList();
+			CheckAllStickmans();
 		}
-		#endregion
-		#region Methods
-		public bool CanReachZ0(int startX, int startZ)
+		private bool CanReachZ0(int startX, int startZ)
 		{
 			if (!gridTiles.Any(tile => tile.X == startX && tile.Z == startZ))
 			{
@@ -96,7 +97,6 @@ namespace GridSystem
 			}
 			return false;
 		}
-
 		private bool IsValidPosition(int x, int z)
 		{
 			// Grid üzerinde var mý kontrol et
@@ -115,12 +115,11 @@ namespace GridSystem
 		}
 		internal void SetStickmans(List<GameObject> stickmanList)
 		{
-			this.stickmanList = stickmanList.ToList();
+			for (int i = 0; i < stickmanList.Count; i++)
+			{
+				stickmanControlList.Add(stickmanList[i].GetComponent<StickmanControl>());
+			}
 		}
-		//public bool CanEscape(int characterX, int characterZ)
-		//{
-
-		//}
 		#endregion
 	}
 }

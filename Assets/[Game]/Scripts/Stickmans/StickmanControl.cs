@@ -8,7 +8,7 @@ namespace Stickman
 		#region Variables
 		[SerializeField] SkinnedMeshRenderer skinnedMeshRenderer;
 		Colors color;
-		int gridX, gridz;
+		int gridX, gridZ;
 		[SerializeField] bool canClickable;
 		#endregion
 		#region Properties 
@@ -25,12 +25,17 @@ namespace Stickman
 		internal void SetGridInfo(int gridX, int gridz)
 		{
 			this.gridX = gridX;
-			this.gridz = gridz;
+			this.gridZ = gridz;
 		}
 		internal int GetGridX() { return gridX; }
-		internal int GetGridZ() { return gridz; }
+		internal int GetGridZ() { return gridZ; }
+		internal bool GetCanClick()
+		{
+			return canClickable;
+		}
 		internal void SetCanClickable(bool state)
 		{
+			print(gridX+" - "+gridZ+" - "+state);
 			canClickable = state;
 			if (state)
 			{
@@ -40,6 +45,11 @@ namespace Stickman
 			{
 				MaterialSet.SetNormalMaterial();
 			}
+		}
+		internal void Clicked()
+		{
+			SetCanClickable(false);
+			gameObject.transform.localScale = Vector3.zero;
 		}
 		#endregion
 	}

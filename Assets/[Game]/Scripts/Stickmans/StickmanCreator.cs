@@ -38,9 +38,9 @@ namespace Stickman.Creator
 		{
 			stickmanParent = GameObject.Find(parentName);
 			ResetStickmans();
-			if (GameSaveLoad.LoadStickmanList().Count > 0)
+			if (GameSaveLoad.LoadStickmanListData().Count > 0)
 			{
-				LoadStickmanFromSave(GameSaveLoad.LoadStickmanList());
+				LoadStickmanFromSave(GameSaveLoad.LoadStickmanListData());
 			}
 			else
 			{

@@ -1,6 +1,7 @@
 using Base.Global.Enums;
 using Base.Managers;
 using Base.Pool;
+using GameSaveLoad;
 using MeshColorSetter;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,8 @@ namespace BusSystem.Creator
 		#region Properties 
 		BusPassengerControl busPassengerControl;
 		BusPassengerControl BusPassengerControl => (busPassengerControl == null) ? busPassengerControl = GetComponent<BusPassengerControl>() : busPassengerControl;
+		GameSaveLoadControl gameSaveLoad;
+		GameSaveLoadControl GameSaveLoad => (gameSaveLoad == null) ? gameSaveLoad = GetComponent<GameSaveLoadControl>() : gameSaveLoad;
 		#endregion
 		#region MonoBehaviour Methods
 		private void OnEnable()
@@ -38,8 +41,15 @@ namespace BusSystem.Creator
 		{
 			busParent = GameObject.Find(parentName);
 			ResetBusList();
-			SetBusData(LevelManager.Instance.GetCurrentLevelData().BusColorList.ToList());
-			BusPassengerControl.SetBusControlsPlacesList(busObjectcs);
+			if (GameSaveLoad.GetBusColorsData().Count > 0)
+			{
+				LoadSavedData();
+			}
+			else
+			{
+				SetBusData(LevelManager.Instance.GetCurrentLevelData().BusColorList.ToList());
+				BusPassengerControl.SetBusControlsPlacesList(busObjectcs);
+			}
 		}
 		void SetBusData(List<Colors> busList)
 		{
@@ -70,6 +80,13 @@ namespace BusSystem.Creator
 				busObjectcs.Add(createdBus.gameObject);
 			}
 		}
+		#region Save Load
+		void LoadSavedData()
+		{
+			SetBusData(GameSaveLoad.GetBusColorsData());
+			BusPassengerControl.LoadBusFromData(busObjectcs, GameSaveLoad.GetBusPassengersData());
+		}
+		#endregion
 		#endregion
 #if UNITY_EDITOR
 		public void SetBusDataEditor(List<Colors> busList, PoolObject bus)

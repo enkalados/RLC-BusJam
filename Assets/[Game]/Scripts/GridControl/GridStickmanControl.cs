@@ -67,7 +67,7 @@ namespace GridSystem
 
 			GetGridTileData();
 			gridTiles = tileGridData.GridTiles.Where(tile => tile.ObjectPoolID == PoolID.Tile).ToList();
-			if (GameSaveLoad.LoadStickmanList().Count == 0)
+			if (GameSaveLoad.LoadStickmanListData().Count == 0)
 			{
 				GetStickmanTileData();
 				obstacleTiles = stickmanGridData.GridTiles.Where(tile => tile.ObjectPoolID == PoolID.Stickman).ToList();
@@ -176,12 +176,12 @@ namespace GridSystem
 				stickmanSaved.Add(stickmanTile);
 			}
 			obstacleTiles = stickmanGridData.GridTiles.Where(tile => tile.ObjectPoolID == PoolID.Stickman).ToList();
-			GameSaveLoad.SaveStickmanList(stickmanSaved);
+			GameSaveLoad.SaveStickmanListData(stickmanSaved);
 		}
 		void RemoveFromSavedList(int x, int z)
 		{
 			stickmanSaved.Remove(stickmanSaved.First(stckmn => stckmn.X == x && stckmn.Z == z));
-			GameSaveLoad.SaveStickmanList(stickmanSaved);
+			GameSaveLoad.SaveStickmanListData(stickmanSaved);
 		}
 		#endregion
 		#endregion

@@ -1,5 +1,7 @@
+using Base.Global.Enums;
 using Base.Managers;
 using Base.Utilities.Events;
+using GameSaveLoad;
 using GridSystem.WaitPlace;
 using Stickman;
 using System.Collections;
@@ -16,8 +18,13 @@ namespace BusSystem
 		WaitingTile selectedPassengerTile;
 		int fullWaitPlaceCount = 0;
 		const float DIST_BETWEEEN_BUS = 7;
+		
+		List<Colors> busSavedColors = new List<Colors>();
+		List<int> busSavedPassengers = new List<int>();
 		#endregion
 		#region Properties 
+		GameSaveLoadControl gameSaveLoad;
+		GameSaveLoadControl GameSaveLoad => (gameSaveLoad == null) ? gameSaveLoad = GetComponent<GameSaveLoadControl>() : gameSaveLoad;
 		#endregion
 		#region MonoBehaviour Methods
 		private void OnEnable()
@@ -64,7 +71,7 @@ namespace BusSystem
 			{
 				busList.Peek().TakeSeat();
 				passenger.MoveToBus(busList.Peek().GetEmptySeat(), this, busList.Peek());
-
+				SaveBusParams();
 			}
 			else if (fullWaitPlaceCount < waitPlaces.Count)
 			{
@@ -104,6 +111,7 @@ namespace BusSystem
 				}
 				StartCoroutine(CheckWaitingpassengersCO());
 				CheckWin();
+				SaveBusParams();
 			}
 		}
 		IEnumerator CheckWaitingpassengersCO()
@@ -127,6 +135,40 @@ namespace BusSystem
 				}
 			}
 		}
+		#region Save Load
+		internal void LoadBusFromData(List<GameObject> busList, List<int> busSavedPassengers)
+		{
+            for (int i = 0; i < busList.Count; i++)
+            {
+				busList[i].GetComponent<BusControl>().LoadPassengers(busSavedPassengers[i]);
+			}
+
+			this.busList.Clear();
+			for (int i = 0; i < busList.Count; i++)
+			{
+				this.busList.Enqueue(busList[i].GetComponent<BusControl>());
+			}
+			foreach (var bus in this.busList)
+			{
+				bus.MoveNextBusPos();
+			}
+		}
+		void ClearSave()
+		{
+			busSavedColors.Clear();
+			busSavedPassengers.Clear();
+		}
+		void SaveBusParams()
+		{
+			ClearSave();
+			foreach (var item in busList)
+            {
+				busSavedColors.Add(item.GetBusColor());
+				busSavedPassengers.Add(item.GetTotalPassenger());
+			}
+			GameSaveLoad.SaveBusDatas(busSavedColors, busSavedPassengers);
+		}
+		#endregion
 		#endregion
 	}
 }

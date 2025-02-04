@@ -8,5 +8,6 @@ namespace Base.Utilities.GlobalVariable
 		public static string StickmanSaveKey = "savedStickmans";
 		public static string BusColorsSaveKey = "BusColorsSave";
 		public static string BusPassengersSaveKey = "BusPassengersSave";
+		public static string WaitingPassengersSaveKey = "WaitingPassengers";
 	}
 }

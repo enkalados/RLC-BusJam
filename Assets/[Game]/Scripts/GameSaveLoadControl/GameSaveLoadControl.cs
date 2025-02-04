@@ -36,6 +36,7 @@ namespace GameSaveLoad
 			SaveLoad.DeleteKey(GlobalVariables.StickmanSaveKey);
 			SaveLoad.DeleteKey(GlobalVariables.BusColorsSaveKey);
 			SaveLoad.DeleteKey(GlobalVariables.BusPassengersSaveKey);
+			SaveLoad.DeleteKey(GlobalVariables.WaitingPassengersSaveKey);
 		}
 		internal void SaveStickmanListData(List<GridTile> list)
 		{
@@ -57,6 +58,14 @@ namespace GameSaveLoad
 		internal List<int> GetBusPassengersData()
 		{
 			return SaveLoad.GetList<int>(GlobalVariables.BusPassengersSaveKey);
+		}
+		internal void SaveWaitingPassengers(List<Colors> passengers)
+		{
+			SaveLoad.SetList<Colors>(GlobalVariables.WaitingPassengersSaveKey, passengers);
+		}
+		internal List<Colors> GetWaitingPassengers()
+		{
+			return SaveLoad.GetList<Colors>(GlobalVariables.WaitingPassengersSaveKey);
 		}
 		#endregion
 	}

@@ -1,11 +1,14 @@
 using Base.Global.Enums;
 using Base.Managers;
+using Base.Pool;
 using Base.Utilities.Events;
 using GameSaveLoad;
 using GridSystem.WaitPlace;
+using MeshColorSetter;
 using Stickman;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using UnityEngine;
 namespace BusSystem
@@ -18,9 +21,11 @@ namespace BusSystem
 		WaitingTile selectedPassengerTile;
 		int fullWaitPlaceCount = 0;
 		const float DIST_BETWEEEN_BUS = 7;
-		
+
 		List<Colors> busSavedColors = new List<Colors>();
 		List<int> busSavedPassengers = new List<int>();
+		List<Colors> savedWaitingTiles = new List<Colors>();
+		List<GameObject> waitingPassengersList = new List<GameObject>();
 		#endregion
 		#region Properties 
 		GameSaveLoadControl gameSaveLoad;
@@ -30,10 +35,12 @@ namespace BusSystem
 		private void OnEnable()
 		{
 			EventManager.OnBusFull.AddListener(CheckNewBus);
+			LevelManager.OnLevelFinish.AddListener(ClearWaitingPassengersData);
 		}
 		private void OnDisable()
 		{
 			EventManager.OnBusFull.RemoveListener(CheckNewBus);
+			LevelManager.OnLevelFinish.RemoveListener(ClearWaitingPassengersData);
 		}
 		#endregion
 		#region Methods
@@ -63,6 +70,7 @@ namespace BusSystem
 		{
 			waitPlaces.Clear();
 			waitPlaces = places.ToList();
+			LoadSavedWaitingPassengers();
 		}
 
 		internal void CheckPassenger(StickmanControl passenger)
@@ -84,6 +92,7 @@ namespace BusSystem
 			waitPlaces.First(tile => tile.GetIsEmpty()).SetTileEmpty(false, passenger);
 			fullWaitPlaceCount++;
 			FailCheck();
+			SaveWaitTiles();
 		}
 		void FailCheck()
 		{
@@ -101,7 +110,7 @@ namespace BusSystem
 		}
 		internal void CheckNewBus()
 		{
-			if(busList.Count > 0)
+			if (busList.Count > 0)
 			{
 				busList.Peek().MoveFullBus();
 				busList.Dequeue();
@@ -133,13 +142,37 @@ namespace BusSystem
 						fullWaitPlaceCount--;
 					}
 				}
+				SaveWaitTiles();
 			}
 		}
 		#region Save Load
+		void LoadSavedWaitingPassengers()
+		{
+			savedWaitingTiles = GameSaveLoad.GetWaitingPassengers().ToList();
+            for (int i = 0; i < savedWaitingTiles.Count; i++)
+            {
+				GameObject waitingPassenger = PoolingManager.Instance.Instantiate(PoolID.Stickman, null).gameObject;
+				waitingPassenger.GetComponent<MeshColorSet>().SetColor(savedWaitingTiles[i]);
+				waitingPassenger.transform.SetLocalPositionAndRotation(waitPlaces[i].transform.position, Quaternion.identity);
+				waitingPassengersList.Add(waitingPassenger);
+			}
+		}
+		void SaveWaitTiles()
+		{
+			savedWaitingTiles.Clear();
+			for (int i = 0; i < waitPlaces.Count; i++)
+			{
+				if (!waitPlaces[i].GetIsEmpty())
+				{
+					savedWaitingTiles.Add(waitPlaces[i].GetStickman().GetColor());
+				}
+			}
+			GameSaveLoad.SaveWaitingPassengers(savedWaitingTiles);
+		}
 		internal void LoadBusFromData(List<GameObject> busList, List<int> busSavedPassengers)
 		{
-            for (int i = 0; i < busList.Count; i++)
-            {
+			for (int i = 0; i < busList.Count; i++)
+			{
 				busList[i].GetComponent<BusControl>().LoadPassengers(busSavedPassengers[i]);
 			}
 
@@ -153,16 +186,25 @@ namespace BusSystem
 				bus.MoveNextBusPos();
 			}
 		}
-		void ClearSave()
+		void ClearWaitingPassengersData()
+		{
+			for (int i = 0; i < waitingPassengersList.Count; i++)
+			{
+				PoolingManager.Instance.DestroyPoolObject(waitingPassengersList[i].GetComponent<PoolObject>());
+			}
+			waitingPassengersList.Clear();
+		}
+		void ClearBusSaveDatas()
 		{
 			busSavedColors.Clear();
 			busSavedPassengers.Clear();
-		}
+			savedWaitingTiles.Clear();
+        }
 		void SaveBusParams()
 		{
-			ClearSave();
+			ClearBusSaveDatas();
 			foreach (var item in busList)
-            {
+			{
 				busSavedColors.Add(item.GetBusColor());
 				busSavedPassengers.Add(item.GetTotalPassenger());
 			}

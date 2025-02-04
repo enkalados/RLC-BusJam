@@ -1,6 +1,7 @@
 using Base.Global.Enums;
 using Base.Managers;
 using BusSystem;
+using GameSaveLoad;
 using Stickman;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,11 +16,14 @@ namespace GridSystem
 		GridData stickmanGridData;
 		List<GridTile> gridTiles = new List<GridTile>();
 		List<GridTile> obstacleTiles = new List<GridTile>();
+		List<GridTile> stickmanSaved = new List<GridTile>();
 
 		#endregion
 		#region Properties 
 		BusPassengerControl busPassengerControl;
 		BusPassengerControl BusPassengerControl => (busPassengerControl == null) ? busPassengerControl = GetComponent<BusPassengerControl>() : busPassengerControl;
+		GameSaveLoadControl gameSaveLoad;
+		GameSaveLoadControl GameSaveLoad => (gameSaveLoad == null) ? gameSaveLoad = GetComponent<GameSaveLoadControl>() : gameSaveLoad;
 		#endregion
 		#region MonoBehaviour Methods
 		private void OnEnable()
@@ -36,11 +40,16 @@ namespace GridSystem
 		{
 			if (CanReachZ0(x, z))
 			{
+				if (stickmanSaved.Count == 0)
+				{
+					CreateStickmanSave();
+				}
 				stickmanControlList.First(stckmn => stckmn.GetGridX() == x && stckmn.GetGridZ() == z).Clicked();
 				BusPassengerControl.CheckPassenger(stickmanControlList.First(stckmn => stckmn.GetGridX() == x && stckmn.GetGridZ() == z));
 				stickmanControlList.Remove(stickmanControlList.First(stckmn => stckmn.GetGridX() == x && stckmn.GetGridZ() == z));
 				obstacleTiles.Remove(obstacleTiles.First(stckmn => stckmn.X == x && stckmn.Z == z));
-				CheckAllStickmans();
+				CheckAllStickmans();	
+				RemoveFromSavedList(x, z);
 			}
 		}
 		void CheckAllStickmans()
@@ -53,7 +62,7 @@ namespace GridSystem
 		void GetGridDatas()
 		{
 			ResetDatas();
-			
+
 			GetGridTileData();
 			GetStickmanTileData();
 
@@ -124,6 +133,7 @@ namespace GridSystem
 		}
 		internal void SetStickmans(List<GameObject> stickmanList)
 		{
+			ClearSavedStickmans();
 			stickmanControlList.Clear();
 			for (int i = 0; i < stickmanList.Count; i++)
 			{
@@ -131,6 +141,29 @@ namespace GridSystem
 			}
 			CheckAllStickmans();
 		}
+		#region	Save Load
+		void ClearSavedStickmans()
+		{
+			stickmanSaved.Clear();
+		}
+		void CreateStickmanSave()
+		{
+			for (int i = 0; i < stickmanControlList.Count; i++)
+			{
+				GridTile stickmanTile = new GridTile();
+				stickmanTile.X = stickmanControlList[i].GetGridX();
+				stickmanTile.Z = stickmanControlList[i].GetGridZ();
+				stickmanTile.Color = stickmanControlList[i].GetColor();
+				stickmanSaved.Add(stickmanTile);
+			}
+			GameSaveLoad.SaveStickmanList(stickmanSaved);
+		}
+		void RemoveFromSavedList(int x, int z)
+		{
+			stickmanSaved.Remove(stickmanSaved.First(stckmn => stckmn.X == x && stckmn.Z == z));
+			GameSaveLoad.SaveStickmanList(stickmanSaved);
+		}
+		#endregion
 		#endregion
 	}
 }

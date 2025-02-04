@@ -1,10 +1,10 @@
 using Base.Global.Enums;
 using Base.Managers;
 using Base.Pool;
+using GameSaveLoad;
 using GridSystem;
 using MeshColorSetter;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEditor;
 using UnityEngine;
 namespace Stickman.Creator
@@ -20,6 +20,8 @@ namespace Stickman.Creator
 		#region Properties 
 		GridStickmanControl gridStickman;
 		GridStickmanControl GridStickmanControl => (gridStickman == null) ? gridStickman = GetComponent<GridStickmanControl>() : gridStickman;
+		GameSaveLoadControl gameSaveLoad;
+		GameSaveLoadControl GameSaveLoad => (gameSaveLoad == null) ? gameSaveLoad = GetComponent<GameSaveLoadControl>() : gameSaveLoad;
 		#endregion
 		#region MonoBehaviour Methods
 		private void OnEnable()
@@ -36,8 +38,15 @@ namespace Stickman.Creator
 		{
 			stickmanParent = GameObject.Find(parentName);
 			ResetStickmans();
-			SetStickmanData(LevelManager.Instance.GetCurrentLevelData().StickmansTileData);
-			GridStickmanControl.SetStickmans(createdStickmanList);
+			if (GameSaveLoad.LoadStickmanList().Count > 0)
+			{
+				LoadStickmanFromSave(GameSaveLoad.LoadStickmanList());
+			}
+			else
+			{
+				SetStickmanData(LevelManager.Instance.GetCurrentLevelData().StickmansTileData);
+				GridStickmanControl.SetStickmans(createdStickmanList);
+			}
 		}
 		void SetStickmanData(GridData gridData)
 		{
@@ -72,6 +81,23 @@ namespace Stickman.Creator
 				}
 			}
 		}
+		#region	Save Load
+		internal void LoadStickmanFromSave(List<GridTile> stickmanList)
+		{
+			for (int i = 0; i < stickmanList.Count; i++)
+			{
+				PoolObject createdStickman;
+				createdStickman = PoolingManager.Instance.Instantiate(PoolID.Stickman, stickmanParent.transform);
+				createdStickman.transform.SetLocalPositionAndRotation(new Vector3(stickmanList[i].X, 0, -stickmanList[i].Z), Quaternion.identity);
+				createdStickman.GetComponent<MeshColorSet>().SetColor(stickmanList[i].Color);
+				createdStickman.GetComponent<StickmanControl>().SetStickmanColor(stickmanList[i].Color);
+				createdStickman.GetComponent<StickmanControl>().SetGridInfo(stickmanList[i].X, stickmanList[i].Z);
+				createdStickmanList.Add(createdStickman.gameObject);
+			}
+			GridStickmanControl.SetStickmans(createdStickmanList);
+
+		}
+		#endregion
 		#endregion
 #if UNITY_EDITOR
 		public void SetStickmanDataEditor(GridData gridData, PoolObject stickmanObj)

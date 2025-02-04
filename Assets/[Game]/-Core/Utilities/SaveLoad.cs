@@ -222,9 +222,7 @@ namespace Base.Utilities.SaveLoadManager
 		}
 
 		#endregion
-
-		//Generic template ---------------------------------------------------------------------------------------
-
+		#region Generic template ---------------------------------------------------------------------------------------
 		static T Get<T>(string key, T defaultValue)
 		{
 			return JsonUtility.FromJson<T>(PlayerPrefs.GetString(key, JsonUtility.ToJson(defaultValue)));
@@ -234,6 +232,6 @@ namespace Base.Utilities.SaveLoadManager
 		{
 			PlayerPrefs.SetString(key, JsonUtility.ToJson(value));
 		}
-
+		#endregion
 	}
 }

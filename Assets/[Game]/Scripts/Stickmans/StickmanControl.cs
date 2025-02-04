@@ -81,6 +81,7 @@ namespace Stickman
 		{
 			transform.SetParent(parent.transform);
 			transform.SetLocalPositionAndRotation(new Vector3(gridX, 0, -gridZ), Quaternion.identity);
+			SetCanClickable(false);
 		}
 		#endregion
 	}

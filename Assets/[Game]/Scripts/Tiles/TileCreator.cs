@@ -80,6 +80,8 @@ namespace GridSystem
 		}
 		void CreateTilesEditor(GridData gridData, PoolObject tileObject)
 		{
+			tilesParent = GameObject.Find(tilesParentName);
+			gridParent = GameObject.Find(gridParentName);
 			for (int i = 0; i < gridData.GridTiles.Count; i++)
 			{
 				if (gridData.GridTiles[i].ObjectPoolID == PoolID.Tile)

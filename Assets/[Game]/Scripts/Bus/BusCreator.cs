@@ -68,6 +68,7 @@ namespace BusSystem.Creator
 		}
 		void CreateBusEditor(List<Colors> busList, PoolObject bus)
 		{
+			busParent = GameObject.Find(parentName);
 			for (int i = 0; i < busList.Count; i++)
 			{
 				PoolObject item = (PoolObject)PrefabUtility.InstantiatePrefab(bus, busParent.transform);

@@ -56,6 +56,7 @@ namespace GridSystem.WaitPlace
 		}
 		void CreatePlacesEditor(int count, PoolObject placeTile)
 		{
+			placesParent = GameObject.Find(parentName);
 			for (int i = 0; i < count; i++)
 			{
 				PoolObject item = (PoolObject)PrefabUtility.InstantiatePrefab(placeTile, placesParent.transform);

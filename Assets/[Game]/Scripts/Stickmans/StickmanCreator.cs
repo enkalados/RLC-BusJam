@@ -95,6 +95,7 @@ namespace Stickman.Creator
 		}
 		void CreateStickmanEditor(GridData gridData, PoolObject stickmanObj)
 		{
+			stickmanParent = GameObject.Find(parentName);
 			for (int i = 0; i < gridData.GridTiles.Count; i++)
 			{
 				if (gridData.GridTiles[i].ObjectPoolID == PoolID.Stickman)

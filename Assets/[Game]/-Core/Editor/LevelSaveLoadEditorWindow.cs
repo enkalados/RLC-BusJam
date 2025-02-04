@@ -26,6 +26,8 @@ namespace LevelDataSystem.Editor
 		PoolData poolDatabase;
 
 		int placeHoldersCount;
+		int timer;
+
 		List<Colors> busColors = new List<Colors>();
 		#endregion
 		#region Properties 
@@ -93,6 +95,7 @@ namespace LevelDataSystem.Editor
 				#endregion
 				#region Other Settings
 				placeHoldersCount = EditorGUILayout.IntField("Place Holder Count", placeHoldersCount);
+				timer = EditorGUILayout.IntField("Timer", timer);
 
 				EditorGUILayout.LabelField("Bus Colors", EditorStyles.boldLabel);
 
@@ -114,9 +117,9 @@ namespace LevelDataSystem.Editor
 					busColors.Add(Colors.None);
 				}
 				EditorGUILayout.Space(10);
-				if (GUILayout.Button("Save Bus & Place Holders"))
+				if (GUILayout.Button("Save Level Data"))
 				{
-					SaveBusAndPlaceHolder();
+					SaveLevelData();
 				}
 				EditorGUILayout.Space(10);
 				Rect group2Rect = GUILayoutUtility.GetRect(position.width, 8);
@@ -253,10 +256,11 @@ namespace LevelDataSystem.Editor
 		}
 		#endregion
 		#region Bus And PlaceHolder Methods
-		void SaveBusAndPlaceHolder()
+		void SaveLevelData()
 		{
 			levelData[selectedLevelIndex].BusColorList = busColors.ToList();
 			levelData[selectedLevelIndex].PlaceHoldersCount = placeHoldersCount;
+			levelData[selectedLevelIndex].Timer = timer;
 
 			EditorUtility.SetDirty(levelData[selectedLevelIndex]);
 			AssetDatabase.SaveAssets();

@@ -45,13 +45,8 @@ namespace BusSystem
 			if (passenger.GetColor() == busControls.Peek().GetBusColor() && busControls.Peek().HaveEmptySeat())
 			{
 				busControls.Peek().TakeSeat();
-				passenger.MoveToBus(busControls.Peek());
-				if (!busControls.Peek().HaveEmptySeat())
-				{
-					busControls.Peek().MoveFullBus();
-					busControls.Dequeue();
-					SetNewBus();
-				}
+				passenger.MoveToBus(busControls.Peek(), this);
+
 			}
 			else if (fullWaitPlaceCount < waitPlaces.Count)
 			{
@@ -59,12 +54,17 @@ namespace BusSystem
 				fullWaitPlaceCount++;
 			}
 		}
-		void SetNewBus()
+		internal void CheckNewBus()
 		{
-            foreach (var bus in busControls)
-            {
-				bus.MoveNextBusPos();
-            }
+			if (!busControls.Peek().HaveEmptySeat())
+			{
+				busControls.Peek().MoveFullBus();
+				busControls.Dequeue();
+				foreach (var bus in busControls)
+				{
+					bus.MoveNextBusPos();
+				}
+			}	
         }
 		#endregion
 	}

@@ -57,10 +57,14 @@ namespace Stickman
 		{
 			SetCanClickable(false);
 		}
-		internal void MoveToBus(BusControl bus)
+		internal void MoveToBus(BusControl bus, BusPassengerControl busPassengerControl)
 		{
 			transform.SetParent(bus.transform);
-			transform.DOMove(bus.transform.position, MOVE_DURATION).OnComplete(()=>transform.position = bus.GetEmptySeat());
+			transform.DOMove(bus.transform.position, MOVE_DURATION).OnComplete(() =>
+			{
+				busPassengerControl.CheckNewBus();
+				transform.position = bus.GetEmptySeat();
+			});
 		}
 		internal void MoveToTile(GameObject tle)
 		{

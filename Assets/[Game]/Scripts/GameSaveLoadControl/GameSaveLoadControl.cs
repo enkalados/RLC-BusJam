@@ -19,16 +19,22 @@ namespace GameSaveLoad
 		private void OnEnable()
 		{
 			LevelManager.OnLevelStart.AddListener(LoadDatas);
+			LevelManager.OnLevelFinish.AddListener(ClearDatas);
 		}
 		private void OnDisable()
 		{
 			LevelManager.OnLevelStart.RemoveListener(LoadDatas);
+			LevelManager.OnLevelFinish.RemoveListener(ClearDatas);
 		}
 		#endregion
 		#region Methods
 		void LoadDatas()
 		{
 			//LoadStickmanList();
+		}
+		void ClearDatas()
+		{
+			SaveLoad.SetList<GridTile>(GlobalVariables.StickmanSaveKey, null);
 		}
 		internal void SaveStickmanList(List<GridTile> list)
 		{

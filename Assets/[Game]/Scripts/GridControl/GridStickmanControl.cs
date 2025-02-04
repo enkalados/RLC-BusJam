@@ -29,10 +29,12 @@ namespace GridSystem
 		private void OnEnable()
 		{
 			LevelManager.OnLevelStart.AddListener(GetGridDatas);
+			LevelManager.OnLevelFinish.AddListener(ClearSavedStickmans);
 		}
 		private void OnDisable()
 		{
 			LevelManager.OnLevelStart.RemoveListener(GetGridDatas);
+			LevelManager.OnLevelFinish.AddListener(ClearSavedStickmans);
 		}
 		#endregion
 		#region Grid Methods
@@ -48,7 +50,7 @@ namespace GridSystem
 				BusPassengerControl.CheckPassenger(stickmanControlList.First(stckmn => stckmn.GetGridX() == x && stckmn.GetGridZ() == z));
 				stickmanControlList.Remove(stickmanControlList.First(stckmn => stckmn.GetGridX() == x && stckmn.GetGridZ() == z));
 				obstacleTiles.Remove(obstacleTiles.First(stckmn => stckmn.X == x && stckmn.Z == z));
-				CheckAllStickmans();	
+				CheckAllStickmans();
 				RemoveFromSavedList(x, z);
 			}
 		}
@@ -64,11 +66,14 @@ namespace GridSystem
 			ResetDatas();
 
 			GetGridTileData();
-			GetStickmanTileData();
-
-			obstacleTiles = stickmanGridData.GridTiles.Where(tile => tile.ObjectPoolID == PoolID.Stickman).ToList();
 			gridTiles = tileGridData.GridTiles.Where(tile => tile.ObjectPoolID == PoolID.Tile).ToList();
-			CheckAllStickmans();
+			if (GameSaveLoad.LoadStickmanList().Count == 0)
+			{
+				GetStickmanTileData();
+				obstacleTiles = stickmanGridData.GridTiles.Where(tile => tile.ObjectPoolID == PoolID.Stickman).ToList();
+				CheckAllStickmans();
+			}
+
 		}
 		void ResetDatas()
 		{
@@ -133,7 +138,6 @@ namespace GridSystem
 		}
 		internal void SetStickmans(List<GameObject> stickmanList)
 		{
-			ClearSavedStickmans();
 			stickmanControlList.Clear();
 			for (int i = 0; i < stickmanList.Count; i++)
 			{
@@ -142,20 +146,36 @@ namespace GridSystem
 			CheckAllStickmans();
 		}
 		#region	Save Load
+		internal void LoadSavedStickman(List<GameObject> stickmanList, List<GridTile> tileList)
+		{
+			ClearSavedStickmans();
+			obstacleTiles.Clear();
+			stickmanControlList.Clear();
+			stickmanSaved = tileList.ToList();
+			for (int i = 0; i < stickmanList.Count; i++)
+			{
+				stickmanControlList.Add(stickmanList[i].GetComponent<StickmanControl>());
+			}
+			obstacleTiles = tileList.Where(tile => tile.ObjectPoolID == PoolID.Stickman).ToList();
+			CheckAllStickmans();
+		}
 		void ClearSavedStickmans()
 		{
 			stickmanSaved.Clear();
 		}
 		void CreateStickmanSave()
 		{
+			obstacleTiles.Clear();
 			for (int i = 0; i < stickmanControlList.Count; i++)
 			{
 				GridTile stickmanTile = new GridTile();
 				stickmanTile.X = stickmanControlList[i].GetGridX();
 				stickmanTile.Z = stickmanControlList[i].GetGridZ();
+				stickmanTile.ObjectPoolID = PoolID.Stickman;
 				stickmanTile.Color = stickmanControlList[i].GetColor();
 				stickmanSaved.Add(stickmanTile);
 			}
+			obstacleTiles = stickmanGridData.GridTiles.Where(tile => tile.ObjectPoolID == PoolID.Stickman).ToList();
 			GameSaveLoad.SaveStickmanList(stickmanSaved);
 		}
 		void RemoveFromSavedList(int x, int z)

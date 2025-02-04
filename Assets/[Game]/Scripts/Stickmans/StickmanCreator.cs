@@ -94,7 +94,7 @@ namespace Stickman.Creator
 				createdStickman.GetComponent<StickmanControl>().SetGridInfo(stickmanList[i].X, stickmanList[i].Z);
 				createdStickmanList.Add(createdStickman.gameObject);
 			}
-			GridStickmanControl.SetStickmans(createdStickmanList);
+			GridStickmanControl.LoadSavedStickman(createdStickmanList, stickmanList);
 
 		}
 		#endregion

@@ -4,6 +4,7 @@ using Base.Pool;
 using GridSystem;
 using MeshColorSetter;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 namespace Stickman.Creator
@@ -20,18 +21,53 @@ namespace Stickman.Creator
 		GridStickmanControl GridStickmanControl => (gridStickman == null) ? gridStickman = GetComponent<GridStickmanControl>() : gridStickman;
 		#endregion
 		#region MonoBehaviour Methods
-		private void Start()
-		{		
-			SetStickmanData(LevelManager.Instance.GetCurrentLevelData().StickmansTileData);
+		private void OnEnable()
+		{
+			LevelManager.OnLevelStart.AddListener(GetSticmanData);
+		}
+		private void OnDisable()
+		{
+			LevelManager.OnLevelStart.RemoveListener(GetSticmanData);
 		}
 		#endregion
 		#region Methods
-		void SetStickmanData(GridData gridData)
+		void GetSticmanData()
 		{
-			stickmanGridData = gridData;
-			CreateStickmans();
+			SetStickmanData(LevelManager.Instance.GetCurrentLevelData().StickmansTileData);
 			GridStickmanControl.SetStickmans(createdStickmanList);
 		}
+		void SetStickmanData(GridData gridData)
+		{
+			if (stickmanGridData == null)
+			{
+				stickmanGridData = gridData;
+				CreateStickmans();
+			}
+			else if (!stickmanGridData.GridTiles.SequenceEqual(gridData.GridTiles))
+			{
+				stickmanGridData = gridData;
+				DestroyStickmans();
+				CreateStickmans();
+			}
+			else
+			{
+				ResetStickmans();
+			}
+		}
+		void DestroyStickmans()
+		{
+			foreach (GameObject item in createdStickmanList)
+			{
+				PoolingManager.Instance.DestroyPoolObject(item.GetComponent<PoolObject>());
+			}
+		}
+		void ResetStickmans()
+		{
+            foreach (GameObject item in createdStickmanList)
+            {
+				item.GetComponent<StickmanControl>().ResetStickman(stickmanParent);
+            }
+        }
 		void CreateStickmans()
 		{
 			createdStickmanList.Clear();
@@ -62,7 +98,7 @@ namespace Stickman.Creator
 				if (gridData.GridTiles[i].ObjectPoolID == PoolID.Stickman)
 				{
 					PoolObject item = (PoolObject)PrefabUtility.InstantiatePrefab(stickmanObj, stickmanParent.transform);
-					item.transform.SetLocalPositionAndRotation(new Vector3(gridData.GridTiles[i].X, 0, -gridData.GridTiles[i].Z), Quaternion.identity );
+					item.transform.SetLocalPositionAndRotation(new Vector3(gridData.GridTiles[i].X, 0, -gridData.GridTiles[i].Z), Quaternion.identity);
 					item.GetComponent<MeshColorSet>().SetColor(gridData.GridTiles[i].Color);
 				}
 			}

@@ -1,6 +1,7 @@
 using Base.Global.Enums;
 using Base.Managers;
 using Base.Pool;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 namespace GridSystem
@@ -10,23 +11,39 @@ namespace GridSystem
 		#region Variables
 		[SerializeField] GameObject tilesParent;
 		[SerializeField] GameObject gridParent;
-		GridData tileGridData;
+		GridData tileGridData = null;
 		PoolObject createdTile;
 		#endregion
 		#region Properties 
 		#endregion
 		#region MonoBehaviour Methods
-		private void Start()
+		private void OnEnable()
 		{
-			SetTileGridData(LevelManager.Instance.GetCurrentLevelData().TilesData);
+			LevelManager.OnLevelStart.AddListener(GetTileGridData);
+		}
+		private void OnDisable()
+		{
+			LevelManager.OnLevelStart.RemoveListener(GetTileGridData);
 		}
 		#endregion
 		#region Methods
+		void GetTileGridData()
+		{
+			SetTileGridData(LevelManager.Instance.GetCurrentLevelData().TilesData);
 
+		}
 		void SetTileGridData(GridData gridData)
 		{
-			tileGridData = gridData;
-			CreateTiles();
+			if (tileGridData == null)
+			{
+				tileGridData = gridData;
+				CreateTiles();
+			}
+			else if(tileGridData.GridX != gridData.GridX || tileGridData.GridZ != gridData.GridZ || !tileGridData.GridTiles.SequenceEqual(gridData.GridTiles))
+			{
+				tileGridData = gridData;
+				CreateTiles();
+			}
 		}
 		void CreateTiles()
 		{
@@ -44,7 +61,7 @@ namespace GridSystem
 		{
 			if (gridData.GridX % 2 == 0)
 			{
-				gridParent.transform.position = new Vector3((-gridData.GridX / 2)+.5f, gridParent.transform.position.y, gridParent.transform.position.z);
+				gridParent.transform.position = new Vector3((-gridData.GridX / 2) + .5f, gridParent.transform.position.y, gridParent.transform.position.z);
 			}
 			else
 			{
@@ -64,7 +81,7 @@ namespace GridSystem
 				if (gridData.GridTiles[i].ObjectPoolID == PoolID.Tile)
 				{
 					PoolObject item = (PoolObject)PrefabUtility.InstantiatePrefab(tileObject, tilesParent.transform);
-					item.transform.SetLocalPositionAndRotation(new Vector3(gridData.GridTiles[i].X, 0,- gridData.GridTiles[i].Z), Quaternion.identity);
+					item.transform.SetLocalPositionAndRotation(new Vector3(gridData.GridTiles[i].X, 0, -gridData.GridTiles[i].Z), Quaternion.identity);
 				}
 			}
 			SetGridParent(gridData);

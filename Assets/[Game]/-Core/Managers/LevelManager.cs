@@ -53,7 +53,7 @@ namespace Base.Managers
 		{
 			CreateLevelUI();
 			SelectCurrentLevel();
-			CreateLevel();
+			CheckCreateLevelEnvironment();
 		}
 		private void OnDisable()
 		{
@@ -101,21 +101,54 @@ namespace Base.Managers
 		void NextLevel()
 		{
 			SelectCurrentLevel();
-			CreateLevel();
+			CheckCreateLevelEnvironment();
 		}
 		void RestartLevel()
 		{
 			SelectCurrentLevel();
-			ReloadLevel();
+			CheckCreateLevelEnvironment();
 		}
-		void CreateLevel()
+		void CheckCreateLevelEnvironment()
 		{
 			levelParent = GameObject.Find(levelParentName);
-			if (levelParent != null)
+			if (levelParent == null)
 			{
-				Destroy(levelParent);
+				CreateLevelEnvironment();
 			}
-
+			else if(currentLevel-1 > 0)
+			{
+				if (!currentLevelData.LevelTransforms.SequenceEqual(levelDatas[currentLevel - 1].LevelTransformData.LevelTransforms))
+				{
+					CreateLevelEnvironment();
+				}
+				else
+				{
+					ResetLevelEnvironment();
+				}
+			}
+			else
+			{
+				if (levelParent == null)
+				{
+					CreateLevelEnvironment();
+				}
+				else
+				{
+					ResetLevelEnvironment();
+				}
+			}
+		}
+		void ResetLevelEnvironment()
+		{
+			for (int i = 0; i < currentLevelData.LevelTransforms.Count; i++)
+			{
+				getObject = GetLevelObject(currentLevelData.LevelTransforms[i].PoolID);
+				getObject.transform.SetPositionAndRotation(currentLevelData.LevelTransforms[i].Position, currentLevelData.LevelTransforms[i].Rotation);
+				getObject.transform.localScale = currentLevelData.LevelTransforms[i].Scale;
+			}
+		}
+		void CreateLevelEnvironment()
+		{
 			levelParent = new GameObject(levelParentName);
 			levelParent.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
 
@@ -134,15 +167,6 @@ namespace Base.Managers
 					Debug.LogWarning("Level Object not found in pool");
 					throw;
 				}
-			}
-		}
-		void ReloadLevel()
-		{
-			for (int i = 0; i < currentLevelData.LevelTransforms.Count; i++)
-			{
-				getObject = GetLevelObject(currentLevelData.LevelTransforms[i].PoolID);
-				getObject.transform.SetPositionAndRotation(currentLevelData.LevelTransforms[i].Position, currentLevelData.LevelTransforms[i].Rotation);
-				getObject.transform.localScale = currentLevelData.LevelTransforms[i].Scale;
 			}
 		}
 		PoolObject GetLevelObject(PoolID poolID)

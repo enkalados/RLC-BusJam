@@ -1,5 +1,7 @@
 using Base.Global.Enums;
+using Base.Utilities.Events;
 using DG.Tweening;
+using System.Collections.Generic;
 using UnityEngine;
 namespace BusSystem
 {
@@ -7,6 +9,7 @@ namespace BusSystem
 	{
 		#region Variables
 		[SerializeField] GameObject[] seats;
+		int arrivedPassengers = 0;
 		int totalPassenger = 0;
 		Colors color;
 		const float MOVE_FORWARD = 20;
@@ -23,7 +26,10 @@ namespace BusSystem
 		{
 			return totalPassenger < seats.Length;
 		}
-		internal void TakeSeat() { totalPassenger++; }
+		internal void TakeSeat()
+		{
+			totalPassenger++;
+		}
 		internal void SetBusColor(Colors color)
 		{
 			this.color = color;
@@ -39,21 +45,27 @@ namespace BusSystem
 		}
 		internal Vector3 GetEmptySeat()
 		{
-			return seats[totalPassenger-1].transform.position;
+			return seats[totalPassenger - 1].transform.position;
 		}
 		internal void MoveFullBus()
 		{
-			if(totalPassenger == seats.Length)
-			{
-				transform.DOMoveX(transform.position.x + MOVE_FORWARD, MOVE_DURAITON);
-			}
+			transform.DOMoveX(transform.position.x + MOVE_FORWARD, MOVE_DURAITON);
 		}
 		internal void MoveNextBusPos()
 		{
 			transform.DOMoveX(transform.position.x + distanceBetweenBus, MOVE_DURAITON);
 		}
+		internal void PassengerArrived()
+		{
+			arrivedPassengers++;
+			if (totalPassenger == seats.Length && totalPassenger == arrivedPassengers)
+			{
+				EventManager.OnBusFull.Invoke();
+			}
+		}
 		internal void ResetBus()
 		{
+			arrivedPassengers = 0;
 			totalPassenger = 0;
 			transform.localPosition = new Vector3(0, 0, startXPos);
 		}

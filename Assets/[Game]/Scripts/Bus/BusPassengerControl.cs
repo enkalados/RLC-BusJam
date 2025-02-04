@@ -1,72 +1,112 @@
+using Base.Utilities.Events;
+using GridSystem.WaitPlace;
 using Stickman;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 namespace BusSystem
 {
 	public class BusPassengerControl : MonoBehaviour
 	{
 		#region Variables
-		Queue<BusControl> busControls = new Queue<BusControl>();
-		List<GameObject> waitPlaces = new List<GameObject>();
+		Queue<BusControl> busList = new Queue<BusControl>();
+		List<WaitingTile> waitPlaces = new List<WaitingTile>();
+		WaitingTile selectedPassengerTile;
 		int fullWaitPlaceCount = 0;
 		const float DIST_BETWEEEN_BUS = 7;
 		#endregion
 		#region Properties 
 		#endregion
 		#region MonoBehaviour Methods
-
+		private void OnEnable()
+		{
+			EventManager.OnBusFull.AddListener(CheckNewBus);
+		}
+		private void OnDisable()
+		{
+			EventManager.OnBusFull.RemoveListener(CheckNewBus);
+		}
 		#endregion
 		#region Methods
 		internal void SetBusControlsPlacesList(List<GameObject> busList)
 		{
-			busControls.Clear();
+			this.busList.Clear();
 			for (int i = 0; i < busList.Count; i++)
 			{
-				busControls.Enqueue(busList[i].GetComponent<BusControl>());
+				this.busList.Enqueue(busList[i].GetComponent<BusControl>());
 			}
 			ResetDataAndBus();
 		}
 		void ResetDataAndBus()
 		{
 			fullWaitPlaceCount = 0;
-			foreach (var bus in busControls)
+			foreach (var bus in busList)
 			{
 				bus.ResetBus();
 				bus.MoveNextBusPos();
 			}
+			foreach (WaitingTile tile in waitPlaces)
+			{
+				tile.SetTileEmpty(true, null);
+			}
 		}
-		internal void SetWaitPlacesList(List<GameObject> places)
+		internal void SetWaitPlacesList(List<WaitingTile> places)
 		{
 			waitPlaces.Clear();
 			waitPlaces = places;
 		}
-	
+
 		internal void CheckPassenger(StickmanControl passenger)
 		{
-			if (passenger.GetColor() == busControls.Peek().GetBusColor() && busControls.Peek().HaveEmptySeat())
+			if (passenger.GetColor() == busList.Peek().GetBusColor() && busList.Peek().HaveEmptySeat())
 			{
-				busControls.Peek().TakeSeat();
-				passenger.MoveToBus(busControls.Peek(), this);
+				busList.Peek().TakeSeat();
+				passenger.MoveToBus(busList.Peek().GetEmptySeat(), this, busList.Peek());
 
 			}
 			else if (fullWaitPlaceCount < waitPlaces.Count)
 			{
-				passenger.MoveToTile(waitPlaces[fullWaitPlaceCount]);
-				fullWaitPlaceCount++;
+				FillTheEmptyWaitPlace(passenger);
 			}
+		}
+		void FillTheEmptyWaitPlace(StickmanControl passenger)
+		{
+			passenger.MoveToTile(waitPlaces.First(tile => tile.GetIsEmpty()).gameObject);
+			waitPlaces.First(tile => tile.GetIsEmpty()).SetTileEmpty(false, passenger);
+			fullWaitPlaceCount++;
 		}
 		internal void CheckNewBus()
 		{
-			if (!busControls.Peek().HaveEmptySeat())
+			busList.Peek().MoveFullBus();
+			busList.Dequeue();
+			foreach (var bus in busList)
 			{
-				busControls.Peek().MoveFullBus();
-				busControls.Dequeue();
-				foreach (var bus in busControls)
+				bus.MoveNextBusPos();
+			}
+			StartCoroutine(CheckWaitingpassengersCO());
+		}
+		IEnumerator CheckWaitingpassengersCO()
+		{
+			yield return new WaitForSeconds(1);
+			CheckWaitingPassengers();
+		}
+		void CheckWaitingPassengers()
+		{
+			if (busList.Count > 0)
+			{
+				for (int i = 0; i < waitPlaces.Count; i++)
 				{
-					bus.MoveNextBusPos();
+					if (!waitPlaces[i].GetIsEmpty() && waitPlaces[i].GetStickman().GetColor() == busList.Peek().GetBusColor())
+					{
+						busList.Peek().TakeSeat();
+						waitPlaces[i].GetStickman().MoveToBus(busList.Peek().GetEmptySeat(), this, busList.Peek());
+						waitPlaces[i].SetTileEmpty(true, null);
+						fullWaitPlaceCount--;
+					}
 				}
-			}	
-        }
+			}
+		}
 		#endregion
 	}
 }

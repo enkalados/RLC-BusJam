@@ -12,7 +12,7 @@ namespace GridSystem.WaitPlace
 		#region Variables
 		GameObject placesParent;
 		string parentName = "WaitTilesParent";
-		List<GameObject> places = new List<GameObject>();
+		List<WaitingTile> places = new List<WaitingTile>();
 		int placeCount;
 		#endregion
 		#region Properties 
@@ -44,7 +44,7 @@ namespace GridSystem.WaitPlace
 			placesParent = GameObject.Find(parentName);
 			for (int i = 0; i < placeCount; i++)
 			{
-				places.Add(PoolingManager.Instance.Instantiate(PoolID.PlaceHolderTile, placesParent.transform, placesParent.transform.position, Quaternion.identity).gameObject);
+				places.Add(PoolingManager.Instance.Instantiate(PoolID.PlaceHolderTile, placesParent.transform, placesParent.transform.position, Quaternion.identity).GetComponent<WaitingTile>());
 				placesParent.GetComponent<OrderObjectsInEditor>().OrderObjects();
 			}
 		}

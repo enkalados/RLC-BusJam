@@ -9,6 +9,7 @@ namespace Base.Utilities.Events
 		public static IntEvent OnMoneyRemoved = new IntEvent();
 		public static IntEvent OnMoneyUpdated = new IntEvent();
 
+		public static UnityEvent OnBusFull = new UnityEvent();
 		//public static IdleUpgradeEvent OnUpgradedElement = new IdleUpgradeEvent();
 	}
 	//public class IdleUpgradeEvent : UnityEvent<UpgradeElementID, int> { }

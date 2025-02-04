@@ -15,7 +15,7 @@ namespace Stickman
 		[SerializeField] bool canClickable;
 
 		const float MOVE_DURATION = .5f;
-		const float BUS_WAIT_TIME = .5f;
+		const float BUS_WAIT_TIME = .2f;
 		Sequence sequence;
 		#endregion
 		#region Properties 
@@ -60,17 +60,14 @@ namespace Stickman
 		{
 			SetCanClickable(false);
 		}
-		internal void MoveToBus(BusControl bus, BusPassengerControl busPassengerControl)
+		internal void MoveToBus(Vector3 searPosition, BusPassengerControl busPassengerControl, BusControl currentBus)
 		{
-			transform.SetParent(bus.transform);
-			if (sequence == null)
-			{
-				sequence = DOTween.Sequence();
-			}
-			sequence.Append(transform.DOMove(bus.transform.position, MOVE_DURATION));
-			sequence.AppendCallback(() => transform.position = bus.GetEmptySeat());
+			transform.SetParent(currentBus.transform);
+			sequence = DOTween.Sequence();
+			sequence.Append(transform.DOMove(currentBus.transform.position, MOVE_DURATION));
+			sequence.AppendCallback(() => transform.position = searPosition);
 			sequence.AppendInterval(BUS_WAIT_TIME);
-			sequence.AppendCallback(() => busPassengerControl.CheckNewBus());
+			sequence.AppendCallback(()=> currentBus.PassengerArrived());
 		}
 		internal void MoveToTile(GameObject tle)
 		{

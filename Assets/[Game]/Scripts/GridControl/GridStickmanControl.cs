@@ -124,6 +124,7 @@ namespace GridSystem
 			{
 				stickmanControlList.Add(stickmanList[i].GetComponent<StickmanControl>());
 			}
+			CheckAllStickmans();
 		}
 		#endregion
 	}

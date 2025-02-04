@@ -9,8 +9,10 @@ namespace GridSystem
 	public class TileCreator : MonoBehaviour
 	{
 		#region Variables
-		[SerializeField] GameObject tilesParent;
-		[SerializeField] GameObject gridParent;
+		GameObject tilesParent;
+		GameObject gridParent;
+		string tilesParentName = "TilesParent";
+		string gridParentName = "Grid";
 		GridData tileGridData = null;
 		PoolObject createdTile;
 		#endregion
@@ -47,6 +49,8 @@ namespace GridSystem
 		}
 		void CreateTiles()
 		{
+			tilesParent = GameObject.Find(tilesParentName);
+			gridParent = GameObject.Find(gridParentName);
 			for (int i = 0; i < tileGridData.GridTiles.Count; i++)
 			{
 				if (tileGridData.GridTiles[i].ObjectPoolID == PoolID.Tile)

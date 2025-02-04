@@ -10,7 +10,8 @@ namespace GridSystem.WaitPlace
 	public class PlaceHolderCreator : MonoBehaviour
 	{
 		#region Variables
-		[SerializeField] GameObject placesParent;
+		GameObject placesParent;
+		string parentName = "WaitTilesParent";
 		List<GameObject> places = new List<GameObject>();
 		int placeCount;
 		#endregion
@@ -40,6 +41,7 @@ namespace GridSystem.WaitPlace
 		}
 		void CreateWaitPlaces()
 		{
+			placesParent = GameObject.Find(parentName);
 			for (int i = 0; i < placeCount; i++)
 			{
 				places.Add(PoolingManager.Instance.Instantiate(PoolID.PlaceHolderTile, placesParent.transform, placesParent.transform.position, Quaternion.identity).gameObject);

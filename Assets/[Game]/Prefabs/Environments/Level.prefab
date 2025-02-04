@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2641081553158787231}
   m_Layer: 0
-  m_Name: Tiles
+  m_Name: TilesParent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -41,13 +41,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6967370840873889275}
   - component: {fileID: 4992679766225637119}
-  - component: {fileID: 1448197943311119691}
-  - component: {fileID: 2487757383118960703}
-  - component: {fileID: 42744589011180710}
-  - component: {fileID: 9160754363015763216}
-  - component: {fileID: 398937070728818340}
-  - component: {fileID: 5729767166144421229}
-  - component: {fileID: 3724908146805299195}
   m_Layer: 0
   m_Name: Level
   m_TagString: Untagged
@@ -87,95 +80,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PoolID: 2
---- !u!114 &1448197943311119691
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 591994110881317607}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bbc811e8e0092584c9503336194e91fe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tilesParent: {fileID: 223904919262889250}
-  gridParent: {fileID: 3313824127676488894}
---- !u!114 &2487757383118960703
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 591994110881317607}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9730bceb041e63b4999622e08fcc6d17, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  stickmanParent: {fileID: 7712745289715331762}
---- !u!114 &42744589011180710
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 591994110881317607}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c284705fe721544e974c11fea741032, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  busParent: {fileID: 3629480759835352678}
---- !u!114 &9160754363015763216
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 591994110881317607}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b86d35cc4863f5d4f8e6af9e706b0ecf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &398937070728818340
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 591994110881317607}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c3a7b144cdd47f48a6ed9adff6eb778, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &5729767166144421229
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 591994110881317607}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bff903e910d3e494db6210cbeccac585, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &3724908146805299195
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 591994110881317607}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7db7c36c2e834584cbd244a65e2096f9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  placesParent: {fileID: 6741284573600719873}
 --- !u!1 &748811479864005627
 GameObject:
   m_ObjectHideFlags: 0
@@ -496,7 +400,7 @@ GameObject:
   - component: {fileID: 8480227019339621234}
   - component: {fileID: 2754028893421100474}
   m_Layer: 0
-  m_Name: WaitTiles
+  m_Name: WaitTilesParent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -542,7 +446,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5515336293405154589}
   m_Layer: 0
-  m_Name: Stickmans
+  m_Name: StickmansParent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -11,7 +11,8 @@ namespace BusSystem.Creator
 	public class BusCreator : MonoBehaviour
 	{
 		#region Variables
-		[SerializeField] GameObject busParent;
+		GameObject busParent;
+		string parentName = "BusParent";
 		List<GameObject> busObjectcs = new List<GameObject>();
 		List<Colors> busList = new List<Colors>();
 		const float DIST_BETWEEEN_BUS = -7;
@@ -48,6 +49,7 @@ namespace BusSystem.Creator
 		}
 		void CreateBus()
 		{
+			busParent = GameObject.Find(parentName);
 			for (int i = 0; i < busList.Count; i++)
 			{
 				PoolObject createdBus = PoolingManager.Instance.Instantiate(PoolID.Bus1, busParent.transform);

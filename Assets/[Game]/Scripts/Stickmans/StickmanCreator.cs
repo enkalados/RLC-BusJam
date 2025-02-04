@@ -12,7 +12,8 @@ namespace Stickman.Creator
 	public class StickmanCreator : MonoBehaviour
 	{
 		#region Variables
-		[SerializeField] GameObject stickmanParent;
+		GameObject stickmanParent;
+		string parentName = "StickmansParent";
 		GridData stickmanGridData;
 		List<GameObject> createdStickmanList = new List<GameObject>();
 		#endregion
@@ -70,6 +71,7 @@ namespace Stickman.Creator
         }
 		void CreateStickmans()
 		{
+			stickmanParent = GameObject.Find(parentName);
 			createdStickmanList.Clear();
 			for (int i = 0; i < stickmanGridData.GridTiles.Count; i++)
 			{

@@ -1,3 +1,4 @@
+using Base.Managers;
 using GridSystem;
 using Stickman;
 using UnityEngine;
@@ -9,12 +10,24 @@ namespace PlayerRay
 		Vector3 mousePos;
 		Ray ray;
 		RaycastHit hit;
+
+		bool canRay;
 		#endregion
 		#region Properties 
 		GridStickmanControl gridControl;
 		GridStickmanControl GridStickmanControl => (gridControl == null) ? gridControl = GetComponent<GridStickmanControl>() : gridControl;
 		#endregion
 		#region MonoBehaviour Methods
+		private void OnEnable()
+		{
+			LevelManager.OnLevelStart.AddListener(()=>SetCanRay(true));
+			LevelManager.OnLevelFinish.AddListener(()=>SetCanRay(false));
+		}
+		private void OnDisable()
+		{
+			LevelManager.OnLevelStart.RemoveListener(() => SetCanRay(true));
+			LevelManager.OnLevelFinish.RemoveListener(() => SetCanRay(false));
+		}
 		private void Update()
 		{
 			mousePos = Input.mousePosition;
@@ -39,6 +52,10 @@ namespace PlayerRay
 		}
 		#endregion
 		#region Methods
+		void SetCanRay(bool state)
+		{
+			canRay = state;
+		}
 		#endregion
 	}
 }

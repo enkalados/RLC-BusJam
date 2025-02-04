@@ -36,20 +36,30 @@ namespace BusSystem.Creator
 		#region Methods
 		void GetData()
 		{
+			busParent = GameObject.Find(parentName);
+			ResetBusList();
 			SetBusData(LevelManager.Instance.GetCurrentLevelData().BusColorList.ToList());
 			BusPassengerControl.SetBusControlsPlacesList(busObjectcs);
 		}
 		void SetBusData(List<Colors> busList)
 		{
-			if (this.busList.Count == 0 || !this.busList.SequenceEqual(busList)) // farkl otobüs varsa oluþtur.
+			this.busList = busList.ToList();
+			CreateBus();
+		}
+		void ResetBusList()
+		{
+			if (busObjectcs.Count > 0)
 			{
-				this.busList = busList;
-				CreateBus();
+				for (int i = 0; i < busList.Count; i++)
+				{
+					PoolingManager.Instance.DestroyPoolObject(busObjectcs[i].GetComponent<PoolObject>());
+				}
+				busList.Clear();
+				busObjectcs.Clear();
 			}
 		}
 		void CreateBus()
 		{
-			busParent = GameObject.Find(parentName);
 			for (int i = 0; i < busList.Count; i++)
 			{
 				PoolObject createdBus = PoolingManager.Instance.Instantiate(PoolID.Bus1, busParent.transform);

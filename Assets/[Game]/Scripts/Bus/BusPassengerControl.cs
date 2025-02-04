@@ -54,7 +54,7 @@ namespace BusSystem
 		internal void SetWaitPlacesList(List<WaitingTile> places)
 		{
 			waitPlaces.Clear();
-			waitPlaces = places;
+			waitPlaces = places.ToList();
 		}
 
 		internal void CheckPassenger(StickmanControl passenger)

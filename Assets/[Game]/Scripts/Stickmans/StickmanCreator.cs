@@ -34,44 +34,29 @@ namespace Stickman.Creator
 		#region Methods
 		void GetSticmanData()
 		{
+			stickmanParent = GameObject.Find(parentName);
+			ResetStickmans();
 			SetStickmanData(LevelManager.Instance.GetCurrentLevelData().StickmansTileData);
 			GridStickmanControl.SetStickmans(createdStickmanList);
 		}
 		void SetStickmanData(GridData gridData)
 		{
-			if (stickmanGridData == null)
-			{
-				stickmanGridData = gridData;
-				CreateStickmans();
-			}
-			else if (!stickmanGridData.GridTiles.SequenceEqual(gridData.GridTiles))
-			{
-				stickmanGridData = gridData;
-				DestroyStickmans();
-				CreateStickmans();
-			}
-			else
-			{
-				ResetStickmans();
-			}
-		}
-		void DestroyStickmans()
-		{
-			foreach (GameObject item in createdStickmanList)
-			{
-				PoolingManager.Instance.DestroyPoolObject(item.GetComponent<PoolObject>());
-			}
+			stickmanGridData = gridData;
+			CreateStickmans();
 		}
 		void ResetStickmans()
 		{
-            foreach (GameObject item in createdStickmanList)
-            {
-				item.GetComponent<StickmanControl>().ResetStickman(stickmanParent);
-            }
-        }
+			if (createdStickmanList.Count > 0)
+			{
+				foreach (GameObject item in createdStickmanList)
+				{
+					PoolingManager.Instance.DestroyPoolObject(item.GetComponent<PoolObject>());
+				}
+				createdStickmanList.Clear();
+			}
+		}
 		void CreateStickmans()
 		{
-			stickmanParent = GameObject.Find(parentName);
 			createdStickmanList.Clear();
 			for (int i = 0; i < stickmanGridData.GridTiles.Count; i++)
 			{

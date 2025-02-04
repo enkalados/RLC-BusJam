@@ -52,15 +52,19 @@ namespace GridSystem
 		}
 		void GetGridDatas()
 		{
+			ResetDatas();
+			
 			GetGridTileData();
 			GetStickmanTileData();
-
-			obstacleTiles.Clear();
-			gridTiles.Clear();
 
 			obstacleTiles = stickmanGridData.GridTiles.Where(tile => tile.ObjectPoolID == PoolID.Stickman).ToList();
 			gridTiles = tileGridData.GridTiles.Where(tile => tile.ObjectPoolID == PoolID.Tile).ToList();
 			CheckAllStickmans();
+		}
+		void ResetDatas()
+		{
+			obstacleTiles.Clear();
+			gridTiles.Clear();
 		}
 		private bool CanReachZ0(int startX, int startZ)
 		{
@@ -120,6 +124,7 @@ namespace GridSystem
 		}
 		internal void SetStickmans(List<GameObject> stickmanList)
 		{
+			stickmanControlList.Clear();
 			for (int i = 0; i < stickmanList.Count; i++)
 			{
 				stickmanControlList.Add(stickmanList[i].GetComponent<StickmanControl>());

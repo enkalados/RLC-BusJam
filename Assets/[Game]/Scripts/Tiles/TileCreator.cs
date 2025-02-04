@@ -31,26 +31,18 @@ namespace GridSystem
 		#region Methods
 		void GetTileGridData()
 		{
+			tilesParent = GameObject.Find(tilesParentName);
+			gridParent = GameObject.Find(gridParentName); 
+			ResetTiles();
 			SetTileGridData(LevelManager.Instance.GetCurrentLevelData().TilesData);
-
 		}
 		void SetTileGridData(GridData gridData)
 		{
-			if (tileGridData == null)
-			{
-				tileGridData = gridData;
-				CreateTiles();
-			}
-			else if(tileGridData.GridX != gridData.GridX || tileGridData.GridZ != gridData.GridZ || !tileGridData.GridTiles.SequenceEqual(gridData.GridTiles))
-			{
-				tileGridData = gridData;
-				CreateTiles();
-			}
+			tileGridData = gridData;
+			CreateTiles();
 		}
 		void CreateTiles()
 		{
-			tilesParent = GameObject.Find(tilesParentName);
-			gridParent = GameObject.Find(gridParentName);
 			for (int i = 0; i < tileGridData.GridTiles.Count; i++)
 			{
 				if (tileGridData.GridTiles[i].ObjectPoolID == PoolID.Tile)
@@ -70,6 +62,16 @@ namespace GridSystem
 			else
 			{
 				gridParent.transform.position = new Vector3((-gridData.GridX / 2), gridParent.transform.position.y, gridParent.transform.position.z);
+			}
+		}
+		void ResetTiles()
+		{
+			if (tilesParent.transform.childCount > 0)
+			{
+				for (int i = 0; i < tilesParent.transform.childCount; i++)
+				{
+					PoolingManager.Instance.DestroyPoolObject(tilesParent.transform.GetChild(i).GetComponent<PoolObject>());
+				}
 			}
 		}
 		#endregion

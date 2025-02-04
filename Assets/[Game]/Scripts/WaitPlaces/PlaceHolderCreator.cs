@@ -32,21 +32,31 @@ namespace GridSystem.WaitPlace
 		#region Methods
 		void GetData()
 		{
-			if (placeCount != LevelManager.Instance.GetCurrentLevelData().PlaceHoldersCount)
-			{
-				placeCount = LevelManager.Instance.GetCurrentLevelData().PlaceHoldersCount;
-				CreateWaitPlaces();
-				BusPassengerControl.SetWaitPlacesList(places);
-			}
+			placesParent = GameObject.Find(parentName);
+			ResetPlaces();
+			placeCount = LevelManager.Instance.GetCurrentLevelData().PlaceHoldersCount;
+			CreateWaitPlaces();
+			BusPassengerControl.SetWaitPlacesList(places);
 		}
 		void CreateWaitPlaces()
 		{
-			placesParent = GameObject.Find(parentName);
 			for (int i = 0; i < placeCount; i++)
 			{
 				places.Add(PoolingManager.Instance.Instantiate(PoolID.PlaceHolderTile, placesParent.transform, placesParent.transform.position, Quaternion.identity).GetComponent<WaitingTile>());
 				placesParent.GetComponent<OrderObjectsInEditor>().OrderObjects();
 			}
+		}
+		void ResetPlaces()
+		{
+			if (places.Count > 0)
+			{
+				for (int i = 0; i < places.Count; i++)
+				{
+					PoolingManager.Instance.DestroyPoolObject(places[i].GetComponent<PoolObject>());
+				}
+			}
+			places.Clear();
+			placeCount = 0;
 		}
 		#endregion
 #if UNITY_EDITOR

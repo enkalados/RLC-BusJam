@@ -1,3 +1,4 @@
+using Base.Managers;
 using Base.Utilities.Events;
 using GridSystem.WaitPlace;
 using Stickman;
@@ -75,16 +76,35 @@ namespace BusSystem
 			passenger.MoveToTile(waitPlaces.First(tile => tile.GetIsEmpty()).gameObject);
 			waitPlaces.First(tile => tile.GetIsEmpty()).SetTileEmpty(false, passenger);
 			fullWaitPlaceCount++;
+			FailCheck();
+		}
+		void FailCheck()
+		{
+			if (fullWaitPlaceCount == waitPlaces.Count)
+			{
+				LevelManager.Instance.CompleteLevel(false);
+			}
+		}
+		void CheckWin()
+		{
+			if (busList.Count == 0)
+			{
+				LevelManager.Instance.CompleteLevel(true);
+			}
 		}
 		internal void CheckNewBus()
 		{
-			busList.Peek().MoveFullBus();
-			busList.Dequeue();
-			foreach (var bus in busList)
+			if(busList.Count > 0)
 			{
-				bus.MoveNextBusPos();
+				busList.Peek().MoveFullBus();
+				busList.Dequeue();
+				foreach (var bus in busList)
+				{
+					bus.MoveNextBusPos();
+				}
+				StartCoroutine(CheckWaitingpassengersCO());
+				CheckWin();
 			}
-			StartCoroutine(CheckWaitingpassengersCO());
 		}
 		IEnumerator CheckWaitingpassengersCO()
 		{

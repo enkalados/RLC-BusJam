@@ -556,6 +556,10 @@ MonoBehaviour:
   levelPlayText: {fileID: 621402270}
   levelDatas:
   - {fileID: 11400000, guid: 8b899c71485c98741abb4cfe12ca6d2e, type: 2}
+  - {fileID: 11400000, guid: af2dc2fe6d1f65b4ab322693be9db5f0, type: 2}
+  - {fileID: 11400000, guid: 8061f26d7f5370645854836480d07acb, type: 2}
+  - {fileID: 11400000, guid: 689ff928205a3e643a26ae5eac432579, type: 2}
+  - {fileID: 11400000, guid: 687c1345939a57c4582cc7f19660aedc, type: 2}
 --- !u!114 &1758063931
 MonoBehaviour:
   m_ObjectHideFlags: 0

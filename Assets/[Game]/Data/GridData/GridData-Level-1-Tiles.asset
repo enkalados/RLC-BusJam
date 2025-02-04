@@ -18,19 +18,19 @@ MonoBehaviour:
   GridTiles:
   - X: 0
     Z: 0
-    ObjectPoolID: 1
+    ObjectPoolID: 0
     Color: 0
   - X: 0
     Z: 1
-    ObjectPoolID: 1
+    ObjectPoolID: 0
     Color: 0
   - X: 0
     Z: 2
-    ObjectPoolID: 1
+    ObjectPoolID: 0
     Color: 0
   - X: 0
     Z: 3
-    ObjectPoolID: 1
+    ObjectPoolID: 0
     Color: 0
   - X: 1
     Z: 0
@@ -46,7 +46,7 @@ MonoBehaviour:
     Color: 0
   - X: 1
     Z: 3
-    ObjectPoolID: 1
+    ObjectPoolID: 0
     Color: 0
   - X: 2
     Z: 0
@@ -62,21 +62,21 @@ MonoBehaviour:
     Color: 0
   - X: 2
     Z: 3
-    ObjectPoolID: 1
+    ObjectPoolID: 0
     Color: 0
   - X: 3
     Z: 0
-    ObjectPoolID: 1
+    ObjectPoolID: 0
     Color: 0
   - X: 3
     Z: 1
-    ObjectPoolID: 1
+    ObjectPoolID: 0
     Color: 0
   - X: 3
     Z: 2
-    ObjectPoolID: 1
+    ObjectPoolID: 0
     Color: 0
   - X: 3
     Z: 3
-    ObjectPoolID: 1
+    ObjectPoolID: 0
     Color: 0

@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c6ccdb6d368bb3843a14ce52c325b06f, type: 3}
-  m_Name: GridData-Level-1-Stickmans
+  m_Name: GridData-Level-3-Tiles
   m_EditorClassIdentifier: 
-  GridType: 2
+  GridType: 1
   GridX: 4
   GridZ: 4
   GridTiles:
@@ -26,40 +26,40 @@ MonoBehaviour:
     Color: 0
   - X: 0
     Z: 2
-    ObjectPoolID: 0
+    ObjectPoolID: 1
     Color: 0
   - X: 0
     Z: 3
-    ObjectPoolID: 0
+    ObjectPoolID: 1
     Color: 0
   - X: 1
     Z: 0
-    ObjectPoolID: 3
-    Color: 1
+    ObjectPoolID: 1
+    Color: 0
   - X: 1
     Z: 1
-    ObjectPoolID: 3
-    Color: 1
+    ObjectPoolID: 1
+    Color: 0
   - X: 1
     Z: 2
-    ObjectPoolID: 3
-    Color: 2
+    ObjectPoolID: 1
+    Color: 0
   - X: 1
     Z: 3
-    ObjectPoolID: 0
+    ObjectPoolID: 1
     Color: 0
   - X: 2
     Z: 0
-    ObjectPoolID: 3
-    Color: 2
+    ObjectPoolID: 1
+    Color: 0
   - X: 2
     Z: 1
-    ObjectPoolID: 3
-    Color: 1
+    ObjectPoolID: 1
+    Color: 0
   - X: 2
     Z: 2
-    ObjectPoolID: 3
-    Color: 2
+    ObjectPoolID: 1
+    Color: 0
   - X: 2
     Z: 3
     ObjectPoolID: 0

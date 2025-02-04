@@ -3134,7 +3134,7 @@ GameObject:
   - component: {fileID: 8640704372667042962}
   - component: {fileID: 3581561776296404476}
   - component: {fileID: 1262412240354557120}
-  - component: {fileID: 7623599183543686032}
+  - component: {fileID: 4736537515713390647}
   m_Layer: 5
   m_Name: TimerPanel
   m_TagString: Untagged
@@ -3212,7 +3212,7 @@ CanvasGroup:
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
---- !u!114 &7623599183543686032
+--- !u!114 &4736537515713390647
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3221,11 +3221,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 6684582108751874247}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 733d1c8d54f51c047aa53cde779a9b1a, type: 3}
+  m_Script: {fileID: 11500000, guid: 047f16ddf001d2040ab972d84726b7ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  panelAnimationTypes: 0
-  <PanelID>k__BackingField: 0
+  timeText: {fileID: 5799329543902331149}
 --- !u!1 &7381075875899537806
 GameObject:
   m_ObjectHideFlags: 0

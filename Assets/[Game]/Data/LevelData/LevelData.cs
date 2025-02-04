@@ -8,6 +8,7 @@ namespace LevelDataSystem
 	public class LevelData : ScriptableObject
 	{
 		public int Level;
+		public int Timer;
 		public int PlaceHoldersCount;
 		public List<Colors> BusColorList = new List<Colors>();
 		public LevelTransformData LevelTransformData;

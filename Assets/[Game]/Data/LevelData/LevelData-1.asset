@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: LevelData-1
   m_EditorClassIdentifier: 
   Level: 1
+  Timer: 15
   PlaceHoldersCount: 2
   BusColorList: 0100000002000000
   LevelTransformData: {fileID: 11400000, guid: 9b7e798dbb94e344db9448fb21701d43, type: 2}

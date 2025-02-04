@@ -153,8 +153,13 @@ namespace BusSystem
             {
 				GameObject waitingPassenger = PoolingManager.Instance.Instantiate(PoolID.Stickman, null).gameObject;
 				waitingPassenger.GetComponent<MeshColorSet>().SetColor(savedWaitingTiles[i]);
+				waitingPassenger.GetComponent<StickmanControl>().SetStickmanColor(savedWaitingTiles[i]);
 				waitingPassenger.transform.SetLocalPositionAndRotation(waitPlaces[i].transform.position, Quaternion.identity);
 				waitingPassengersList.Add(waitingPassenger);
+
+				waitingPassenger.GetComponent<StickmanControl>().MoveToTile(waitPlaces.First(tile => tile.GetIsEmpty()).gameObject);
+				waitPlaces.First(tile => tile.GetIsEmpty()).SetTileEmpty(false, waitingPassenger.GetComponent<StickmanControl>());
+				fullWaitPlaceCount++;
 			}
 		}
 		void SaveWaitTiles()

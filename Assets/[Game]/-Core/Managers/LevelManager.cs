@@ -123,36 +123,14 @@ namespace Base.Managers
 			{
 				CreateLevelEnvironment();
 			}
-			else if(currentLevel-1 > 0)
-			{
-				if (!currentLevelData.LevelTransforms.SequenceEqual(levelDatas[currentLevel - 1].LevelTransformData.LevelTransforms))
-				{
-					CreateLevelEnvironment();
-				}
-				else
-				{
-					ResetLevelEnvironment();
-				}
-			}
 			else
 			{
-				if (levelParent == null)
-				{
-					CreateLevelEnvironment();
+                for (int i = 0; i < levelParent.transform.childCount; i++)
+                {
+					PoolingManager.Instance.DestroyPoolObject(levelParent.transform.GetChild(i).GetComponent<PoolObject>());
 				}
-				else
-				{
-					ResetLevelEnvironment();
-				}
-			}
-		}
-		void ResetLevelEnvironment()
-		{
-			for (int i = 0; i < currentLevelData.LevelTransforms.Count; i++)
-			{
-				getObject = GetLevelObject(currentLevelData.LevelTransforms[i].PoolID);
-				getObject.transform.SetPositionAndRotation(currentLevelData.LevelTransforms[i].Position, currentLevelData.LevelTransforms[i].Rotation);
-				getObject.transform.localScale = currentLevelData.LevelTransforms[i].Scale;
+				Destroy(levelParent);
+				CreateLevelEnvironment();
 			}
 		}
 		void CreateLevelEnvironment()

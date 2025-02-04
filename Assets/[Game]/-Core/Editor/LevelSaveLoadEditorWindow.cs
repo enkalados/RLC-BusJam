@@ -144,10 +144,6 @@ namespace LevelDataSystem.Editor
 			{
 				DestroyImmediate(levelParent);
 			}
-			else
-			{
-				Debug.LogWarning("There is no Level in the scene");
-			}
 		}
 		private void SaveLevelEnvironment(LevelTransformData selectedLevel)
 		{

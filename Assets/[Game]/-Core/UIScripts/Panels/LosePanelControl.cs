@@ -22,8 +22,6 @@ namespace Base.UI
         {
             LevelManager.OnRestartLevel.Invoke();
             UiPanel.HidePanel();
-            UIManager.Instance.HidePanel(Base.Global.Enums.PanelID.InGamePanel);
-            UIManager.Instance.ShowPanel(Base.Global.Enums.PanelID.StartPanel);
         }
         #endregion
     }

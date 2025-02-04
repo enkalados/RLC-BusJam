@@ -102,11 +102,19 @@ namespace Base.Managers
 		{
 			SelectCurrentLevel();
 			CheckCreateLevelEnvironment();
+
+			OnLevelStart.Invoke();
+			UIManager.Instance.HideAllPanels();
+			UIManager.Instance.ShowPanel(PanelID.InGamePanel);
 		}
 		void RestartLevel()
 		{
 			SelectCurrentLevel();
 			CheckCreateLevelEnvironment();
+
+			OnLevelStart.Invoke();
+			UIManager.Instance.HideAllPanels();
+			UIManager.Instance.ShowPanel(PanelID.InGamePanel);
 		}
 		void CheckCreateLevelEnvironment()
 		{

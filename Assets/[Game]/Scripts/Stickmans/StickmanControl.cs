@@ -1,4 +1,6 @@
 using Base.Global.Enums;
+using Base.Managers;
+using Base.Pool;
 using BusSystem;
 using DG.Tweening;
 using MeshColorSetter;
@@ -20,6 +22,16 @@ namespace Stickman
 		MeshColorSet MaterialSet => (matSet == null) ? matSet = GetComponent<MeshColorSet>() : matSet;
 		#endregion
 		#region MonoBehaviour Methods
+		private void OnEnable()
+		{
+			LevelManager.OnRestartLevel.AddListener(DestroyStickman);
+			LevelManager.OnNextLevel.AddListener(DestroyStickman);
+		}
+		private void OnDisable()
+		{
+			LevelManager.OnRestartLevel.RemoveListener(DestroyStickman);
+			LevelManager.OnNextLevel.RemoveListener(DestroyStickman);
+		}
 		#endregion
 		#region Methods
 		internal void SetStickmanColor(Colors color)
@@ -69,6 +81,10 @@ namespace Stickman
 		internal void MoveToTile(GameObject tle)
 		{
 			transform.DOMove(tle.transform.position, MOVE_DURATION);
+		}
+		void DestroyStickman()
+		{
+			PoolingManager.Instance.DestroyPoolObject(gameObject.GetComponent<PoolObject>());
 		}
 		#endregion
 	}

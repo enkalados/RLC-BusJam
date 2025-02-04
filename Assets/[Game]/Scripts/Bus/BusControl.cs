@@ -12,6 +12,7 @@ namespace BusSystem
 		const float MOVE_FORWARD = 20;
 		const float MOVE_DURAITON = .5f;
 		float distanceBetweenBus;
+		float startXPos;
 		#endregion
 		#region Properties 
 		#endregion
@@ -27,9 +28,10 @@ namespace BusSystem
 		{
 			this.color = color;
 		}
-		internal void SetDistanceValue(float distance)
+		internal void SetCreateValues(float distance, float startX)
 		{
 			distanceBetweenBus = Mathf.Abs(distance);
+			startXPos = startX;
 		}
 		internal Colors GetBusColor()
 		{
@@ -49,6 +51,11 @@ namespace BusSystem
 		internal void MoveNextBusPos()
 		{
 			transform.DOMoveX(transform.position.x + distanceBetweenBus, MOVE_DURAITON);
+		}
+		internal void ResetBus()
+		{
+			totalPassenger = 0;
+			transform.localPosition = new Vector3(0, 0, startXPos);
 		}
 		#endregion
 	}

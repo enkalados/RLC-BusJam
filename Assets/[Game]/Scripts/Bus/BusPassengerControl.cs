@@ -1,5 +1,3 @@
-using Base.Managers;
-using DG.Tweening;
 using Stickman;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,22 +14,9 @@ namespace BusSystem
 		#region Properties 
 		#endregion
 		#region MonoBehaviour Methods
-		private void OnEnable()
-		{
-			LevelManager.OnLevelStart.AddListener(() => fullWaitPlaceCount = 0);
-		}
-		private void OnDisable()
-		{
-			
-		}
+
 		#endregion
 		#region Methods
-
-		internal void SetWaitPlacesList(List<GameObject> places)
-		{
-			waitPlaces.Clear();
-			waitPlaces = places;
-		}
 		internal void SetBusControlsPlacesList(List<GameObject> busList)
 		{
 			busControls.Clear();
@@ -39,7 +24,23 @@ namespace BusSystem
 			{
 				busControls.Enqueue(busList[i].GetComponent<BusControl>());
 			}
+			ResetDataAndBus();
 		}
+		void ResetDataAndBus()
+		{
+			fullWaitPlaceCount = 0;
+			foreach (var bus in busControls)
+			{
+				bus.ResetBus();
+				bus.MoveNextBusPos();
+			}
+		}
+		internal void SetWaitPlacesList(List<GameObject> places)
+		{
+			waitPlaces.Clear();
+			waitPlaces = places;
+		}
+	
 		internal void CheckPassenger(StickmanControl passenger)
 		{
 			if (passenger.GetColor() == busControls.Peek().GetBusColor() && busControls.Peek().HaveEmptySeat())

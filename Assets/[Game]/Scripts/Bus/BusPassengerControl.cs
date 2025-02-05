@@ -6,6 +6,7 @@ using GameSaveLoad;
 using GridSystem.WaitPlace;
 using MeshColorSetter;
 using Stickman;
+using Stickman.Animation;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;

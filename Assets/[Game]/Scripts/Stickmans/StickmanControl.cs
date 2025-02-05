@@ -3,6 +3,7 @@ using Base.Pool;
 using BusSystem;
 using DG.Tweening;
 using MeshColorSetter;
+using Stickman.Animation;
 using UnityEngine;
 namespace Stickman
 {
@@ -12,7 +13,7 @@ namespace Stickman
 		[SerializeField] SkinnedMeshRenderer skinnedMeshRenderer;
 		Colors color;
 		int gridX, gridZ;
-		[SerializeField] bool canClickable;
+		bool canClickable;
 
 		const float MOVE_DURATION = .5f;
 		const float BUS_WAIT_TIME = .2f;
@@ -21,8 +22,14 @@ namespace Stickman
 		#region Properties 
 		MeshColorSet matSet;
 		MeshColorSet MaterialSet => (matSet == null) ? matSet = GetComponent<MeshColorSet>() : matSet;
+		AnimationControl animationControl;
+		AnimationControl AnimationControl => (animationControl == null) ? animationControl = GetComponent<AnimationControl>() : animationControl;
 		#endregion
 		#region MonoBehaviour Methods
+		private void OnEnable()
+		{
+			AnimationControl.IdleAnimation();
+		}
 		#endregion
 		#region Methods
 		internal void SetStickmanColor(Colors color)
@@ -60,18 +67,24 @@ namespace Stickman
 		{
 			SetCanClickable(false);
 		}
-		internal void MoveToBus(Vector3 searPosition, BusPassengerControl busPassengerControl, BusControl currentBus)
+		internal void MoveToBus(Vector3 seatPosition, BusPassengerControl busPassengerControl, BusControl currentBus)
 		{
+			AnimationControl.RunAnimation();
 			transform.SetParent(currentBus.transform);
 			sequence = DOTween.Sequence();
 			sequence.Append(transform.DOMove(currentBus.transform.position, MOVE_DURATION));
-			sequence.AppendCallback(() => transform.position = searPosition);
+			sequence.AppendCallback(() => transform.SetPositionAndRotation(seatPosition, Quaternion.Euler(new Vector3(0,-270,0))));
 			sequence.AppendInterval(BUS_WAIT_TIME);
-			sequence.AppendCallback(()=> currentBus.PassengerArrived());
+			sequence.AppendCallback(() =>
+			{
+				AnimationControl.SitAnimation();
+				currentBus.PassengerArrived();
+			});
 		}
 		internal void MoveToTile(GameObject tle)
 		{
-			transform.DOMove(tle.transform.position, MOVE_DURATION);
+			AnimationControl.RunAnimation();
+			transform.DOMove(tle.transform.position, MOVE_DURATION).OnComplete(AnimationControl.IdleAnimation);
 		}
 		internal void DestroyStickman()
 		{

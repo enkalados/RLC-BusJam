@@ -4,6 +4,7 @@ using Base.Utilities.Events;
 using DG.Tweening;
 using MeshColorSetter;
 using Stickman;
+using Stickman.Animation;
 using System.Collections.Generic;
 using UnityEngine;
 namespace BusSystem
@@ -96,8 +97,9 @@ namespace BusSystem
 				totalPassenger++;
 				GameObject loadedPassenger = PoolingManager.Instance.Instantiate(PoolID.Stickman, null).gameObject;
 				loadedPassenger.GetComponent<MeshColorSet>().SetColor(color);
-				loadedPassenger.transform.SetLocalPositionAndRotation(seats[totalPassenger - 1].transform.position, Quaternion.identity);
+				loadedPassenger.transform.SetLocalPositionAndRotation(seats[totalPassenger - 1].transform.position, Quaternion.Euler(new Vector3(0, -270, 0)));
 				loadedPassenger.transform.SetParent(seats[totalPassenger - 1].transform);
+				loadedPassenger.GetComponent<AnimationControl>().SitAnimation();
 				loadedPassengers.Add(loadedPassenger);
 			}
 		}

@@ -615,11 +615,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8510995365734157043}
+  - component: {fileID: 2447740646812451673}
+  - component: {fileID: 7291150155399035310}
   - component: {fileID: 2121135071511376049}
   - component: {fileID: -3949274203085835470}
-  - component: {fileID: 7291150155399035310}
-  - component: {fileID: 2447740646812451673}
   - component: {fileID: 1789984326058798538}
+  - component: {fileID: -7787764181240493813}
   m_Layer: 0
   m_Name: Stickman
   m_TagString: Untagged
@@ -644,6 +645,48 @@ Transform:
   - {fileID: 2379763260178640374}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!65 &2447740646812451673
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3481777946579399723}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.6, y: 1.5, z: 0.6}
+  m_Center: {x: 0, y: 0.6, z: 0}
+--- !u!95 &7291150155399035310
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3481777946579399723}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: df9b5d297d81547888b344327c5dc32a, type: 3}
+  m_Controller: {fileID: 9100000, guid: 0e0895ef2ba42cb41ad4e033c39c3810, type: 2}
+  m_CullingMode: 1
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &2121135071511376049
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -684,48 +727,6 @@ MonoBehaviour:
   - Color: 4
     Material: {fileID: 2100000, guid: 6c69c6d329242a34e844451bb26ef7cf, type: 2}
     ClickableMaterial: {fileID: 2100000, guid: f2f5c635029290f4faed2249a8fec5c0, type: 2}
---- !u!95 &7291150155399035310
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3481777946579399723}
-  m_Enabled: 0
-  m_Avatar: {fileID: 9000000, guid: df9b5d297d81547888b344327c5dc32a, type: 3}
-  m_Controller: {fileID: 9100000, guid: 0e0895ef2ba42cb41ad4e033c39c3810, type: 2}
-  m_CullingMode: 1
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 1
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
---- !u!65 &2447740646812451673
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3481777946579399723}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.6, y: 1.5, z: 0.6}
-  m_Center: {x: 0, y: 0.6, z: 0}
 --- !u!114 &1789984326058798538
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -739,6 +740,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skinnedMeshRenderer: {fileID: 4985115905238391869}
+--- !u!114 &-7787764181240493813
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3481777946579399723}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12d2f45e262a9ed4e8c18d9293811b58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 7291150155399035310}
 --- !u!1 &3567499457657206816
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,6 +1,7 @@
 using Base.Global.Enums;
 using Base.Managers;
 using Base.Pool;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 namespace GridSystem
@@ -13,7 +14,7 @@ namespace GridSystem
 		string tilesParentName = "TilesParent";
 		string gridParentName = "Grid";
 		GridData tileGridData = null;
-		PoolObject createdTile;
+		List<PoolObject> createdTiles = new List<PoolObject>();
 		#endregion
 		#region Properties 
 		#endregion
@@ -46,8 +47,9 @@ namespace GridSystem
 			{
 				if (tileGridData.GridTiles[i].ObjectPoolID == PoolID.Tile)
 				{
-					createdTile = PoolingManager.Instance.Instantiate(PoolID.Tile, tilesParent.transform);
+					PoolObject createdTile = PoolingManager.Instance.Instantiate(PoolID.Tile, tilesParent.transform);
 					createdTile.transform.SetLocalPositionAndRotation(new Vector3(tileGridData.GridTiles[i].X, 0, -tileGridData.GridTiles[i].Z), Quaternion.identity);
+					createdTiles.Add(createdTile);
 				}
 			}
 			SetGridParent(tileGridData);
@@ -67,10 +69,11 @@ namespace GridSystem
 		{
 			if (tilesParent.transform.childCount > 0)
 			{
-				for (int i = 0; i < tilesParent.transform.childCount; i++)
+				for (int i = 0; i < createdTiles.Count; i++)
 				{
-					PoolingManager.Instance.DestroyPoolObject(tilesParent.transform.GetChild(i).GetComponent<PoolObject>());
+					PoolingManager.Instance.DestroyPoolObject(createdTiles[i]);
 				}
+				createdTiles.Clear();
 			}
 		}
 		#endregion

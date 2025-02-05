@@ -155,20 +155,6 @@ namespace Base.Managers
 				}
 			}
 		}
-		PoolObject GetLevelObject(PoolID poolID)
-		{
-			foreach (Transform item in levelParent.transform)
-			{
-				if (item.gameObject.TryGetComponent(out PoolObject poolObject))
-				{
-					if (poolObject.PoolID == poolID)
-					{
-						return poolObject;
-					}
-				}
-			}
-			return null;
-		}
 		void CreateLevelUI()
 		{
 			levelUIControl.CreateButtons(levelDatas.Length);

@@ -84,7 +84,6 @@ namespace GridSystem
 		{
 			if (!gridTiles.Any(tile => tile.X == startX && tile.Z == startZ))
 			{
-				Debug.Log($"Invalid position ({startX}, {startZ})");
 				return false;
 			}
 

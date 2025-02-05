@@ -54,7 +54,13 @@ namespace LevelDataSystem.Editor
 				EditorGUILayout.HelpBox("Not found Level Data!", MessageType.Warning);
 				return;
 			}
-			selectedLevelIndex = EditorGUILayout.Popup("Selected Level:", selectedLevelIndex, GetLevelNames());
+
+			int newSelectedLevel = EditorGUILayout.Popup("Selected Level:", selectedLevelIndex, GetLevelNames());
+			if (newSelectedLevel != selectedLevelIndex)
+			{
+				selectedLevelIndex = newSelectedLevel;
+				LoadLevelData();
+			}
 
 			if (levelData.Count > 0 && selectedLevelIndex < levelData.Count)
 			{
@@ -240,6 +246,7 @@ namespace LevelDataSystem.Editor
 			}
 
 			placeHoldersCount = levelData[selectedLevelIndex].PlaceHoldersCount;
+			timer = levelData[selectedLevelIndex].Timer;
 			busColors = levelData[selectedLevelIndex].BusColorList.ToList();
 
 			if (selectedLevelIndex >= levelData.Count)

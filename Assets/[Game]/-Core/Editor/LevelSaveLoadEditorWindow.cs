@@ -34,7 +34,7 @@ namespace LevelDataSystem.Editor
 
 		#endregion
 		#region Editor Methods
-		[MenuItem("Tools/Level Editor Manager")]
+		//[MenuItem("Tools/Level Editor Manager")]
 		public static void ShowWindow()
 		{
 			LevelSaveLoadEditorWindow window = GetWindow<LevelSaveLoadEditorWindow>("Level Editor Window");

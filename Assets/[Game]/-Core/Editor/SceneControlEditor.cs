@@ -35,10 +35,14 @@ namespace Base.Init
 			//	GetActiveSceneBuildIndex();
 			//	OpenScene(scenePath, true);
 			//}
-			if (GUILayout.Button("Open Level Editor", EditorStyles.toolbarButton))
+			if (SceneManager.GetActiveScene().name == "LevelEditor")
 			{
-				LevelSaveLoadEditorWindow.ShowWindow();
+				if (GUILayout.Button("Open Level Editor", EditorStyles.toolbarButton))
+				{
+					LevelSaveLoadEditorWindow.ShowWindow();
+				}
 			}
+	
 			GUILayout.EndHorizontal();
 			GUILayout.EndArea();
 

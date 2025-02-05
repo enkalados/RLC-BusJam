@@ -36,7 +36,7 @@ public class OrderObjectsInEditor : MonoBehaviour
     }
     #endregion
 }
-
+#if UNITY_EDITOR
 [CustomEditor(typeof(OrderObjectsInEditor))]
 public class ObjectsOrderEditor : Editor
 {
@@ -67,3 +67,4 @@ public class ObjectsOrderEditor : Editor
         }
     }
 }
+#endif

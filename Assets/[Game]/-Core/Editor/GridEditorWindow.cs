@@ -22,14 +22,8 @@ namespace GridSystem.Editor
 		int selectedGridDataIndex;
 		#endregion
 		#region Dictionary
-
-		public static Dictionary<PoolID, Color> PoolColors = new Dictionary<PoolID, Color>();
 		#endregion
 		#region Editor Methods
-		//public static void ShowWindow()
-		//{
-		//	GetWindow<GridEditorWindow>("Grid Editor");
-		//}
 		public static void ShowWindow(GridData gridData)
 		{
 			editingData = gridData;
@@ -39,7 +33,6 @@ namespace GridSystem.Editor
 		{
 			InitializeGrid(gridX, gridZ);
 			LoadGridData();
-			LoadColors();
 			poolDatabase = Resources.Load<PoolData>(poolPath);
 			if (editingData != null)
 			{
@@ -60,7 +53,6 @@ namespace GridSystem.Editor
 		private void OnGUI()
 		{
 			GUILayout.Label("Grid Settings", EditorStyles.boldLabel);
-			selectedGridDataIndex = EditorGUILayout.Popup("Selected Grid:", selectedGridDataIndex, GetGridDataNames());
 
 			int newGridX = EditorGUILayout.IntField("Grid Width (X)", gridX);
 			int newGridZ = EditorGUILayout.IntField("Grid Depth (Z)", gridZ);
@@ -71,11 +63,6 @@ namespace GridSystem.Editor
 			}
 			EditorGUILayout.Space(15);
 			
-			if (GUILayout.Button("Edit Pool Colors"))
-			{
-				PoolColorWindow.ShowWindow();
-			}
-
 			if (gridDataList.Count == 0)
 			{
 				EditorGUILayout.HelpBox("Not found GridData!", MessageType.Warning);
@@ -156,7 +143,7 @@ namespace GridSystem.Editor
 					if (x < gridData.GetLength(0) && z < gridData.GetLength(1))
 					{
 						Rect rect = GUILayoutUtility.GetRect(50, 30);
-						EditorGUI.DrawRect(rect, GetTileColor(gridData[x, z]));
+						//EditorGUI.DrawRect(rect, GetTileColor(gridData[x, z]));
 
 						gridData[x, z] = (PoolID)EditorGUI.EnumPopup(rect, gridData[x, z]);
 					}
@@ -244,37 +231,7 @@ namespace GridSystem.Editor
 			return names;
 		}
 		#endregion
-		#region Color Control
-		public static void SaveColor(PoolID id, Color color)
-		{
-			PoolColors[id] = color;
-			EditorPrefs.SetString("PoolColor_" + id.ToString(), JsonUtility.ToJson(color));
-		}
-		private void LoadColors()
-		{
-			foreach (PoolID id in System.Enum.GetValues(typeof(PoolID)))
-			{
-				string key = "PoolColor_" + id.ToString();
-				if (EditorPrefs.HasKey(key))
-				{
-					Color color = JsonUtility.FromJson<Color>(EditorPrefs.GetString(key));
-					PoolColors[id] = color;
-				}
-				else
-				{
-					PoolColors[id] = Color.white;
-				}
-			}
-		}
-		Color GetTileColor(PoolID poolID)
-		{
-			if (PoolColors.TryGetValue(poolID, out Color color))
-			{
-				return color;
-			}
-			return Color.white;
-		}
-		#endregion
+	
 		#region Warning Popup
 		private void ShowWarningPopup(GridData selectedGrid)
 		{
@@ -291,37 +248,5 @@ namespace GridSystem.Editor
 			}
 		}
 		#endregion
-	}
-	public class PoolColorWindow : EditorWindow
-	{
-		public static void ShowWindow()
-		{
-			GetWindow<PoolColorWindow>("Pool Objects Colors");
-		}
-
-		private void OnGUI()
-		{
-			EditorGUILayout.LabelField("Set Colors for Pool Objects", EditorStyles.boldLabel);
-
-			foreach (PoolID id in System.Enum.GetValues(typeof(PoolID)))
-			{
-				EditorGUILayout.BeginHorizontal();
-				EditorGUILayout.LabelField(id.ToString(), GUILayout.Width(100));
-
-				if (!GridEditorWindow.PoolColors.TryGetValue(id, out Color color))
-				{
-					color = Color.white;
-				}
-
-				Color newColor = EditorGUILayout.ColorField(color);
-				if (newColor != color)
-				{
-					GridEditorWindow.SaveColor(id, newColor);
-				}
-
-				EditorGUILayout.EndHorizontal();
-			}
-		}
-	}
-	
+	}	
 }

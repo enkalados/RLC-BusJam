@@ -37,6 +37,12 @@ namespace Base.Global.Enums
 		Orange = 3,
 		Purple = 4
 	}
+	public enum LevelNumberShowTypes
+	{
+		Current=0,
+		Next=1, 
+		Previous=2
+	}
 	//public enum UpgradeElementID
 	//{
 	//	FireRateUpgrade,

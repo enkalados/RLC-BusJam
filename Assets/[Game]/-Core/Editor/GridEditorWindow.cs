@@ -17,6 +17,8 @@ namespace GridSystem.Editor
 		PoolData poolDatabase;
 
 		public static GridData editingData = null;
+		private bool[,] toggleStates;
+		private PoolID selectedPoolID = PoolID.None;
 		List<GridData> gridDataList = new List<GridData>();
 		string gridDatasPath = "Assets/[Game]/Data/GridData";
 		int selectedGridDataIndex;
@@ -34,6 +36,7 @@ namespace GridSystem.Editor
 			InitializeGrid(gridX, gridZ);
 			LoadGridData();
 			poolDatabase = Resources.Load<PoolData>(poolPath);
+			toggleStates = new bool[gridX, gridZ];
 			if (editingData != null)
 			{
 				ClearAndPreviewGrid(editingData);
@@ -112,6 +115,15 @@ namespace GridSystem.Editor
 		private void InitializeGrid(int x, int z)
 		{
 			gridData = new PoolID[x, z];
+			toggleStates = new bool[x, z];
+			for (int i = 0; i < x; i++)
+			{
+				for (int j = 0; j < z; j++)
+				{
+					gridData[i, j] = PoolID.None;
+					toggleStates[i, j] = false;
+				}
+			}
 		}
 		private void ResizeGrid(int newX, int newZ)
 		{
@@ -134,18 +146,36 @@ namespace GridSystem.Editor
 			GUILayout.Label("Set Grid", EditorStyles.boldLabel);
 			EditorGUILayout.Space(10);
 
+			// PoolID seçici
+			selectedPoolID = (PoolID)EditorGUILayout.EnumPopup("Select PoolID", selectedPoolID);
+			EditorGUILayout.Space(10);
+
 			Handles.BeginGUI();
-			for (int z = 0; z < gridZ; z++) 
+			for (int z = 0; z < gridZ; z++)
 			{
 				EditorGUILayout.BeginHorizontal();
 				for (int x = 0; x < gridX; x++)
 				{
 					if (x < gridData.GetLength(0) && z < gridData.GetLength(1))
 					{
-						Rect rect = GUILayoutUtility.GetRect(50, 30);
-						//EditorGUI.DrawRect(rect, GetTileColor(gridData[x, z]));
+						Rect rect = GUILayoutUtility.GetRect(30, 30);
+						bool isCurrentPoolID = gridData[x, z] == selectedPoolID;
 
-						gridData[x, z] = (PoolID)EditorGUI.EnumPopup(rect, gridData[x, z]);
+						// Toggle'ý çiz
+						EditorGUI.BeginChangeCheck();
+						toggleStates[x, z] = GUI.Toggle(rect, isCurrentPoolID, "");
+
+						if (EditorGUI.EndChangeCheck())
+						{
+							if (toggleStates[x, z])
+							{
+								gridData[x, z] = selectedPoolID;
+							}
+							else
+							{
+								gridData[x, z] = PoolID.None;
+							}
+						}
 					}
 				}
 				EditorGUILayout.EndHorizontal();
